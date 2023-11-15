@@ -51,7 +51,7 @@ export default function ButtonAppBar() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>
-              <Link to="/personal" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link to="/Personal" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Personal Objectives
               </Link>
             </MenuItem>
@@ -72,6 +72,4 @@ export default function ButtonAppBar() {
 }
 
 
-{/* <Link color="inherit" href="https://mui.com/">
-        OKR Tracker
-      </Link>{' '} */}
+

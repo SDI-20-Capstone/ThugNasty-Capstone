@@ -10,8 +10,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider} from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useState, useNavigate, useContext  } from 'react';
+import { UserContext } from './UserContext';
 
 function Copyright(props) {
   return (
@@ -30,15 +32,47 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [existingUser, setExisitingUser] = useState();
+    const { user, setUser } = useContext(UserContext);
+    let navigate = useNavigate();
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        let jsonData = {
+            "email": existingUser.email,
+            "password": existingUser.password,
+          }
+          fetch('http://localhost:8081/SignIn', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(jsonData)
+          })
+          .then((response) => {
+            console.log(response)
+            if (response.status === 201) {
+              fetch('http://localhost:8081/SignIn')
+                .then(res => res.json())
+                .then(data => data.filter(element => element.email === existingUser.email))
+                .then(filteredInfo => setUser({
+                    loggedIn: true,
+                    email: filteredInfo[0].email,
+                    password: filteredInfo[0].password
+                }))
+              navigate('/');
+            } else {
+                alert('email/password incorrect')
+                setUser({
+                  loggedIn: false,
+                  email: '',
+                  password: ''
+                })
+                setEmail('');
+                setPassword('');
+            }
+          })
+        }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -67,6 +101,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={event => setEmail(event.target.value)}
             />
             <TextField
               margin="normal"
@@ -77,6 +112,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={event => setPassword(event.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -87,6 +123,10 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => setExisitingUser({
+                email: email,
+                password: password
+              })}
             >
               Sign In
             </Button>
