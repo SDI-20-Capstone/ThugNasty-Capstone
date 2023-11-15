@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 // import { Form } from "react-router-dom";
 
 const HomePage = () => {
-  
+
   return (
     <div>
       <ButtonAppBar />
@@ -36,14 +36,14 @@ const HomePage = () => {
             {/* <Form>
 
             </Form> */}
-             
+
     <PersonalOkr/>
       <Divider orientation="vertical" flexItem />
             </Grid>
-            
+
           </Grid>
         </Grid>
-      
+
         {/* Second row */}
         <Grid item xs={25}>
           <Grid
