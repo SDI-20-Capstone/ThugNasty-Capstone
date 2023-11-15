@@ -9,10 +9,8 @@ exports.up = function(knex) {
     table.string('last_name')
     table.string('email');
     table.string('password');
-    table.string('organization');
-    // table.integer('organization_id').references('id').inTable('organization');
+    table.integer('organization_id').references('id').inTable('organization');
     table.string('rank');
-    table.string('role');
   })
 };
 
@@ -21,10 +19,10 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-//   return knex.schema.alterTable('userinfo', table => {
-//     table.dropForeign('organization_id')
-//   })
-//   .then(()=> {
+  // return knex.schema.alterTable('userinfo', table => {
+  //   table.dropForeign('organization_id')
+  // })
+  // .then(()=> {
     return knex.schema.dropTableIfExists('userinfo')
-  
+  // })
 };
