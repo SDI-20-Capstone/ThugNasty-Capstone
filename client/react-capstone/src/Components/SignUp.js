@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -30,14 +31,47 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const [newUser, setNewUser] = useState();
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [organization, setOrganization] = useState("");
+    const [rank, setRank] = useState("");
+    const [role, setRole] = useState("");
+    
+
+   
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        let jsonData = {
+          
+          first_name: newUser.first_name,
+          last_name: newUser.last_name,
+          email: newUser.email,
+          password: newUser.password,
+          organization: newUser.organization,
+          rank: newUser.rank,
+          role: newUser.role
+        };
+    
+        fetch("http://localhost:8081/userinfo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData),
+        });
+    
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setOrganization("");
+        setRank("");
+        setRole("");
+        
+        alert("Account Created Successfully")
+    
+      };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -68,6 +102,7 @@ export default function SignUp() {
                   id="First Name"
                   label="First Name"
                   autoFocus
+                  onChange={event => setFirstName(event.target.value)}
                 />
               </Grid>
              
@@ -79,6 +114,7 @@ export default function SignUp() {
                   label="Last Name"
                   name="Last Name"
                   autoComplete="Last Name"
+                  onChange={event => setLastName(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -90,6 +126,7 @@ export default function SignUp() {
                   type="Email"
                   id="Email"
                   autoComplete="new-email"
+                  onChange={event => setEmail(event.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -100,6 +137,7 @@ export default function SignUp() {
                    label="Password"
                    name='Password'
                    autoComplete='Password'
+                   onChange={event => setPassword(event.target.value)}
 
                 />
               </Grid>
@@ -111,6 +149,7 @@ export default function SignUp() {
                   label="Organization"
                   name="Organization"
                   autoComplete="Organization"
+                  onChange={event => setOrganization(event.target.value)}
                 />
               </Grid>
               < Grid item xs={12} >
@@ -121,6 +160,7 @@ export default function SignUp() {
                 label='Rank'
                 name='Rank'
                 autoComplete='Rank'
+                onChange={event => setRank(event.target.value)}
                 />
               </Grid>
               < Grid item xs={12}>
@@ -130,6 +170,7 @@ export default function SignUp() {
                 id='Role'
                 label='Role'
                 name='Role'
+                onChange={event => setRole(event.target.value)}
                 />
 
               </Grid>
@@ -139,6 +180,17 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => setNewUser({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                password: password,
+                organization: organization,
+                rank: rank,
+                role: role,      
+              }, () => {
+                handleSubmit();
+              })}
             >
               Sign Up
             </Button>
