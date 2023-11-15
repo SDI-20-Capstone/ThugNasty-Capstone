@@ -8,10 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router
+import { Link, useNavigate } from 'react-router-dom'; // Assuming you're using React Router
 
 export default function ButtonAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,7 +57,7 @@ export default function ButtonAppBar() {
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link to="/organization" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link to="/Organization" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Organization Objectives
               </Link>
             </MenuItem>
@@ -64,7 +65,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OKR Tracker
           </Typography>
-          <Button color="inherit" href='/SignIn'>Login</Button>
+          <Button color="inherit" onClick={() => navigate('/SignIn')}>Login</Button>
         </Toolbar>
       </AppBar>
     </Box>
