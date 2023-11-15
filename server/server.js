@@ -39,11 +39,10 @@ app.post('/userinfo', (req, res) => {
         last_name,
         email,
         password,
-        organization,
+        organization_id,
         rank,
-        role
     } = req.body
-    createNewUser(first_name,last_name,email,password,organization,rank,role)
+    createNewUser(first_name,last_name,email,password,organization_id,rank)
     .then((data) => res.status(201).send(data))
 })
 

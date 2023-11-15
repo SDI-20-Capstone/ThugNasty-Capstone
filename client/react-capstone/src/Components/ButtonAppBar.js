@@ -9,10 +9,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom'; // Assuming you're using React Router
+import { UserContext } from './UserContext'
+import { useContext, useState } from 'react'
 
 export default function ButtonAppBar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +24,15 @@ export default function ButtonAppBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logout = () => {
+    setUser({
+      loggedIn: false,
+      email: "",
+    })
+  }
+
+  console.log(user);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -65,7 +77,12 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OKR Tracker
           </Typography>
-          <Button color="inherit" onClick={() => navigate('/SignIn')}>Login</Button>
+          {user.loggedIn === false ?
+          <Button color="inherit" onClick={() => navigate('/SignIn')}>Login</Button> :
+          <>
+          <div>You are logged in</div>
+          <Button color="inherit" onClick={() => logout()}>logout</Button>
+          </>}
         </Toolbar>
       </AppBar>
     </Box>
