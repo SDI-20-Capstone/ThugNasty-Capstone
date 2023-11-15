@@ -6,14 +6,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './Components/HomePage';
 import Personal from './Components/Personal';
 import Organization from './Components/Organization';
-import { UserContext } from "./Components/UserContext";
 import {  useState } from "react";
+import { UserContext } from './Components/UserContext'
 
 function App() {
   const [user, setUser] = useState({
     loggedIn: false,
     email: "",
-    password: ""
   });
 
 
