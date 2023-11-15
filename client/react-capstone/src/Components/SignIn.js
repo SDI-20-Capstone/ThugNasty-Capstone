@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider} from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useState, useNavigate, useContext  } from 'react';
+import { useState, useContext  } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { UserContext } from './UserContext';
 
 function Copyright(props) {
