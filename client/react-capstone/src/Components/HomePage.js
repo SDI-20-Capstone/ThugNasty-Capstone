@@ -1,11 +1,69 @@
 import React from "react";
 import ButtonAppBar from "./ButtonAppBar";
+import { Grid } from "@mui/material";
+import PersonalOkr from "./miniComponents/PersonalOkr";
+import OrgOkr from "./miniComponents/OrgOkr";
+import PersonalGraph from "./miniComponents/PersonalGraph";
+import OrganizationGraph from "./miniComponents/OrganizationGraph";
+import Divider from '@mui/material/Divider';
+// import { Form } from "react-router-dom";
 
 const HomePage = () => {
+  
   return (
     <div>
       <ButtonAppBar />
-      This will be our main dashboard that the user would see
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-evenly"
+        alignItems="stretch"
+      >
+        {/* First row */}
+        <Grid item xs={25}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="space-evenly"
+            alignItems="stretch"
+            height="100%"
+          >
+            <Grid item xs={25}>
+            Grid 1
+            <OrgOkr/>
+            </Grid>
+            <Grid item xs={25} >
+            {/* <Form>
+
+            </Form> */}
+             
+    <PersonalOkr/>
+      <Divider orientation="vertical" flexItem />
+            </Grid>
+            
+          </Grid>
+        </Grid>
+      
+        {/* Second row */}
+        <Grid item xs={25}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="space-evenly"
+            alignItems="stretch"
+            height="100%"
+          >
+            <Grid item xs={25}>
+              {/* Grid 3 */}
+              <OrganizationGraph/>
+            </Grid>
+            <Grid item xs={25}>
+              {/* Grid 4 */}
+              <PersonalGraph/>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </div>
   );
 };
