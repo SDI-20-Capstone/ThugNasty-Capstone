@@ -30,9 +30,8 @@ export default function ButtonAppBar() {
       loggedIn: false,
       email: "",
     })
+    navigate('/SignIn')
   }
-
-  console.log(user);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
