@@ -74,3 +74,21 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+// reference sandbox
+
+// xVal = (measurement_table.count / key_results_table.target_value||target_percent)
+// yVal = ()
+
+// Plot.plot({
+//   x: {
+//     axis: "top",
+//     grid: true,
+//     percent: true
+//   },
+//   marks: [
+//     Plot.ruleX([0]),
+//     Plot.barX(alphabet, {x: "Completion", y: "Objectives"})
+//   ]
+// })
