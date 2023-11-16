@@ -12,7 +12,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom'
 
 function Copyright(props) {
   return (
@@ -39,13 +44,14 @@ export default function SignUp() {
     const [organization, setOrganization] = useState("");
     const [rank, setRank] = useState("");
     const [role, setRole] = useState("");
-    
+    const navigate = useNavigate();
 
-   
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
         let jsonData = {
-          
+
           first_name: newUser.first_name,
           last_name: newUser.last_name,
           email: newUser.email,
@@ -54,23 +60,34 @@ export default function SignUp() {
           rank: newUser.rank,
           role: newUser.role
         };
-    
+
         fetch("http://localhost:8081/userinfo", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jsonData),
-        });
-    
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        setOrganization("");
-        setRank("");
-        setRole("");
-        
-        alert("Account Created Successfully")
-    
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setOrganization("");
+            setRank("");
+            setRole("");
+            alert("Account Created Successfully")
+            navigate("/SignIn")
+          } else {
+            alert("Something went wrong, please try again")
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setOrganization("");
+            setRank("");
+            setRole("");
+          }
+        })
       };
 
   return (
@@ -105,7 +122,7 @@ export default function SignUp() {
                   onChange={event => setFirstName(event.target.value)}
                 />
               </Grid>
-             
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -142,15 +159,19 @@ export default function SignUp() {
                 />
               </Grid>
                <Grid item xs={12} >
-                <TextField
-                  required
-                  fullWidth
-                  id="Organization"
-                  label="Organization"
-                  name="Organization"
-                  autoComplete="Organization"
-                  onChange={event => setOrganization(event.target.value)}
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="org-dropdown">Organization</InputLabel>
+                  <Select
+                    labelId="organization-dropwdown"
+                    id="org-select"
+                    value={organization}
+                    label="Organization"
+                    onChange={event => setOrganization(event.target.value)}
+                  >
+                    <MenuItem value="SLD 30">SLD 30</MenuItem>
+                    <MenuItem value="30 SFS">30 SFS</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               < Grid item xs={12} >
                 <TextField
@@ -162,17 +183,6 @@ export default function SignUp() {
                 autoComplete='Rank'
                 onChange={event => setRank(event.target.value)}
                 />
-              </Grid>
-              < Grid item xs={12}>
-                <TextField
-                required
-                fullWidth
-                id='Role'
-                label='Role'
-                name='Role'
-                onChange={event => setRole(event.target.value)}
-                />
-
               </Grid>
             </Grid>
             <Button
@@ -187,7 +197,7 @@ export default function SignUp() {
                 password: password,
                 organization: organization,
                 rank: rank,
-                role: role,      
+                role: role,
               }, () => {
                 handleSubmit();
               })}

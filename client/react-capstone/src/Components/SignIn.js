@@ -51,7 +51,6 @@ export default function SignIn() {
             body: JSON.stringify(jsonData)
           })
           .then((response) => {
-            console.log(response)
             if (response.status === 201) {
               fetch('http://localhost:8081/SignIn')
                 .then(res => res.json())

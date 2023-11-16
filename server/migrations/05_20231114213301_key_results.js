@@ -9,8 +9,10 @@ exports.up = function(knex) {
     table.integer('objective_id').references('id').inTable('objectives');
     table.date('start_date');
     table.date('end_date');
-    table.integer('target_percent')
-    table.integer('target_value')
+    table.integer('current_value');
+    table.integer('current_percent');
+    table.integer('target_percent');
+    table.integer('target_value');
   })
 };
 
