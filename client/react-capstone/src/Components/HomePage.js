@@ -1,11 +1,15 @@
 import React from "react";
 import ButtonAppBar from "./ButtonAppBar";
 import { Grid } from "@mui/material";
+import Switch from '@mui/material/Switch';
 import PersonalOkr from "./miniComponents/PersonalOkr";
 import OrgOkr from "./miniComponents/OrgOkr";
 import PersonalGraph from "./miniComponents/PersonalGraph";
 import OrganizationGraph from "./miniComponents/OrganizationGraph";
 import Divider from '@mui/material/Divider';
+
+
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 // import { Form } from "react-router-dom";
 
 const HomePage = () => {
@@ -19,6 +23,7 @@ const HomePage = () => {
         justifyContent="space-evenly"
         alignItems="stretch"
       >
+         <Switch {...label} />
         {/* First row */}
         <Grid item xs={25}>
           <Grid

@@ -1,73 +1,76 @@
-import React from 'react'
-import TableContainer from "@mui/material/TableContainer";
-import {
-  Paper,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
-}from "@mui/material";
+import React, { useState } from 'react';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
+import CircularWithValueLabel from './CircularWithValueLabel';
+
 
 const PersonalOkr = () => {
-    const personal1 = { name: 'personal1', value: 'KR1' };
-    const personal2 = { name: 'personal2', value: 'KR1' };
-    const personal3 = { name: 'personal3', value: 'KR1' };
-    const unionArray = [personal1,personal2,personal3];
-  return (
-   <div>
-    <br></br>
-    <TableContainer component={Paper}>
-            <Table className='' aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Your OKRs</TableCell>
-                  <TableCell align="center">Key Results</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {
-                  unionArray.map((row) => (
-                    <TableRow key={row.name}>
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      {Object.keys(row).map((key) =>
-                        key === "name" ? (
-                          ""
-                        ) : (
-                          <TableCell align="center">
-                      
-                            <FormControl
-                              variant="outlined"
-                              className=''
-                            >
-                              <InputLabel htmlFor="outlined-age-native-simple">
-                                Keys
-                              </InputLabel>
-                              <Select
-                                native
-                                label="Value"                                
-                              >
-                                <option aria-label="None" value="" />
-                                <option>{key}:{row[key]}</option>                                
-                              </Select>
-                            </FormControl>
-                          </TableCell>
-                        )
-                      )}
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-  
-   </div>
-  )
-}
+  const personal1 = { name: 'personal1', value: 'KR1' };
+  const personal2 = { name: 'personal2', value: 'KR1' };
+  const personal3 = { name: 'personal3', value: 'KR1' };
+  const unionArray = [personal1, personal2, personal3];
 
-export default PersonalOkr
+  const [measurementCount, setMeasurementCount] = useState(0);
+  const [successCount, setSuccessCount] = useState(0);
+
+  const handleAddMeasurement = () => {
+    setMeasurementCount(measurementCount + 1);
+    
+  };
+
+  return (
+    <div>
+      {unionArray.map((row, index) => (
+        <Accordion key={index}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>{row.name}</Typography>
+          </AccordionSummary>
+          <AccordionDetails style={{ display: 'flex',flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+            <Typography>
+                KR1: This is key result 1
+            </Typography>
+
+            </div>
+            <br/>
+            <div style={{ display: 'flex', flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center' }}>
+              <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
+                <AddIcon />
+              </IconButton>
+              <Typography>{`${measurementCount}/${successCount}`}</Typography>
+            </div>
+            <CircularWithValueLabel/>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </div>
+  );
+};
+
+export default PersonalOkr;
+
+
+
+
+
+
+
+{/* This will go after 47 <TableCell align="center">
+                    <FormControl variant="outlined" className=''>
+                      <InputLabel htmlFor="outlined-age-native-simple">
+                        Keys
+                      </InputLabel>
+                      <Select native label="Value">
+                        <option aria-label="None" value="" />
+                        <option>{row.value}</option>
+                      </Select>
+                    </FormControl>
+                  </TableCell> */}
+
+               
