@@ -51,7 +51,6 @@ export default function SignIn() {
             body: JSON.stringify(jsonData)
           })
           .then((response) => {
-            console.log(response)
             if (response.status === 201) {
               fetch('http://localhost:8081/SignIn')
                 .then(res => res.json())
@@ -59,7 +58,7 @@ export default function SignIn() {
                 .then(filteredInfo => setUser({
                     loggedIn: true,
                     email: filteredInfo[0].email,
-                    password: filteredInfo[0].password
+                    organization_id: filteredInfo[0].organization_id
                 }))
               navigate('/');
             } else {
