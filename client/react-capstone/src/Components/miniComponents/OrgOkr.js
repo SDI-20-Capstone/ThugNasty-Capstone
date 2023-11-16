@@ -12,6 +12,7 @@ import { UserContext } from '../UserContext';
 import AddIcon from '@mui/icons-material/Add';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularWithValueLabel from './CircularWithValueLabel';
+import AddKr from './AddKr';
 
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([{}]);
@@ -62,6 +63,10 @@ const OrgOkr = () => {
               <Typography>{`${measurementCount}/${successCount}`}</Typography>
             </div>
             <CircularWithValueLabel />
+            <div>
+            <AddKr/>
+
+            </div>
           </AccordionDetails>
         </Accordion>
       ))}
