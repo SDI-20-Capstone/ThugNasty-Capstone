@@ -6,6 +6,7 @@ import OrgOkr from "./miniComponents/OrgOkr";
 import PersonalGraph from "./miniComponents/PersonalGraph";
 import OrganizationGraph from "./miniComponents/OrganizationGraph";
 import Divider from '@mui/material/Divider';
+import * as Plot from "@observablehq/plot";
 // import { Form } from "react-router-dom";
 
 const HomePage = () => {
@@ -69,3 +70,18 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+// reference sandbox
+
+// Plot.plot({
+//   x: {
+//     axis: "top",
+//     grid: true,
+//     percent: true
+//   },
+//   marks: [
+//     Plot.ruleX([0]),
+//     Plot.barX(alphabet, {x: "Completion", y: "Objectives"})
+//   ]
+// })
