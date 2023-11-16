@@ -1,4 +1,4 @@
-const {createNewUser} = require("./NewUserData")
+const {createNewUser} = require("./Helpers")
 
 const express = require('express');
 const app = express();
@@ -39,10 +39,10 @@ app.post('/userinfo', (req, res) => {
         last_name,
         email,
         password,
-        organization_id,
+        organization,
         rank,
     } = req.body
-    createNewUser(first_name,last_name,email,password,organization_id,rank)
+    createNewUser(first_name,last_name,email,password,organization,rank)
     .then((data) => res.status(201).send(data))
 })
 
