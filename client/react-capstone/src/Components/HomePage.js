@@ -74,6 +74,9 @@ export default HomePage;
 
 // reference sandbox
 
+// xVal = (measurement_table.count / key_results_table.target_value||target_percent)
+// yVal = ()
+
 // Plot.plot({
 //   x: {
 //     axis: "top",
