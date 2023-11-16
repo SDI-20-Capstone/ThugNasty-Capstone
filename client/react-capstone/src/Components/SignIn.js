@@ -58,7 +58,7 @@ export default function SignIn() {
                 .then(filteredInfo => setUser({
                     loggedIn: true,
                     email: filteredInfo[0].email,
-                    password: filteredInfo[0].password
+                    organization_id: filteredInfo[0].organization_id
                 }))
               navigate('/');
             } else {

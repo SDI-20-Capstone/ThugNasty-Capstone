@@ -13,6 +13,7 @@ function App() {
   const [user, setUser] = useState({
     loggedIn: false,
     email: "",
+    organization_id: ""
   });
 
 

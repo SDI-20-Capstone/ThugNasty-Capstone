@@ -48,7 +48,7 @@ app.post('/userinfo', (req, res) => {
 
 app.get('/SignIn', (req, res) => {
     knex('userinfo')
-    .select('email', 'password')
+    .select('email', 'password', 'organization_id')
     .then(data => {
         res.json(data)
     })
@@ -88,7 +88,21 @@ app.patch('/login', (req, res) => {
     })
   })
 
+app.get('/organization', (req, res) => {
+  knex('organization')
+  .select('*')
+  .then(data => {
+    res.json(data)
+  })
+})
 
+app.get('/objectives', (req, res) => {
+  knex('objectives')
+  .select('*')
+  .then(data => {
+    res.json(data)
+  })
+})
 
 app.listen(port, () => {
     console.log(`this is running on ${port}`)

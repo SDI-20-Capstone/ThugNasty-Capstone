@@ -11,7 +11,6 @@ exports.up = function(knex) {
     table.date('end_date');
     table.integer('current_value');
     table.integer('current_percent');
-    table.integer('target_percent');
     table.integer('target_value');
   })
 };

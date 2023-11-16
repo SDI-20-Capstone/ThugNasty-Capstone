@@ -11,8 +11,21 @@ import {
   InputLabel,
   Select,
 } from "@mui/material";
-const OrgOkr = () => {
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../UserContext';
 
+const OrgOkr = () => {
+  const [orgOkr, setOrgOkr] = useState([{}]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    fetch('http://localhost:8081/objectives')
+    .then(res => res.json())
+    .then(data => data.filter(entry => entry.id === user.organization_id))
+    .then(filteredData => setOrgOkr(filteredData))
+  }, [user])
+
+  console.log(orgOkr)
 
   const Objective1 = { name: 'Objective1', value: 'KR1' };
   const Objective2 = { name: 'Objective2', value: 'KR2' };
@@ -29,7 +42,14 @@ const OrgOkr = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {
+                {orgOkr.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell component="th" scopr="row">
+                      {row.title}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {/* {
                   unionArray.map((row) => (
                     <TableRow key={row.name}>
                       <TableCell component="th" scope="row">
@@ -40,7 +60,7 @@ const OrgOkr = () => {
                           ""
                         ) : (
                           <TableCell align="center">
-                      
+
                             <FormControl
                               variant="outlined"
                               className=''
@@ -50,17 +70,17 @@ const OrgOkr = () => {
                               </InputLabel>
                               <Select
                                 native
-                                label="Value"                                
+                                label="Value"
                               >
                                 <option aria-label="None" value="" />
-                                <option>{key}:{row[key]}</option>                                
+                                <option>{key}:{row[key]}</option>
                               </Select>
                             </FormControl>
                           </TableCell>
                         )
                       )}
                     </TableRow>
-                  ))}
+                  ))} */}
               </TableBody>
             </Table>
           </TableContainer>
