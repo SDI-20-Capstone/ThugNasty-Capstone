@@ -3,35 +3,23 @@ import ButtonAppBar from './ButtonAppBar';
 import { DataGrid } from '@mui/x-data-grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import AddMemberModal from './miniComponents/AdminModal'; // Assuming you've placed the modal in the same directory
+import AddMemberModal from './miniComponents/AdminModal';
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First name', width: 130 },
-    { field: 'lastName', headerName: 'Last name', width: 130 },
-    {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 90,
-    },
-    {
-        field: 'fullName',
-        headerName: 'Full name',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 160,
-        valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
+    { field: 'id', headerName: 'ID', width: 200 },
+    { field: 'firstName', headerName: 'First name', width: 350 },
+    { field: 'lastName', headerName: 'Last name', width: 350 },
+    { field: 'rank', headerName: 'Rank', width: 350 },
+    { field: 'email', headerName: 'Email', width: 350 },
+
 ];
 
 const memberRows = [
-    { id: 1, lastName: 'Member1Last', firstName: 'Member1First', age: 25 },
-    { id: 2, lastName: 'Member2Last', firstName: 'Member2First', age: 30 },
-    { id: 3, lastName: 'Member3Last', firstName: 'Member3First', age: 25 },
-    { id: 4, lastName: 'Member4Last', firstName: 'Member4First', age: 30 },
-    // Add more member rows as needed
+    { id: 1, lastName: 'Member1Last', firstName: 'Member1First', rank: 'SSgt', email: 'john.doe@example.com' },
+    { id: 2, lastName: 'Member2Last', firstName: 'Member2First', rank: 'Col',  email: 'jane.smith@example.com' }, 
+    { id: 3, lastName: 'Member3Last', firstName: 'Member3First', rank: 'MSgt',  email: 'bob.roberts@example.com' },
+    { id: 4, lastName: 'Member4Last', firstName: 'Member4First', rank: 'A1C',  email: 'emily.davis@example.com' },
+
 ];
 
 const unitRows = [
@@ -39,7 +27,7 @@ const unitRows = [
     { id: 2, lastName: 'Unit2Last', firstName: 'Unit2First', age: 35 },
     { id: 3, lastName: 'Unit3Last', firstName: 'Unit3First', age: 40 },
     { id: 4, lastName: 'Unit4Last', firstName: 'Unit4First', age: 35 },
-    // Add more unit rows as needed
+
 ];
 
 export default function AdminPage() {
@@ -59,28 +47,29 @@ export default function AdminPage() {
     };
 
     const handleAddMember = (newMember) => {
-        // Add the new member to the memberRows array or your data source
-        // For now, just update the state directly
+
         memberRows.push(newMember);
     };
 
     const rows = currentTab === 0 ? memberRows : unitRows;
 
     return (
-        <div>
+        <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: 'white' }}>
             <ButtonAppBar />
-            <h1>Administrator Page</h1>
+            <h1 style={{ color: 'black' }}>Administrator Page</h1>
 
-            {/* Add Tabs for Members and Units */}
             <Tabs value={currentTab} onChange={handleTabChange} centered>
                 <Tab label="Members" />
                 <Tab label="Units" />
             </Tabs>
 
-            {/* Button to open the Add Member modal */}
-            <button onClick={handleOpenAddMemberModal}>Add Member</button>
+            <button
+                onClick={handleOpenAddMemberModal}
+                style={{ backgroundColor: '#3385ff', color: 'white', marginRight: '1600px' }}
+            >
+                Add Member
+            </button>
 
-            {/* Display the DataGrid based on the selected tab */}
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows}
@@ -95,7 +84,6 @@ export default function AdminPage() {
                 />
             </div>
 
-            
             <AddMemberModal
                 open={isAddMemberModalOpen}
                 onClose={handleCloseAddMemberModal}

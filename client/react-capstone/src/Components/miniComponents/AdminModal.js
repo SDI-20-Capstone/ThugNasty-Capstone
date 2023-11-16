@@ -42,14 +42,21 @@ const AddMemberModal = ({ open, onClose, onAddMember }) => {
                 />
                 <TextField
                     fullWidth
-                    label="Age"
-                    name="age"
-                    value={memberInfo.age}
+                    label="Rank"
+                    name="Rank"
+                    value={memberInfo.Rank}
                     onChange={handleInputChange}
                     margin="normal"
                 />
-                <div style={{ display: "flex", flexDirection: "row" }}> <Button variant="contained" onClick={handleAddMember}>Add Member</Button></div>
-
+                <TextField
+                    fullWidth
+                    label="Email"
+                    name="Email"
+                    value={memberInfo.Email}
+                    onChange={handleInputChange}
+                    margin="normal"
+                />
+                <Button variant="contained" onClick={handleAddMember}>Add Member</Button>
             </Box>
         </Modal>
     );
