@@ -11,6 +11,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom'; // Assuming you're using React Router
 import { UserContext } from './UserContext'
 import { useContext, useState } from 'react'
+import WorkIcon from '@mui/icons-material/Work';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function ButtonAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,6 +32,7 @@ export default function ButtonAppBar() {
     setUser({
       loggedIn: false,
       email: "",
+      organization_id: ""
     })
     navigate('/SignIn')
   }
@@ -63,11 +67,19 @@ export default function ButtonAppBar() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>
+              <AccountBoxIcon />
+              <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                Home
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <PersonIcon />
               <Link to="/Personal" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Personal Objectives
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
+              <WorkIcon />
               <Link to="/Organization" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Organization Objectives
               </Link>

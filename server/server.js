@@ -1,4 +1,4 @@
-const {createNewUser} = require("./NewUserData")
+const {createNewUser} = require("./Helpers")
 
 const express = require('express');
 const app = express();
@@ -39,16 +39,16 @@ app.post('/userinfo', (req, res) => {
         last_name,
         email,
         password,
-        organization_id,
+        organization,
         rank,
     } = req.body
-    createNewUser(first_name,last_name,email,password,organization_id,rank)
+    createNewUser(first_name,last_name,email,password,organization,rank)
     .then((data) => res.status(201).send(data))
 })
 
 app.get('/SignIn', (req, res) => {
     knex('userinfo')
-    .select('email', 'password')
+    .select('email', 'password', 'organization_id')
     .then(data => {
         res.json(data)
     })
@@ -88,7 +88,21 @@ app.patch('/login', (req, res) => {
     })
   })
 
+app.get('/organization', (req, res) => {
+  knex('organization')
+  .select('*')
+  .then(data => {
+    res.json(data)
+  })
+})
 
+app.get('/objectives', (req, res) => {
+  knex('objectives')
+  .select('*')
+  .then(data => {
+    res.json(data)
+  })
+})
 
 app.listen(port, () => {
     console.log(`this is running on ${port}`)
