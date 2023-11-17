@@ -6,6 +6,8 @@ import {
   AccordionDetails,
   Typography,
   IconButton,
+  MenuItem,
+  Select
 } from "@mui/material";
 import {  useEffect, useContext } from 'react';
 import { UserContext } from '../UserContext';
@@ -13,6 +15,12 @@ import AddIcon from '@mui/icons-material/Add';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularWithValueLabel from './CircularWithValueLabel';
 import AddKr from './AddKr';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([{}]);
@@ -32,10 +40,29 @@ const OrgOkr = () => {
 
   const [measurementCount, setMeasurementCount] = useState(0);
   const [successCount, setSuccessCount] = useState(0);
+  const [measurementValue, setMeasurementValue] = useState('');
 
   const handleAddMeasurement = () => {
-    setMeasurementCount(measurementCount + 1);
+    setAddDialog(true);
   };
+
+  const [addDialog, setAddDialog] = useState(false);
+
+   const handleAddDialogClose = () => {
+    setAddDialog(false);
+    setMeasurementValue('');
+   };
+
+   const handleAddDialogSubmit = () => {
+    const measurement = parseFloat(measurementValue);
+    if(!isNaN(measurement)) {
+        setMeasurementCount(measurementCount + measurement);
+        setSuccessCount(successCount + (measurement > 0 ? 1 : 0));
+    }
+
+    setAddDialog(false);
+    setMeasurementValue('');
+   };
 
 
   return (
@@ -59,7 +86,59 @@ const OrgOkr = () => {
               <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
                 <AddIcon />
               </IconButton>
-              <Typography>{`${measurementCount}/${successCount}`}</Typography>
+              <Typography>{`${measurementCount.toFixed(2)}/${successCount}`}</Typography>
+              <Dialog open={addDialog} onClose={handleAddDialogClose}>
+        <DialogTitle>Organization: Org here</DialogTitle>
+        <DialogContent>
+Number of Measurements
+          <TextField
+            label="Number Input"
+            variant="outlined"
+            value={measurementValue}
+            onChange={(e) => setMeasurementValue(e.target.value)}
+            type="number"
+            autoFocus
+            margin="dense"
+            fullWidth
+          />
+   Success or Fail
+    <Select
+    value=''
+    onChange={''}
+    fullWidth
+    autoFocus
+    margin='dense'
+    variant='outlined'
+    label=''
+    >
+    <MenuItem value={10}> Success</MenuItem>
+    <MenuItem value={10}> Failure</MenuItem>
+
+        </Select>
+
+
+
+Notes
+<TextField
+            label=""
+            variant="filled"
+            type="text"
+            multiline
+            fullWidth
+            rows={8}
+            autoFocus
+            margin="dense"
+          />
+
+
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleAddDialogClose}>Cancel</Button>
+          <Button onClick={handleAddDialogSubmit} color="primary">Submit</Button>
+        </DialogActions>
+            </Dialog>
+
             </div>
             <CircularWithValueLabel />
             <div>
@@ -68,6 +147,8 @@ const OrgOkr = () => {
             </div>
           </AccordionDetails>
         </Accordion>
+
+
       ))}
     </Paper>
   );
