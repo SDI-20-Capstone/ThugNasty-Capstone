@@ -11,6 +11,7 @@ exports.up = function(knex) {
     table.string('password');
     table.integer('organization_id').references('id').inTable('organization');
     table.string('rank');
+    table.string('role');
   })
 };
 
