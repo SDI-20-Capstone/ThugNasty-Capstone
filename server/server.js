@@ -53,9 +53,7 @@ app.patch('/userinfo', (req, res) => {
     unit
   } = req.body
   updateMember(email, unit)
-  .then((data) =>{
-     res.status(201).json(data)
-    })
+    .then((data) => res.status(201).json(data))
 })
 
 app.get('/SignIn', (req, res) => {
