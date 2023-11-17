@@ -21,7 +21,7 @@ export default function AdminPage() {
         fetch('http://localhost:8081/unitrows')
         .then(res => res.json())
         .then(data => setUnitRows(data))
-      }, [user])
+      }, [memberRows.organization_id])
 
     const memberColumns = [
         { field: 'first_name', headerName: 'First name', width: 350 },

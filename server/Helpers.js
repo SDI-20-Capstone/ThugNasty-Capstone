@@ -15,12 +15,12 @@ const createNewUser = (first_name,last_name,email,password,organization,rank, ro
 }
 
 const updateMember = (email, unit) => {
-  const orgId = knex('organization').select('organization_id').where("name", "=", unit)
+  const updateOrgId = knex('organization').select('organization.id').where("name", "=", unit)
 
   return knex("userinfo")
           .select('*')
           .where("email", "=", email)
-          .update({organization_id: orgId})
+          .update({organization_id: updateOrgId})
 }
 
 module.exports = {createNewUser, updateMember}
