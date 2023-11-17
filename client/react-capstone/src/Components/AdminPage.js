@@ -1,38 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ButtonAppBar from './ButtonAppBar';
 import { DataGrid } from '@mui/x-data-grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddMemberModal from './miniComponents/AdminModal';
+import {UserContext} from './UserContext'
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 200 },
-    { field: 'firstName', headerName: 'First name', width: 350 },
-    { field: 'lastName', headerName: 'Last name', width: 350 },
-    { field: 'rank', headerName: 'Rank', width: 350 },
-    { field: 'email', headerName: 'Email', width: 350 },
-
-];
-
-const memberRows = [
-    { id: 1, lastName: 'Member1Last', firstName: 'Member1First', rank: 'SSgt', email: 'john.doe@example.com' },
-    { id: 2, lastName: 'Member2Last', firstName: 'Member2First', rank: 'Col',  email: 'jane.smith@example.com' }, 
-    { id: 3, lastName: 'Member3Last', firstName: 'Member3First', rank: 'MSgt',  email: 'bob.roberts@example.com' },
-    { id: 4, lastName: 'Member4Last', firstName: 'Member4First', rank: 'A1C',  email: 'emily.davis@example.com' },
-
-];
-
-const unitRows = [
-    { id: 1, lastName: 'Unit1Last', firstName: 'Unit1First', age: 40 },
-    { id: 2, lastName: 'Unit2Last', firstName: 'Unit2First', age: 35 },
-    { id: 3, lastName: 'Unit3Last', firstName: 'Unit3First', age: 40 },
-    { id: 4, lastName: 'Unit4Last', firstName: 'Unit4First', age: 35 },
-
-];
 
 export default function AdminPage() {
     const [currentTab, setCurrentTab] = useState(0);
     const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
+    const [personnel, setPersonnel] = useState([{}])
+    const { user } = useContext(UserContext);
+    const [rows, setRows] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8081/userinfo')
+        .then(res => res.json())
+        .then(data => data.filter(entry => entry.organization_id === user.organization_id))
+        .then(filteredData => setRows(filteredData))
+      }, [user])
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 200 },
+        { field: 'first_name', headerName: 'First name', width: 350 },
+        { field: 'last_name', headerName: 'Last name', width: 350 },
+        { field: 'rank', headerName: 'Rank', width: 350 },
+        { field: 'email', headerName: 'Email', width: 350 },
+    ];
+
+    // const memberRows = [
+    // //     // { id: 1, lastName: 'Member1Last', firstName: 'Member1First', rank: 'SSgt', email: 'john.doe@example.com' },
+    // //     // { id: 2, lastName: 'Member2Last', firstName: 'Member2First', rank: 'Col',  email: 'jane.smith@example.com' },
+    // //     // { id: 3, lastName: 'Member3Last', firstName: 'Member3First', rank: 'MSgt',  email: 'bob.roberts@example.com' },
+    // //     // { id: 4, lastName: 'Member4Last', firstName: 'Member4First', rank: 'A1C',  email: 'emily.davis@example.com' },
+    // ];
+
+    const unitRows = [
+        { id: 1, lastName: 'Unit1Last', firstName: 'Unit1First', age: 40 },
+        { id: 2, lastName: 'Unit2Last', firstName: 'Unit2First', age: 35 },
+        { id: 3, lastName: 'Unit3Last', firstName: 'Unit3First', age: 40 },
+        { id: 4, lastName: 'Unit4Last', firstName: 'Unit4First', age: 35 },
+
+    ];
+
 
     const handleTabChange = (event, newValue) => {
         setCurrentTab(newValue);
@@ -51,7 +62,7 @@ export default function AdminPage() {
         memberRows.push(newMember);
     };
 
-    const rows = currentTab === 0 ? memberRows : unitRows;
+    // const rows = currentTab === 0 ? memberRows : unitRows;
 
     return (
         <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: 'white' }}>
