@@ -1,6 +1,6 @@
 const knex = require("knex")(require("./knexfile.js")["development"]);
 
-const createNewUser = (first_name,last_name,email,password,organization,rank) => {
+const createNewUser = (first_name,last_name,email,password,organization,rank, role) => {
   const orgId = knex('organization').select('organization.id').where("name", "=", organization)
 
   return knex("userinfo").insert([{
@@ -9,7 +9,8 @@ const createNewUser = (first_name,last_name,email,password,organization,rank) =>
     email: email,
     password: password,
     organization_id: orgId,
-    rank: rank
+    rank: rank,
+    role: role
   }])
 }
 

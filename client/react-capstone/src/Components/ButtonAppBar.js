@@ -32,9 +32,10 @@ export default function ButtonAppBar() {
     setUser({
       loggedIn: false,
       email: "",
-      organization_id: ""
+      organization_id: "",
+      role: ""
     })
-    navigate('/SignIn')
+    navigate('/')
   }
 
   return (
@@ -68,7 +69,7 @@ export default function ButtonAppBar() {
           >
             <MenuItem onClick={handleClose}>
               <AccountBoxIcon />
-              <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Home
               </Link>
             </MenuItem>
@@ -84,12 +85,20 @@ export default function ButtonAppBar() {
                 Organization Objectives
               </Link>
             </MenuItem>
+            {user.role === 'admin' || 'org_owner' ?
+            <MenuItem onClick={handleClose}>
+              <PersonIcon />
+              <Link to="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                Admin
+              </Link>
+            </MenuItem> :
+            <></> }
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OKR Tracker
           </Typography>
           {user.loggedIn === false ?
-          <Button color="inherit" onClick={() => navigate('/SignIn')}>Login</Button> :
+          <Button color="inherit" onClick={() => navigate('/')}>Login</Button> :
           <>
           <div>You are logged in</div>
           <Button color="inherit" onClick={() => logout()}>logout</Button>

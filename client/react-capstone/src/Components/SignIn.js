@@ -58,15 +58,17 @@ export default function SignIn() {
                 .then(filteredInfo => setUser({
                     loggedIn: true,
                     email: filteredInfo[0].email,
-                    organization_id: filteredInfo[0].organization_id
+                    organization_id: filteredInfo[0].organization_id,
+                    role: filteredInfo[0].role
                 }))
-              navigate('/');
+              navigate('/Home');
             } else {
                 alert('email/password incorrect')
                 setUser({
                   loggedIn: false,
                   email: '',
-                  password: ''
+                  organization_id: "",
+                  role: ""
                 })
                 setEmail('');
                 setPassword('');

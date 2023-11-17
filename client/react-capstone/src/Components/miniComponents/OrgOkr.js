@@ -33,7 +33,6 @@ const OrgOkr = () => {
     .then(filteredData => setOrgOkr(filteredData))
   }, [user])
 
-  console.log(orgOkr)
   const Objective1 = { name: 'Objective1', value: 'KR1' };
   const Objective2 = { name: 'Objective2', value: 'KR2' };
   const Objective3 = { name: 'Objective3', value: 'KR3' };
@@ -49,7 +48,7 @@ const OrgOkr = () => {
   };
 
   const [addDialog, setAddDialog] = useState(false);
-  
+
    const handleAddDialogClose = () => {
     setAddDialog(false);
     setMeasurementValue('');
@@ -113,14 +112,14 @@ Number of Measurements
     margin='dense'
     variant='outlined'
     label=''
-    > 
+    >
     <MenuItem value={10}> Success</MenuItem>
     <MenuItem value={10}> Failure</MenuItem>
 
         </Select>
-        
-        
-          
+
+
+
 Notes
 <TextField
             label=""
@@ -132,16 +131,16 @@ Notes
             autoFocus
             margin="dense"
           />
-          
+
 
         </DialogContent>
-    
+
         <DialogActions>
           <Button onClick={handleAddDialogClose}>Cancel</Button>
           <Button onClick={handleAddDialogSubmit} color="primary">Submit</Button>
         </DialogActions>
-            </Dialog> 
-            
+            </Dialog>
+
             </div>
             <CircularWithValueLabel />
             <div>
@@ -151,7 +150,7 @@ Notes
           </AccordionDetails>
         </Accordion>
 
-        
+
       ))}
     </Paper>
   );
