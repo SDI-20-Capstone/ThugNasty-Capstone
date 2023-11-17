@@ -41,14 +41,15 @@ app.post('/userinfo', (req, res) => {
         password,
         organization,
         rank,
+        role
     } = req.body
-    createNewUser(first_name,last_name,email,password,organization,rank)
+    createNewUser(first_name,last_name,email,password,organization,rank, role)
     .then((data) => res.status(201).send(data))
 })
 
 app.get('/SignIn', (req, res) => {
     knex('userinfo')
-    .select('email', 'password', 'organization_id')
+    .select('email', 'password', 'organization_id', 'role')
     .then(data => {
         res.json(data)
     })

@@ -76,7 +76,7 @@ export default function SignUp() {
             setRank("");
             setRole("");
             alert("Account Created Successfully")
-            navigate("/SignIn")
+            navigate("/")
           } else {
             alert("Something went wrong, please try again")
             setFirstName("");
@@ -197,7 +197,7 @@ export default function SignUp() {
                 password: password,
                 organization: organization,
                 rank: rank,
-                role: role,
+                role: 'user'
               }, () => {
                 handleSubmit();
               })}
@@ -206,7 +206,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="SignIn" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
