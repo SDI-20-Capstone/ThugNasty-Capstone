@@ -1,4 +1,4 @@
-const {createNewUser} = require("./Helpers")
+const {createNewUser, updateMember} = require("./Helpers")
 
 const express = require('express');
 const app = express();
@@ -44,7 +44,18 @@ app.post('/userinfo', (req, res) => {
         role
     } = req.body
     createNewUser(first_name,last_name,email,password,organization,rank, role)
-    .then((data) => res.status(201).send(data))
+    .then((data) => res.status(200).send(data))
+})
+
+app.patch('/userinfo', (req, res) => {
+  const {
+    email,
+    unit
+  } = req.body
+  updateMember(email, unit)
+  .then((data) =>{
+     res.status(201).json(data)
+    })
 })
 
 app.get('/SignIn', (req, res) => {
@@ -103,6 +114,24 @@ app.get('/objectives', (req, res) => {
   .then(data => {
     res.json(data)
   })
+})
+
+app.get('/memberrows', (req, res) => {
+  knex('organization')
+  .join('userinfo', 'organization.id', '=', 'userinfo.organization_id')
+  .select('*')
+  .then(data => {
+      res.json(data);
+  })
+})
+
+app.get('/unitrows', (req, res) => {
+  knex('organization')
+    .select('organization.id', 'organization.name as unit_name', 'parent.name as parent_name')
+    .leftJoin('organization as parent', 'organization.parent_id', '=', 'parent.id')
+    .then(data => {
+      res.json(data);
+    })
 })
 
 app.listen(port, () => {

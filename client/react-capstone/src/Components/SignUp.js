@@ -169,7 +169,21 @@ export default function SignUp() {
                     onChange={event => setOrganization(event.target.value)}
                   >
                     <MenuItem value="SLD 30">SLD 30</MenuItem>
+                    <MenuItem value="30 OG">30 OG</MenuItem>
+                    <MenuItem value="30 MSG">30 MSG</MenuItem>
+                    <MenuItem value="30 MDG">30 MDG</MenuItem>
+                    <MenuItem value="30 CPTS">30 CPTS</MenuItem>
+                    <MenuItem value="2 ROPS">2 ROPS</MenuItem>
+                    <MenuItem value="2 SLS">2 SLS</MenuItem>
+                    <MenuItem value="30 OSS">30 OSS</MenuItem>
+                    <MenuItem value="30 SCS">30 SCS</MenuItem>
+                    <MenuItem value="30 CES">30 CES</MenuItem>
+                    <MenuItem value="30 CONS">30 CONS</MenuItem>
+                    <MenuItem value="30 FSS">30 FSS</MenuItem>
+                    <MenuItem value="30 LRS">30 LRS</MenuItem>
                     <MenuItem value="30 SFS">30 SFS</MenuItem>
+                    <MenuItem value="30 HCOS">30 HCONS</MenuItem>
+                    <MenuItem value="30 OMRS">30 OMRS</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
