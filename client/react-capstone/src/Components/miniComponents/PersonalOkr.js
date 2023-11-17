@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import CircularWithValueLabel from './CircularWithValueLabel';
-
+import AddKr from './AddKr';
 
 const PersonalOkr = () => {
   const personal1 = { name: 'personal1', value: 'KR1' };
@@ -41,11 +41,14 @@ const PersonalOkr = () => {
             <br/>
             <div style={{ display: 'flex', flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center' }}>
               <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
-                <AddIcon />
+                <AddIcon
+                
+                />
               </IconButton>
               <Typography>{`${measurementCount}/${successCount}`}</Typography>
             </div>
             <CircularWithValueLabel/>
+            <AddKr/>
           </AccordionDetails>
         </Accordion>
       ))}
