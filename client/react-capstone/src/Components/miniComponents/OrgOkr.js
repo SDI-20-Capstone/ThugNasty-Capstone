@@ -42,6 +42,7 @@ const OrgOkr = () => {
   const [measurementCount, setMeasurementCount] = useState(0);
   const [successCount, setSuccessCount] = useState(0);
   const [measurementValue, setMeasurementValue] = useState('');
+  const [successOrFail, setSuccessOrFail] = useState('');
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -63,6 +64,7 @@ const OrgOkr = () => {
 
     setAddDialog(false);
     setMeasurementValue('');
+    setSuccessOrFail('');
    };
 
 
@@ -87,7 +89,7 @@ const OrgOkr = () => {
               <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
                 <AddIcon />
               </IconButton>
-              <Typography>{`${measurementCount.toFixed(2)}/${successCount}`}</Typography>
+              <Typography>{`${measurementCount}/${successCount}`}</Typography>
               <Dialog open={addDialog} onClose={handleAddDialogClose}>
         <DialogTitle>Organization: Org here</DialogTitle>
         <DialogContent>
@@ -105,7 +107,7 @@ Number of Measurements
    Success or Fail
     <Select
     value=''
-    onChange={''}
+    onChange={(e) => setSuccessOrFail(e.target.value)}
     fullWidth
     autoFocus
     margin='dense'
