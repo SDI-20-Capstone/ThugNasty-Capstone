@@ -19,6 +19,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import AddPersObj from './AddPersObj';
+
 
 const PersonalOkr = () => {
   const personal1 = { name: 'personal1', value: 'KR1' };
@@ -55,7 +57,11 @@ const PersonalOkr = () => {
   };
 
   return (
+
+    
+    
     <Paper>
+        <AddPersObj/>
       {unionArray.map((row, index) => (
         <Accordion key={index}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -64,7 +70,7 @@ const PersonalOkr = () => {
           <AccordionDetails style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <Typography>
-                {`${row.value}: This is Key Result ${row.value}`}
+                {`${row.value}: This is Key Result `}
               </Typography>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
