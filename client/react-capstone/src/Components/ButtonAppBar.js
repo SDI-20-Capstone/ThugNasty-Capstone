@@ -38,8 +38,6 @@ export default function ButtonAppBar() {
     navigate('/')
   }
 
-  console.log(user.role)
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
