@@ -74,7 +74,7 @@ export default function AddObj() {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Personal Objective</DialogTitle>
+        <DialogTitle id="form-dialog-title">Organization Objective</DialogTitle>
         <DialogContent>
           <DialogContentText>Organization: Org will be here</DialogContentText>
         </DialogContent>

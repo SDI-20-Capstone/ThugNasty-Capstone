@@ -95,7 +95,7 @@ const PersonalOkr = () => {
               <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
                 <AddIcon />
               </IconButton>
-              <Typography>{`${measurementCount}/${successCount}`}</Typography>
+              <Typography>{`${row.target_value}/${row.success_count}`}</Typography>
               <Dialog open={addDialog} onClose={handleAddDialogClose}>
                 <DialogTitle>Organization: Org here</DialogTitle>
                 <DialogContent>
