@@ -65,6 +65,7 @@ const PersonalOkr = () => {
   
     <Paper>
         <AddPersObj/>
+        {/* {orgOkr should be personal once data has been made} */}
       {orgOkr.map((row, index) => (
         <Accordion key={index}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
