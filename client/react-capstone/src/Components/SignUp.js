@@ -67,7 +67,7 @@ export default function SignUp() {
           body: JSON.stringify(jsonData),
         })
         .then((response) => {
-          if (response.status === 201) {
+          if (response.status === 200) {
             setFirstName("");
             setLastName("");
             setEmail("");
