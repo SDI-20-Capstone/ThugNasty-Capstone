@@ -31,6 +31,8 @@ const OrgOkr = () => {
       .then((data) => data.filter((entry) => entry.id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
   }, [user]);
+
+  console.log(orgOkr)
 // Here we will have the info from data base isntead of below via mapping.
   const Objective1 = { name: "Objective1", value: "KR1" };
   const Objective2 = { name: "Objective2", value: "KR2" };
