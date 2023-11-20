@@ -30,7 +30,9 @@ const OrgOkr = () => {
   const [successCount, setSuccessCount] = useState(0);
   const [measurementValue, setMeasurementValue] = useState("");
   const [successOrFail, setSuccessOrFail] = useState("");
-
+  const [newMeasurement, setNewMeasurement] = useState();
+  const [title, setTitle] = useState("");
+  const [missionImpact, setMissionImpact] = useState('');
 
   useEffect(() => {
     fetch("http://localhost:8081/objectives")
@@ -50,17 +52,26 @@ const OrgOkr = () => {
     setMeasurementValue("");
   };
 
-  const handleAddDialogSubmit = () => {
-    const measurement = parseFloat(measurementValue);
-    if (!isNaN(measurement)) {
-      setMeasurementCount(measurementCount + measurement);
-      setSuccessCount(successCount + (measurement > 0 ? 1 : 0));
-    }
+  const handleAddDialogSubmit = (event) => {
+    event.preventDefault();
+    let jsonMeasuredData = {
+      target_value: newMeasurement.target_value,
+      successCount: newMeasurement.successCount
+    };
+    
+    fetch("http://localhost:8081/key_results", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonMeasuredData),
+        })
+        .then((response) => {
+          if (response.status === 200)
+          setTitle("");
+          setMissionImpact("");
+          alert('OBJ added succesfully');
+        })
 
-    setAddDialog(false);
-    setMeasurementValue("");
-    setSuccessOrFail("");
-  };
+  }
 
   return (
     <Paper>
@@ -104,7 +115,7 @@ const OrgOkr = () => {
               >
                 <AddIcon />
               </IconButton>
-              <Typography>{`${measurementCount}/${successCount}`}</Typography>
+              <Typography>{`${row.target_value}/${row.success_count}`}</Typography>
               <Dialog open={addDialog} onClose={handleAddDialogClose}>
                 <DialogTitle>Organization: Org here</DialogTitle>
                 <DialogContent>

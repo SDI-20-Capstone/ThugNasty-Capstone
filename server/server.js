@@ -12,14 +12,6 @@ app.use(cors());
 
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development'])
 
-// const pool = new Pool({
-//       host: '127.0.0.1',
-//       user: 'postgres',
-//       password: 'docker',
-//       port: '5432',
-//       database: 'okr'
-
-// })
 
 app.get('/', (req, res) => {
     res.send('Application up and running.')
