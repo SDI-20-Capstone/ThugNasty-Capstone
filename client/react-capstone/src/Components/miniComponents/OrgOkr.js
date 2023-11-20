@@ -24,6 +24,11 @@ import AddObj from "./AddObj";
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([{}]);
   const { user } = useContext(UserContext);
+  const [measurementCount, setMeasurementCount] = useState(0);
+  const [successCount, setSuccessCount] = useState(0);
+  const [measurementValue, setMeasurementValue] = useState("");
+  const [successOrFail, setSuccessOrFail] = useState("");
+
 
   useEffect(() => {
     fetch("http://localhost:8081/objectives")
@@ -31,18 +36,6 @@ const OrgOkr = () => {
       .then((data) => data.filter((entry) => entry.id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
   }, [user]);
-
-  console.log(orgOkr)
-// Here we will have the info from data base isntead of below via mapping.
-  const Objective1 = { name: "Objective1", value: "KR1" };
-  const Objective2 = { name: "Objective2", value: "KR2" };
-  const Objective3 = { name: "Objective3", value: "KR3" };
-  const unionArray = [Objective1, Objective2, Objective3];
-
-  const [measurementCount, setMeasurementCount] = useState(0);
-  const [successCount, setSuccessCount] = useState(0);
-  const [measurementValue, setMeasurementValue] = useState("");
-  const [successOrFail, setSuccessOrFail] = useState("");
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -70,14 +63,14 @@ const OrgOkr = () => {
   return (
     <Paper>
         <AddObj/>
-      {unionArray.map((row, index) => (
+      {orgOkr.map((row, index) => (
         <Accordion key={index}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-${row.name}-content`}
-            id={`panel-${row.name}-header`}
+            aria-controls={`panel-${row.title}-content`}
+            id={`panel-${row.title}-header`}
           >
-            <Typography>{row.name}</Typography>
+            <Typography>{row.title}</Typography>
           </AccordionSummary>
           <AccordionDetails
             style={{
@@ -88,7 +81,11 @@ const OrgOkr = () => {
             }}
           >
             <div>
-              <Typography>{row.value}: This is Key Result</Typography>
+              {/* <Typography>{row.target_value} </Typography> */}
+            </div>
+            <div>
+
+               <Typography>{row.mission_impact} </Typography>
             </div>
             <div
               style={{
