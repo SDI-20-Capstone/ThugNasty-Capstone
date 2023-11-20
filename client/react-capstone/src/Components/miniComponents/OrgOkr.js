@@ -31,7 +31,7 @@ const OrgOkr = () => {
   const [measurementValue, setMeasurementValue] = useState("");
   const [successOrFail, setSuccessOrFail] = useState("");
 
-  
+
   useEffect(() => {
     fetch("http://localhost:8081/objectives")
       .then((res) => res.json())
@@ -86,7 +86,7 @@ const OrgOkr = () => {
               {/* <Typography>{row.target_value} </Typography> */}
             </div>
             <div>
-             
+
                <Typography>{row.mission_impact} </Typography>
             </div>
             <div
