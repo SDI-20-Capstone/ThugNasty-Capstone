@@ -1,21 +1,29 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import WorkIcon from '@mui/icons-material/Work';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router
 import ButtonAppBar from './ButtonAppBar';
-
+import React,  { useState } from 'react'
+import {
+  Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  IconButton,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { UserContext } from "./UserContext";
+import AddIcon from "@mui/icons-material/Add";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import OrgOkr from "./miniComponents/OrgOkr";
+import { Grid } from "@mui/material";
 
 export default function Organization() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +36,21 @@ export default function Organization() {
   return (
     <>
       <ButtonAppBar />
+      <Grid item xs={25}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="space-evenly"
+            alignItems="stretch"
+            height="100%"
+          >
+            <Grid item xs={25}>
+
+            <OrgOkr/>
+            </Grid>
+            <Grid item xs={25} ></Grid>
+          </Grid>
+      </Grid>
     </>
   );
 }
