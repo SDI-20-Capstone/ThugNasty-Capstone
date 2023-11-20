@@ -11,6 +11,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom'; // Assuming you're using React Router
 import { UserContext } from './UserContext'
 import { useContext, useState } from 'react'
+import WorkIcon from '@mui/icons-material/Work';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function ButtonAppBar() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,8 +32,10 @@ export default function ButtonAppBar() {
     setUser({
       loggedIn: false,
       email: "",
+      organization_id: "",
+      role: ""
     })
-    navigate('/SignIn')
+    navigate('/')
   }
 
   return (
@@ -63,21 +68,37 @@ export default function ButtonAppBar() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>
+              <AccountBoxIcon />
+              <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
+                Home
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <PersonIcon />
               <Link to="/Personal" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Personal Objectives
               </Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
+              <WorkIcon />
               <Link to="/Organization" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Organization Objectives
               </Link>
             </MenuItem>
+            {user.role === 'admin' || 'org_owner' ?
+            <MenuItem onClick={handleClose}>
+              <PersonIcon />
+              <Link to="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                Admin
+              </Link>
+            </MenuItem> :
+            <></> }
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OKR Tracker
           </Typography>
           {user.loggedIn === false ?
-          <Button color="inherit" onClick={() => navigate('/SignIn')}>Login</Button> :
+          <Button color="inherit" onClick={() => navigate('/')}>Login</Button> :
           <>
           <div>You are logged in</div>
           <Button color="inherit" onClick={() => logout()}>logout</Button>
