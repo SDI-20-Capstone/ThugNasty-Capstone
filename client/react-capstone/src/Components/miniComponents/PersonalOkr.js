@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Paper,
   Accordion,
@@ -20,19 +20,23 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddPersObj from './AddPersObj';
-
+import { UserContext } from "../UserContext";
 
 const PersonalOkr = () => {
-  const personal1 = { name: 'personal1', value: 'KR1' };
-  const personal2 = { name: 'personal2', value: 'KR2' };
-  const personal3 = { name: 'personal3', value: 'KR3' };
-  const unionArray = [personal1, personal2, personal3];
-
   const [measurementCount, setMeasurementCount] = useState(0);
   const [successCount, setSuccessCount] = useState(0);
   const [measurementValue, setMeasurementValue] = useState('');
   const [successOrFail, setSuccessOrFail] = useState('');
   const [addDialog, setAddDialog] = useState(false);
+  const [orgOkr, setOrgOkr] = useState([{}]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    fetch("http://localhost:8081/objectives")
+      .then((res) => res.json())
+      .then((data) => data.filter((entry) => entry.id === user.organization_id))
+      .then((filteredData) => setOrgOkr(filteredData));
+  }, [user]);
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -58,22 +62,36 @@ const PersonalOkr = () => {
 
   return (
 
-    
-    
+  
     <Paper>
         <AddPersObj/>
-      {unionArray.map((row, index) => (
+        {/* {orgOkr should be personal once data has been made} */}
+      {orgOkr.map((row, index) => (
         <Accordion key={index}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>{row.name}</Typography>
+            <Typography>{row.title}</Typography>
           </AccordionSummary>
-          <AccordionDetails style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <AccordionDetails 
+          style={{ 
+            display: 'flex', 
+            flexDirection: 'row',
+             justifyContent: 'space-between',
+              alignItems: 'center' }}
+              >
             <div>
               <Typography>
-                {`${row.value}: This is Key Result `}
+                {/* {`${row.title}: This is Key Result `} */}
               </Typography>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+             
+               <Typography>{row.mission_impact} </Typography>
+            </div>
+            <div style={{ display: 'flex',
+             flexDirection: 'row', 
+             justifyContent: 'space-between',
+             alignItems: 'center' }}
+              >
               <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
                 <AddIcon />
               </IconButton>
