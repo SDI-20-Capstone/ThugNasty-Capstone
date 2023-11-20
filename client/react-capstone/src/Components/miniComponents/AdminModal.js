@@ -11,18 +11,14 @@ import InputLabel from '@mui/material/InputLabel';
 const AddMemberModal = ({ open, onClose, onAddMember }) => {
     const [email, setEmail] = useState("")
     const [unit, setUnit] = useState("")
-    const [memberInfo, setMemberInfo] = useState({
-        email: '',
-        unit: ''
-    });
+    const [memberInfo, setMemberInfo] = useState([])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setMemberInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
     };
 
-    const handleAddMember = (event) => {
-        event.preventDefault();
+    const handleAddMember = (memberInfo) => {
         let jsonData = {
             email: memberInfo.email,
             unit: memberInfo.unit
@@ -35,18 +31,10 @@ const AddMemberModal = ({ open, onClose, onAddMember }) => {
         })
         .then((response) => {
             if(response.status === 201){
-                setMemberInfo({
-                    email: "",
-                    unit: ""
-                })
                 setEmail("");
                 setUnit("");
                 alert("Member added to unit successfully")
             } else {
-                setMemberInfo({
-                    email: "",
-                    unit: ""
-                })
                 setEmail("");
                 setUnit("");
                 alert("Something went wrong, please try again")
@@ -126,12 +114,12 @@ const AddMemberModal = ({ open, onClose, onAddMember }) => {
                     onChange={event => setUnit(event.target.value)}
                     margin="normal"
                 /> */}
-                <Button variant="contained" onClick={() => setMemberInfo({
-                    email: email,
-                    unit: unit
-                }, () => {
-                    handleAddMember();
-                })}>Add Member</Button>
+                <Button variant="contained" onClick={() => {
+                    handleAddMember({
+                        email: email,
+                        unit: unit
+                })
+                }}>Add Member</Button>
             </Box>
         </Modal>
     );

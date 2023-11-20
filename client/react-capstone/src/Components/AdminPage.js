@@ -21,7 +21,7 @@ export default function AdminPage() {
         fetch('http://localhost:8081/unitrows')
         .then(res => res.json())
         .then(data => setUnitRows(data))
-      }, [user])
+      }, [isAddMemberModalOpen])
 
     const memberColumns = [
         { field: 'first_name', headerName: 'First name', width: 350 },
@@ -34,6 +34,8 @@ export default function AdminPage() {
     const unitColumns = [
         { field: 'unit_name', headerName: 'Unit', width: 350 },
         { field: 'parent_name', headerName: 'Parent Org', width: 350 },
+        { field: 'member_count', headerName: 'Number of Members', width: 350},
+        { field: 'objectives_count', headerName: 'Number of OKRs', width: 350}
     ];
 
     const handleTabChange = (event, newValue) => {
