@@ -38,6 +38,8 @@ export default function ButtonAppBar() {
     navigate('/')
   }
 
+  console.log(user.role)
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -85,7 +87,7 @@ export default function ButtonAppBar() {
                 Organization Objectives
               </Link>
             </MenuItem>
-            {user.role === 'admin' || 'org_owner' ?
+            {user.role !== "user" ?
             <MenuItem onClick={handleClose}>
               <PersonIcon />
               <Link to="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -97,12 +99,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             OKR Tracker
           </Typography>
-          {user.loggedIn === false ?
-          <Button color="inherit" onClick={() => navigate('/')}>Login</Button> :
-          <>
-          <div>You are logged in</div>
           <Button color="inherit" onClick={() => logout()}>logout</Button>
-          </>}
         </Toolbar>
       </AppBar>
     </Box>

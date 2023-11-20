@@ -125,8 +125,11 @@ app.get('/memberrows', (req, res) => {
 
 app.get('/unitrows', (req, res) => {
   knex('organization')
-    .select('organization.id', 'organization.name as unit_name', 'parent.name as parent_name')
+    .select('organization.id', 'organization.name as unit_name', 'parent.name as parent_name', knex.raw('COUNT(userinfo.id) as member_count'), knex.raw('COUNT(objectives.id) as objectives_count'))
     .leftJoin('organization as parent', 'organization.parent_id', '=', 'parent.id')
+    .leftJoin('userinfo', 'organization.id', '=', 'userinfo.organization_id')
+    .leftJoin('objectives', 'organization.id', '=', 'objectives.organization_id')
+    .groupBy('organization.id', 'organization.name', 'parent.name')
     .then(data => {
       res.json(data);
     })
