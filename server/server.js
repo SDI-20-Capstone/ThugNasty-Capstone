@@ -109,6 +109,7 @@ app.get('/organization', (req, res) => {
 app.get('/objectives', (req, res) => {
   knex('objectives')
   .select('*')
+  .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
   .then(data => {
     res.json(data)
   })
@@ -133,6 +134,14 @@ app.get('/unitrows', (req, res) => {
     .then(data => {
       res.json(data);
     })
+})
+
+app.get('/key_results', (req, res) => {
+  knex('key_results')
+  .select('*')
+  .then(data => {
+    res.json(data)
+  })
 })
 
 app.listen(port, () => {
