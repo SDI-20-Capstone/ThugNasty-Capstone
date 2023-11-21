@@ -31,6 +31,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList';
 import TabContext from '@mui/lab/TabContext';
 import OrganizationGraph from './miniComponents/OrganizationGraph';
+import AddObj from './miniComponents/AddObj'
 
 
 export default function Organization() {
@@ -92,7 +93,7 @@ export default function Organization() {
       <ButtonAppBar />
       <Box sx={{ width: '100%', typography: 'body1' }}>
         {user.role !== "user" ?
-        <button>Add New Organizational OKR</button> :
+        <AddObj /> :
         <></>
         }
         <TabContext value={currentTab}>

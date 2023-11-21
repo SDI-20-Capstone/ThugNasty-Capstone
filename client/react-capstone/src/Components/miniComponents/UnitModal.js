@@ -81,14 +81,6 @@ const AddUnitModal = ({ open, onClose, onAddUnit }) => {
                         <MenuItem value={16}>30 OMRS</MenuItem>
                     </Select>
                 </FormControl>
-                {/* <TextField
-                    fullWidth
-                    label="unit"
-                    name="unit"
-                    value={unit}
-                    onChange={event => setUnit(event.target.value)}
-                    margin="normal"
-                /> */}
                 <Button variant="contained" onClick={() => {
                     handleAddUnit({
                         unit: unit,

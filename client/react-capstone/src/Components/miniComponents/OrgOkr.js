@@ -38,7 +38,7 @@ const OrgOkr = () => {
   useEffect(() => {
     fetch("http://localhost:8081/objectives")
       .then((res) => res.json())
-      .then((data) => data.filter((entry) => entry.id === user.organization_id))
+      .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
   }, [user]);
 
@@ -59,7 +59,7 @@ const OrgOkr = () => {
       target_value: newMeasurement.target_value,
       successCount: newMeasurement.successCount
     };
-    
+
     fetch("http://localhost:8081/key_results", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
