@@ -54,15 +54,6 @@ const AddUnitModal = ({ open, onClose, onAddUnit }) => {
                     onChange={event => setUnit(event.target.value)}
                     margin="normal"
                 />
-                <TextField
-                    fullWidth
-                    label="Parent Org"
-                    name="parent_org"
-                    value={parent_org}
-                    onChange={event => setParentOrg(event.target.value)}
-                    margin="normal"
-                />
-
                 <FormControl fullWidth>
                     <InputLabel id="parent_org">Parent Org</InputLabel>
                     <Select
