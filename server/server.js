@@ -1,5 +1,4 @@
 const {createNewUser, updateMember} = require("./Helpers")
-
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -183,6 +182,24 @@ app.get('/organization_page', (req, res) => {
       res.json(groupedArray);
     })
 })
+app.get('/addMember', (req, res) => {
+  knex('userinfo')
+  .select('*')
+  .then(data => {
+      res.json(data);
+  })
+})
+
+app.post('/addMember', (req, res) => {
+  const { first_name, last_name, email, password, organization_id, rank } = req.body;
+
+  createNewUser( first_name, last_name, email, password, organization_id, rank ) 
+    .then((data) => res.status(201).json(data))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error adding member' });
+    });
+});
 
 app.listen(port, () => {
     console.log(`this is running on ${port}`)
