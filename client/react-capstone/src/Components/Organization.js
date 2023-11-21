@@ -36,6 +36,7 @@ export default function Organization() {
   const [currentTab, setCurrentTab] = useState(0);
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
+  const [objectivesData, setObjectivesData] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:8081/organization_page")
@@ -74,20 +75,49 @@ export default function Organization() {
     setCurrentTab(newValue);
   };
 
+  const handleTabClick = async (organizationId) => {
+    try {
+      const response = await fetch(`http://localhost:8081/organization/${organizationId}/objectives`);
+      const objectivesData = await response.json();
+      setObjectivesData(objectivesData);
+    } catch (error) {
+      console.error('Error fetching objectives:', error);
+    }
+  };
+
   return (
     <>
       <ButtonAppBar />
       <Box sx={{ width: '100%', typography: 'body1' }}>
         <TabContext value={currentTab}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleTabChange} aria-label={currentTab} centered>
               {data.map((item) => (
-                <Tab key={item.id} label={item.unit_name} value={item.id} />
+                <Tab
+                  key={item.id}
+                  label={item.unit_name}
+                  value={item.id}
+                  onClick={() => handleTabClick(item.id)}
+                />
               ))}
             </TabList>
           </Box>
           {data.map((item) => (
-            <TabPanel key={item.id} value={item.id}>{item.unit_name}</TabPanel>
+            <TabPanel key={item.id} value={item.id}>
+              <Typography variant="h5">{item.unit_name}</Typography>
+              {/* Display objectives here based on the fetched data */}
+              {objectivesData.map((objective) => (
+                <Paper key={objective.id} elevation={3} style={{ padding: 16, marginBottom: 16 }}>
+                  <Typography variant="h6">Title: {objective.title}</Typography>
+                  <Typography>Mission Impact: {objective.mission_impact}</Typography>
+                  <Typography>Start Date: {objective.start_date}</Typography>
+                  <Typography>End Date: {objective.end_date}</Typography>
+                  <Typography>Target Value: {objective.target_value}</Typography>
+                  <Typography>Success Count: {objective.success_count}</Typography>
+                  <Typography>Fail Count: {objective.fail_count}</Typography>
+                </Paper>
+              ))}
+            </TabPanel>
           ))}
         </TabContext>
       </Box>
