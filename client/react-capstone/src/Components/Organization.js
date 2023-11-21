@@ -30,6 +30,8 @@ import PropTypes from 'prop-types';
 import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList';
 import TabContext from '@mui/lab/TabContext';
+import OrganizationGraph from './miniComponents/OrganizationGraph';
+
 
 export default function Organization() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -115,7 +117,7 @@ export default function Organization() {
                   <Typography>Target Value: {objective.target_value}</Typography>
                   <Typography>Success Count: {objective.success_count}</Typography>
                   <Typography>Fail Count: {objective.fail_count}</Typography>
-                </Paper>
+                  <OrganizationGraph success={objective.success_count} fail={objective.fail_count} total={objective.target_value} />                </Paper>
               ))}
             </TabPanel>
           ))}
