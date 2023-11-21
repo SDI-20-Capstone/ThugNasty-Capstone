@@ -97,6 +97,14 @@ app.get('/organization', (req, res) => {
   })
 })
 
+app.post('/organization', (req, res) => {
+  knex('organization')
+  .select('*')
+  .then(data => {
+      res.json(data);
+  })
+})
+
 app.get('/objectives', (req, res) => {
   knex('objectives')
   .select('*')

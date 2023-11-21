@@ -5,10 +5,12 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddMemberModal from './miniComponents/AdminModal';
 import { UserContext } from './UserContext';
+import AddUnitModal from './miniComponents/UnitModal';
 
 export default function AdminPage() {
     const [currentTab, setCurrentTab] = useState(0);
     const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
+    const [isAddUnitModalOpen, setAddUnitModalOpen] = useState(false);
     const { user } = useContext(UserContext);
     const [memberRows, setMemberRows] = useState([]);
     const [unitRows, setUnitRows] = useState([]);
@@ -42,38 +44,66 @@ export default function AdminPage() {
     };
 
     const handleOpenAddModal = () => {
-        setAddMemberModalOpen(true);
+        if (currentTab === 0) {
+            setAddMemberModalOpen(true);
+        } else {
+            setAddUnitModalOpen(true);
+        }
     };
 
     const handleCloseAddModal = () => {
         setAddMemberModalOpen(false);
+        setAddUnitModalOpen(false);
     };
 
     const handleAdd = (newData) => {
         if (currentTab === 0) {
-          fetch('http://localhost:8081/addMember', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newData),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.success) {
-                setMemberRows([...memberRows, newData]);
-                handleCloseAddModal();
-              } else {
-                console.error(data.message);
-
-              }
+            fetch('http://localhost:8081/addMember', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newData),
             })
-            .catch((error) => {
-              console.error(error);
-            });
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        setMemberRows([...memberRows, newData]);
+                        handleCloseAddModal();
+                    } else {
+                        console.error(data.message);
+
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         } else {
+
+            fetch('http://localhost:8081/organization', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newData),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        setUnitRows([...unitRows, newData]);
+                        handleCloseAddModal();
+                    } else {
+                        console.error(data.message);
+
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         }
     };
+
+
 
     const rows = currentTab === 0 ? memberRows : unitRows;
     const columns = currentTab === 0 ? memberColumns : unitColumns;
@@ -116,6 +146,12 @@ export default function AdminPage() {
                 onAdd={handleAdd}
                 isAddingUnit={currentTab !== 0}
             />
+            <AddUnitModal
+                open={isAddUnitModalOpen}
+                onClose={handleCloseAddModal}
+                onAddUnit={handleAdd}
+            />
         </div>
+
     );
 }
