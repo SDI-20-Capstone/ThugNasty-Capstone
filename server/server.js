@@ -1,4 +1,4 @@
-const {createNewUser, updateMember} = require("./Helpers")
+const { createNewUser, updateMember } = require("./Helpers")
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -9,32 +9,32 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development'])
+const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development'])
 
 
 app.get('/', (req, res) => {
-    res.send('Application up and running.')
+  res.send('Application up and running.')
 })
 
 app.get('/userinfo', (req, res) => {
-    knex('userinfo')
+  knex('userinfo')
     .select('*')
     .then(data => {
-        res.json(data);
+      res.json(data);
     })
 })
 
 app.post('/userinfo', (req, res) => {
-    const {
-        first_name,
-        last_name,
-        email,
-        password,
-        organization,
-        rank,
-        role
-    } = req.body
-    createNewUser(first_name,last_name,email,password,organization,rank, role)
+  const {
+    first_name,
+    last_name,
+    email,
+    password,
+    organization,
+    rank,
+    role
+  } = req.body
+  createNewUser(first_name, last_name, email, password, organization, rank, role)
     .then((data) => res.status(200).send(data))
 })
 
@@ -48,37 +48,37 @@ app.patch('/userinfo', (req, res) => {
 })
 
 app.get('/SignIn', (req, res) => {
-    knex('userinfo')
+  knex('userinfo')
     .select('email', 'password', 'organization_id', 'role')
     .then(data => {
-        res.json(data)
+      res.json(data)
     })
 })
 
 app.post('/SignIn', (req, res) => {
-    const {
-        email,
-        password,
-    } = req.body
-    knex('userinfo')
-      .select('*')
-      .where('email', '=', email)
-      .andWhere('password', '=', password)
-      .then(result => {
-        if (result.length > 0) {
-          res.status(201).send(result)
-        } else {
-          res.status(404).send({ message: 'Wrong username/password combination!' })
-        }
-      })
+  const {
+    email,
+    password,
+  } = req.body
+  knex('userinfo')
+    .select('*')
+    .where('email', '=', email)
+    .andWhere('password', '=', password)
+    .then(result => {
+      if (result.length > 0) {
+        res.status(201).send(result)
+      } else {
+        res.status(404).send({ message: 'Wrong username/password combination!' })
+      }
+    })
 })
 
 app.patch('/login', (req, res) => {
-    const {
-      email,
-      id
-    } = req.body
-    knex('userinfo')
+  const {
+    email,
+    id
+  } = req.body
+  knex('userinfo')
     .select('*')
     .where('id', '=', id)
     .update({
@@ -87,40 +87,47 @@ app.patch('/login', (req, res) => {
     .then(data => {
       res.status(201).json(data)
     })
-  })
+})
 
 app.get('/organization', (req, res) => {
   knex('organization')
-  .select('*')
-  .then(data => {
-    res.json(data)
-  })
+    .select('*')
+    .then(data => {
+      res.json(data)
+    })
 })
 
 app.post('/organization', (req, res) => {
+  const {
+    unit,
+    parent_org,
+  } = req.body
   knex('organization')
-  .select('*')
-  .then(data => {
-      res.json(data);
-  })
+    .insert([{
+      name: unit,
+      parent_id: parent_org,
+    }])
+    .then(result => {
+      res.status(201).json(result)
+    })
 })
 
 app.get('/objectives', (req, res) => {
   knex('objectives')
-  .select('*')
-  .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
-  .then(data => {
-    res.json(data)
-  })
+    .select('*')
+    .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
+    .then(data => {
+      res.json(data)
+    })
 })
 
 app.get('/memberrows', (req, res) => {
   knex('organization')
-  .join('userinfo', 'organization.id', '=', 'userinfo.organization_id')
-  .select('*')
-  .then(data => {
+    .join('userinfo', 'organization.id', '=', 'userinfo.organization_id')
+    .select('*')
+    .then(data => {
       res.json(data);
-  })
+    })
 })
 
 app.get('/unitrows', (req, res) => {
@@ -137,10 +144,10 @@ app.get('/unitrows', (req, res) => {
 
 app.get('/key_results', (req, res) => {
   knex('key_results')
-  .select('*')
-  .then(data => {
-    res.json(data)
-  })
+    .select('*')
+    .then(data => {
+      res.json(data)
+    })
 })
 
 app.get('/organization_page', (req, res) => {
@@ -192,16 +199,16 @@ app.get('/organization_page', (req, res) => {
 })
 app.get('/addMember', (req, res) => {
   knex('userinfo')
-  .select('*')
-  .then(data => {
+    .select('*')
+    .then(data => {
       res.json(data);
-  })
+    })
 })
 
 app.post('/addMember', (req, res) => {
   const { first_name, last_name, email, password, organization_id, rank } = req.body;
 
-  createNewUser( first_name, last_name, email, password, organization_id, rank ) 
+  createNewUser(first_name, last_name, email, password, organization_id, rank)
     .then((data) => res.status(201).json(data))
     .catch((error) => {
       console.error(error);
@@ -221,5 +228,5 @@ app.get('/organization/:id/objectives', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`this is running on ${port}`)
+  console.log(`this is running on ${port}`)
 })
