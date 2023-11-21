@@ -201,6 +201,17 @@ app.post('/addMember', (req, res) => {
     });
 });
 
+app.get('/organization/:id/objectives', (req, res) => {
+  const organizationId = req.params.id;
+  knex('objectives')
+    .select('*')
+    .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
+    .where('objectives.organization_id', '=', organizationId)
+    .then(data => {
+      res.json(data);
+    })
+});
+
 app.listen(port, () => {
     console.log(`this is running on ${port}`)
 })

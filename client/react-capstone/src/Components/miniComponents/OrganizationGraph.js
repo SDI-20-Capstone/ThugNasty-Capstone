@@ -2,14 +2,20 @@ import React from 'react'
 import { PieChart } from '@mui/x-charts/PieChart';
 
 
-const data = [
-    { id: 0, value: 10, label: 'series A' },
-    { id: 1, value: 15, label: 'series B' },
-    { id: 2, value: 20, label: 'series C' },
+
+
+
+const OrganizationGraph = ({ success, fail, total }) => {
+  let remaining = total - (success + fail)
+  if (remaining < 0){
+    remaining = 0
+  }
+  const data = [
+    { id: 0, value: success, label: 'Success', color: "#02F311"},
+    { id: 1, value: fail, label: 'Failure', color: "red" },
+    { id: 2, value: remaining, label: 'Incomplete', color: "gray" },
   ];
 
-
-const OrganizationGraph = () => {
   return (
     <PieChart
     series={[
