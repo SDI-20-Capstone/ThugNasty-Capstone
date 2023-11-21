@@ -100,7 +100,22 @@ app.get('/organization', (req, res) => {
 
 app.get('/objectives', (req, res) => {
   knex('objectives')
-  .select('*')
+  .select(
+      'objectives.id ',
+      'objectives.title as objective_title',
+      'objectives.mission_impact',
+      'objectives.organization_id',
+      'objectives.user_id',
+      'key_results.id',
+      'key_results.title as kr_title',
+      'key_results.target_value',
+      'key_results.success_count',
+      'key_results.objective_id',
+      'key_results.start_date',
+      'key_results.end_date',
+      'key_results.fail_count',
+  )
+  .from('objectives')
   .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
   .then(data => {
     res.json(data)
