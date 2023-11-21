@@ -4,24 +4,25 @@ import { DataGrid } from '@mui/x-data-grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddMemberModal from './miniComponents/AdminModal';
-import {UserContext} from './UserContext'
-
+import { UserContext } from './UserContext';
+import AddUnitModal from './miniComponents/UnitModal';
 
 export default function AdminPage() {
     const [currentTab, setCurrentTab] = useState(0);
     const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
+    const [isAddUnitModalOpen, setAddUnitModalOpen] = useState(false);
     const { user } = useContext(UserContext);
     const [memberRows, setMemberRows] = useState([]);
-    const [unitRows, setUnitRows] = useState([])
+    const [unitRows, setUnitRows] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:8081/memberrows')
-        .then(res => res.json())
-        .then(data => setMemberRows(data))
+            .then((res) => res.json())
+            .then((data) => setMemberRows(data));
         fetch('http://localhost:8081/unitrows')
-        .then(res => res.json())
-        .then(data => setUnitRows(data))
-      }, [isAddMemberModalOpen])
+            .then((res) => res.json())
+            .then((data) => setUnitRows(data));
+    }, [isAddMemberModalOpen, isAddUnitModalOpen]);
 
     const memberColumns = [
         { field: 'first_name', headerName: 'First name', width: 350 },
@@ -34,29 +35,79 @@ export default function AdminPage() {
     const unitColumns = [
         { field: 'unit_name', headerName: 'Unit', width: 350 },
         { field: 'parent_name', headerName: 'Parent Org', width: 350 },
-        { field: 'member_count', headerName: 'Number of Members', width: 350},
-        { field: 'objectives_count', headerName: 'Number of OKRs', width: 350}
+        { field: 'member_count', headerName: 'Number of Members', width: 350 },
+        { field: 'objectives_count', headerName: 'Number of OKRs', width: 350 },
     ];
 
     const handleTabChange = (event, newValue) => {
         setCurrentTab(newValue);
     };
 
-    const handleOpenAddMemberModal = () => {
-        setAddMemberModalOpen(true);
+    const handleOpenAddModal = () => {
+        if (currentTab === 0) {
+            setAddMemberModalOpen(true);
+        } else {
+            setAddUnitModalOpen(true);
+        }
     };
 
-    const handleCloseAddMemberModal = () => {
+    const handleCloseAddModal = () => {
         setAddMemberModalOpen(false);
+        setAddUnitModalOpen(false);
     };
 
-    const handleAddMember = (newMember) => {
+    const handleAdd = (newData) => {
+        if (currentTab === 0) {
+            fetch('http://localhost:8081/addMember', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newData),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        setMemberRows([...memberRows, newData]);
+                        handleCloseAddModal();
+                    } else {
+                        console.error(data.message);
 
-        setMemberRows(...memberRows, newMember);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+
+            fetch('http://localhost:8081/organization', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newData),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        setUnitRows([...unitRows, newData]);
+                        handleCloseAddModal();
+                    } else {
+                        console.error(data.message);
+
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     };
+
+
 
     const rows = currentTab === 0 ? memberRows : unitRows;
     const columns = currentTab === 0 ? memberColumns : unitColumns;
+    const addButtonLabel = currentTab === 0 ? 'Add Member' : 'Add Unit';
 
     return (
         <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: 'white' }}>
@@ -69,10 +120,10 @@ export default function AdminPage() {
             </Tabs>
 
             <button
-                onClick={handleOpenAddMemberModal}
+                onClick={handleOpenAddModal}
                 style={{ backgroundColor: '#3385ff', color: 'white', marginRight: '1600px' }}
             >
-                Add Member
+                {addButtonLabel}
             </button>
 
             <div style={{ height: 400, width: '100%' }}>
@@ -91,9 +142,16 @@ export default function AdminPage() {
 
             <AddMemberModal
                 open={isAddMemberModalOpen}
-                onClose={handleCloseAddMemberModal}
-                onAddMember={handleAddMember}
+                onClose={handleCloseAddModal}
+                onAdd={handleAdd}
+                isAddingUnit={currentTab !== 0}
+            />
+            <AddUnitModal
+                open={isAddUnitModalOpen}
+                onClose={handleCloseAddModal}
+                onAddUnit={handleAdd}
             />
         </div>
+
     );
 }
