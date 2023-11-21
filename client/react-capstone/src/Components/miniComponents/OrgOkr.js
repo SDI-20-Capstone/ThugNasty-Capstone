@@ -25,7 +25,7 @@ import AddObj from "./AddObj";
 
 
 const OrgOkr = () => {
-  const [orgOkr, setOrgOkr] = useState([{}]);
+  const [orgOkr, setOrgOkr] = useState([]);
   const { user } = useContext(UserContext);
   const [measurementCount, setMeasurementCount] = useState(0);
   const [successCount, setSuccessCount] = useState(0);
@@ -41,6 +41,7 @@ const OrgOkr = () => {
       .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
   }, [user]);
+  
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -77,14 +78,14 @@ const OrgOkr = () => {
   return (
     <Paper>
         <AddObj/>
-      {orgOkr.map((row, index) => (
-        <Accordion key={index}>
+      {orgOkr.map((row,index) => (
+        <Accordion key={row.objective_id}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-${row.title}-content`}
-            id={`panel-${row.title}-header`}
+            aria-controls={`panel-${row.objective_title}-content`}
+            id={`panel-${row.objective_title}-header`}
           >
-            <Typography>{row.title}</Typography>
+            <Typography>{row.objective_title}</Typography>
           </AccordionSummary>
           <AccordionDetails
             style={{
