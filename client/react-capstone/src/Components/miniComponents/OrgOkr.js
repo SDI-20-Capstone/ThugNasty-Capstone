@@ -117,7 +117,7 @@ const OrgOkr = () => {
               >
                 <AddIcon />
               </IconButton>
-              <Typography>{`${row.target_value}/${row.success_count}`}</Typography>
+              <Typography>{`${row.success_count}/${row.target_value}`}</Typography>
               <Dialog open={addDialog} onClose={handleAddDialogClose}>
                 <DialogTitle>Organization: Org here</DialogTitle>
                 <DialogContent>
@@ -166,7 +166,11 @@ const OrgOkr = () => {
                 </DialogActions>
               </Dialog>
             </div>
-            <CircularWithValueLabel />
+            <CircularWithValueLabel 
+          
+            successCount={row.success_count}
+            targetValue={row.target_value}
+            />
             <div>
               <AddKr />
             </div>
