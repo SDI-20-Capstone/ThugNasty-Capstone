@@ -242,6 +242,57 @@ app.get('/organization/:id/objectives', (req, res) => {
     })
 });
 
+app.get('/home_orginfo', (req,res) => {
+  knex('objectives')
+  .select(
+    'objectives.id ',
+    'objectives.title as objective_title',
+    'objectives.mission_impact',
+    'objectives.organization_id',
+    'objectives.user_id',
+    'key_results.id',
+    'key_results.title as kr_title',
+    'key_results.target_value',
+    'key_results.success_count',
+    'key_results.objective_id',
+    'key_results.start_date',
+    'key_results.end_date',
+    'key_results.fail_count',
+)
+  .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
+  .groupBy('objectives.id', 'key_results.id')
+  .then(data => {
+    const groupedData = data.reduce((result, item) => {
+      const key = `${item.objective_title}-${item.mission_impact}-${item.organization_id}-${item.user_id}-${item.objective_id}`;
+      if (!result[key]) {
+        result[key] = {
+          id: item.id,
+          objective_title: item.objective_title,
+          mission_impact: item.mission_impact,
+          organization_id: item.organization_id,
+          user_id: item.user_id,
+          objective_id: item.objective_id,
+          objectives: [],
+        };
+      }
+
+      result[key].objectives.push({
+        kr_title: item.kr_title,
+        target_value: item.target_value,
+        success_count: item.success_count,
+        start_date: item.start_date,
+        end_date: item.end_date,
+        fail_count: item.fail_count,
+      });
+
+      return result;
+    }, {});
+
+    const groupedArray = Object.values(groupedData);
+    res.json(groupedArray);
+  })
+})
+
 app.listen(port, () => {
   console.log(`this is running on ${port}`)
 })
