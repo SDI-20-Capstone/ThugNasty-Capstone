@@ -86,20 +86,18 @@ const OrgOkr = () => {
           >
             <Typography>{row.objective_title}</Typography>
           </AccordionSummary>
+            {row.objectives.map(entry => (
           <AccordionDetails
             style={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
             <div>
               {/* <Typography>{row.target_value} </Typography> */}
             </div>
-            {row.objectives.map(entry => (
-              <>
-
                 <div>
                   <Typography>{entry.kr_title} </Typography>
                 </div>
@@ -171,9 +169,8 @@ const OrgOkr = () => {
               <div>
                 <AddKr />
               </div>
-              </>
-              ))}
           </AccordionDetails>
+              ))}
         </Accordion>
       ))}
     </Paper>
