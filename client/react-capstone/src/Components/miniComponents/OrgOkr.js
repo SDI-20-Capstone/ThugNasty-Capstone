@@ -92,7 +92,7 @@ const OrgOkr = () => {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "flex-start",
+              alignItems: "center",
             }}
           >
             <div>
