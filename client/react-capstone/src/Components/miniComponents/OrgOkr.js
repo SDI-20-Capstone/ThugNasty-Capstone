@@ -22,8 +22,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddObj from "./AddObj";
 
-
-
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([]);
   const { user } = useContext(UserContext);
@@ -36,12 +34,13 @@ const OrgOkr = () => {
   const [missionImpact, setMissionImpact] = useState('');
 
   useEffect(() => {
-    fetch("http://localhost:8081/objectives")
+    fetch("http://localhost:8081/home_orginfo")
       .then((res) => res.json())
       .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
   }, [user]);
-  
+
+  console.log(orgOkr)
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -79,7 +78,7 @@ const OrgOkr = () => {
     <Paper>
         <AddObj/>
       {orgOkr.map((row,index) => (
-        <Accordion key={row.objective_id}>
+        <Accordion key={row.id}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-${row.objective_title}-content`}
@@ -87,94 +86,94 @@ const OrgOkr = () => {
           >
             <Typography>{row.objective_title}</Typography>
           </AccordionSummary>
+            {row.objectives.map(entry => (
           <AccordionDetails
             style={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
             <div>
               {/* <Typography>{row.target_value} </Typography> */}
             </div>
-            <div>
+                <div>
+                  <Typography>{entry.kr_title} </Typography>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                <IconButton
+                  onClick={handleAddMeasurement}
+                  color="primary"
+                  aria-label="add measurement"
+                >
+                  <AddIcon />
+                </IconButton>
+                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
+                <Dialog open={addDialog} onClose={handleAddDialogClose}>
+                  <DialogTitle>Organization: Org here</DialogTitle>
+                  <DialogContent>
+                    Number of Measurements
+                    <TextField
+                      label="Number Input"
+                      variant="outlined"
+                      value={measurementValue}
+                      onChange={(e) => setMeasurementValue(e.target.value)}
+                      type="number"
+                      autoFocus
+                      margin="dense"
+                      fullWidth
+                    />
+                    Success or Fail
+                    <Select
+                      value=""
+                      onChange={(e) => setSuccessOrFail(e.target.value)}
+                      fullWidth
+                      autoFocus
+                      margin="dense"
+                      variant="outlined"
+                      label=""
+                    >
+                      <MenuItem value={10}> Success</MenuItem>
+                      <MenuItem value={10}> Failure</MenuItem>
+                    </Select>
+                    Notes
+                    <TextField
+                      label=""
+                      variant="filled"
+                      type="text"
+                      multiline
+                      fullWidth
+                      rows={8}
+                      autoFocus
+                      margin="dense"
+                    />
+                  </DialogContent>
 
-               <Typography>{row.mission_impact} </Typography>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <IconButton
-                onClick={handleAddMeasurement}
-                color="primary"
-                aria-label="add measurement"
-              >
-                <AddIcon />
-              </IconButton>
-              <Typography>{`${row.success_count}/${row.target_value}`}</Typography>
-              <Dialog open={addDialog} onClose={handleAddDialogClose}>
-                <DialogTitle>Organization: Org here</DialogTitle>
-                <DialogContent>
-                  Number of Measurements
-                  <TextField
-                    label="Number Input"
-                    variant="outlined"
-                    value={measurementValue}
-                    onChange={(e) => setMeasurementValue(e.target.value)}
-                    type="number"
-                    autoFocus
-                    margin="dense"
-                    fullWidth
-                  />
-                  Success or Fail
-                  <Select
-                    value=""
-                    onChange={(e) => setSuccessOrFail(e.target.value)}
-                    fullWidth
-                    autoFocus
-                    margin="dense"
-                    variant="outlined"
-                    label=""
-                  >
-                    <MenuItem value={10}> Success</MenuItem>
-                    <MenuItem value={10}> Failure</MenuItem>
-                  </Select>
-                  Notes
-                  <TextField
-                    label=""
-                    variant="filled"
-                    type="text"
-                    multiline
-                    fullWidth
-                    rows={8}
-                    autoFocus
-                    margin="dense"
-                  />
-                </DialogContent>
-
-                <DialogActions>
-                  <Button onClick={handleAddDialogClose}>Cancel</Button>
-                  <Button onClick={handleAddDialogSubmit} color="primary">
-                    Submit
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-            <CircularWithValueLabel 
-          
-            successCount={row.success_count}
-            targetValue={row.target_value}
-            />
-            <div>
-              <AddKr />
-            </div>
+                  <DialogActions>
+                    <Button onClick={handleAddDialogClose}>Cancel</Button>
+                    <Button onClick={handleAddDialogSubmit} color="primary">
+                      Submit
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+              <CircularWithValueLabel
+              
+              successCount={row.success_count}
+            targetValue={row.target_value}/>
+              <div>
+                <AddKr />
+              </div>
           </AccordionDetails>
+              ))}
         </Accordion>
       ))}
     </Paper>
