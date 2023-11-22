@@ -93,8 +93,8 @@ export default function Organization() {
       <ButtonAppBar />
       <Box sx={{ width: '100%', typography: 'body1' }}>
         {user.role !== "user" ?
-        <AddObj /> :
-        <></>
+          <AddObj /> :
+          <></>
         }
         <TabContext value={currentTab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -111,18 +111,28 @@ export default function Organization() {
           </Box>
           {data.map((item) => (
             <TabPanel key={item.id} value={item.id}>
-              <Typography variant="h5">{item.unit_name}</Typography>
-              {/* Display objectives here based on the fetched data */}
               {objectivesData.map((objective) => (
                 <Paper key={objective.id} elevation={3} style={{ padding: 16, marginBottom: 16 }}>
-                  <Typography variant="h6">Title: {objective.title}</Typography>
-                  <Typography>Mission Impact: {objective.mission_impact}</Typography>
-                  <Typography>Start Date: {objective.start_date}</Typography>
-                  <Typography>End Date: {objective.end_date}</Typography>
-                  <Typography>Target Value: {objective.target_value}</Typography>
-                  <Typography>Success Count: {objective.success_count}</Typography>
-                  <Typography>Fail Count: {objective.fail_count}</Typography>
-                  <OrganizationGraph success={objective.success_count} fail={objective.fail_count} total={objective.target_value} />                </Paper>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Typography variant="h6">Key Result: {objective.title}</Typography>
+                      <Typography>Mission Impact: {objective.mission_impact}</Typography>
+                      <Typography>Start Date: {objective.start_date}</Typography>
+                      <Typography>End Date: {objective.end_date}</Typography>
+                      <Typography>Target Value: {objective.target_value}</Typography>
+                      <Typography>Success Count: {objective.success_count}</Typography>
+                      <Typography>Fail Count: {objective.fail_count}</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <OrganizationGraph
+                        key={objective.id}
+                        success={objective.success_count}
+                        fail={objective.fail_count}
+                        total={objective.target_value}
+                      />
+                    </Grid>
+                  </Grid>
+                </Paper>
               ))}
             </TabPanel>
           ))}
