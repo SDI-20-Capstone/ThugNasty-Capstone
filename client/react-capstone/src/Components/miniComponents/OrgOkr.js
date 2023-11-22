@@ -92,11 +92,11 @@ const OrgOkr = () => {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "flex-start",
+              alignItems: "center",
             }}
           >
             <div>
-              {/* <Typography>{row.target_value} </Typography> */}
+              <Typography>{row.mission_impact} </Typography>
             </div>
                 <div>
                   <Typography>{entry.kr_title} </Typography>
@@ -166,9 +166,9 @@ const OrgOkr = () => {
                 </Dialog>
               </div>
               <CircularWithValueLabel
-              
-              successCount={row.success_count}
-            targetValue={row.target_value}/>
+
+              successCount={entry.success_count}
+            targetValue={entry.target_value}/>
               <div>
                 <AddKr />
               </div>
