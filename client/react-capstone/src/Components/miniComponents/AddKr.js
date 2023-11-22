@@ -43,7 +43,6 @@ export default function AddKr() {
           <DialogContentText>
             Organization: Org will be here
           </DialogContentText>
-          
         <TextField
           autoFocus
           margin='dense'
@@ -51,14 +50,6 @@ export default function AddKr() {
           label='Title'
           type='Title'
           fullWidth
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Mission Impact"
-            type="Mission"
-            fullWidth
           />
           <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>

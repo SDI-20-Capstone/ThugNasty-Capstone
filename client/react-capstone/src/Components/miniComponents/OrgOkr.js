@@ -165,7 +165,10 @@ const OrgOkr = () => {
                   </DialogActions>
                 </Dialog>
               </div>
-              <CircularWithValueLabel />
+              <CircularWithValueLabel
+              
+              successCount={row.success_count}
+            targetValue={row.target_value}/>
               <div>
                 <AddKr />
               </div>
