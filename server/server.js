@@ -401,6 +401,72 @@ app.post('/measurements', (req, res) => {
   })
 })
 
+app.get('/personal_key_results', (req, res) => {
+  knex('personal_key_results')
+    .select('*')
+    .then(data => {
+      res.json(data)
+    })
+})
+
+app.get('/personal_objectives', (req, res) => {
+  knex('personal_objectives')
+    .select(
+      'personal_objectives.id',
+      'personal_objectives.user_id',
+      'personal_objectives.objective',
+      'personal_objectives.impact',
+      'personal_key_results.id as key_result_id',
+      'personal_key_results.title as key_result_title',
+      'personal_key_results.start_date',
+      'personal_key_results.end_date',
+      'personal_key_results.target_value',
+      'personal_key_results.success_count',
+      'personal_key_results.fail_count'
+    )
+    .leftJoin('personal_key_results', 'personal_objectives.id', '=', 'personal_key_results.personal_objective_id')
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => {
+      console.error('Error fetching personal objectives:', error);
+      res.status(500).json({ success: false, message: 'Error fetching personal objectives' });
+    });
+});
+
+app.get('/personal_objectives/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  knex('personal_objectives')
+    .select('*')
+    .where('user_id', '=', userId)  
+    .then(data => {
+      console.log('Personal objectives fetched successfully:', data);
+      res.json(data);
+    })
+    .catch(error => {
+      console.error('Error fetching personal objectives:', error);
+      res.status(500).json({ success: false, message: 'Error fetching personal objectives' });
+    });
+});
+
+app.get('/personal_key_results/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  knex('personal_key_results')  
+    .select('*')
+    .join('personal_objectives', 'personal_key_results.personal_objective_id', '=', 'personal_objectives.id')
+    .where('personal_objectives.user_id', '=', userId)
+    .then(data => {
+      console.log('Personal key results fetched successfully:', data);
+      res.json(data);
+    })
+    .catch(error => {
+      console.error('Error fetching personal key results:', error);
+      res.status(500).json({ success: false, message: 'Error fetching personal key results' });
+    });
+});
+
 app.listen(port, () => {
   console.log(`this is running on ${port}`)
 })
