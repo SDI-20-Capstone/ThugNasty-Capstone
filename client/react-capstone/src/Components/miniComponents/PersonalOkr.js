@@ -65,9 +65,8 @@ const PersonalOkr = () => {
   
     <Paper>
         <AddPersObj/>
-        {/* {orgOkr should be personal once data has been made} */}
       {personalOkr.map((row, index) => (
-        <Accordion key={index}>
+        <Accordion key={row.id}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>{row.objective}</Typography>
           </AccordionSummary>
@@ -95,7 +94,7 @@ const PersonalOkr = () => {
               <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
                 <AddIcon />
               </IconButton>
-              <Typography>{`${row.target_value}/${row.success_count}`}</Typography>
+              <Typography>{`${row.success_count}/${row.target_value}`}</Typography>
               <Dialog open={addDialog} onClose={handleAddDialogClose}>
                 <DialogTitle>Organization: Org here</DialogTitle>
                 <DialogContent>
@@ -147,7 +146,11 @@ Notes
                 </DialogActions>
               </Dialog>
             </div>
-            <CircularWithValueLabel />
+            <CircularWithValueLabel 
+            successCount={row.success_count}
+            targetValue={row.target_value}
+            
+            />
             <div>
               <AddKr />
             </div>
