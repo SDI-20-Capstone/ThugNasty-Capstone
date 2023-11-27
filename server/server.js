@@ -293,7 +293,7 @@ app.delete('/removeMember', (req, res) => {
       res.status(200).json({ success: true, message: 'Member deleted successfully' });
     })
     .catch((error) => {
-      console.error(error); // Log the error
+      console.error(error); 
       res.status(500).json({ success: false, message: 'Internal server error' });
     });
 });
@@ -308,7 +308,7 @@ app.delete('/removeUnit', (req, res) => {
       res.status(200).json({ success: true, message: 'Unit deleted successfully' });
     })
     .catch((error) => {
-      console.error(error); // Log the error
+      console.error(error); 
       res.status(500).json({ success: false, message: 'Internal server error' });
     });
 });
