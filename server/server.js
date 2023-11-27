@@ -268,6 +268,7 @@ app.get('/home_orginfo', (req,res) => {
     'objectives.title as objective_title',
     'objectives.mission_impact',
     'objectives.organization_id',
+    'organization.name as organization_name',
     'objectives.user_id',
     'key_results.id',
     'key_results.title as kr_title',
@@ -279,16 +280,18 @@ app.get('/home_orginfo', (req,res) => {
     'key_results.fail_count',
 )
   .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
-  .groupBy('objectives.id', 'key_results.id')
+  .leftJoin('organization', 'objectives.organization_id', '=', 'organization.id')
+  .groupBy('objectives.id', 'key_results.id', 'organization.name')
   .then(data => {
     const groupedData = data.reduce((result, item) => {
-      const key = `${item.objective_title}-${item.mission_impact}-${item.organization_id}-${item.user_id}-${item.objective_id}`;
+      const key = `${item.objective_title}-${item.mission_impact}-${item.organization_id}-${item.organization_name}-${item.user_id}-${item.objective_id}`;
       if (!result[key]) {
         result[key] = {
           id: item.id,
           objective_title: item.objective_title,
           mission_impact: item.mission_impact,
           organization_id: item.organization_id,
+          organization_name: item.organization_name,
           user_id: item.user_id,
           objective_id: item.objective_id,
           objectives: [],
