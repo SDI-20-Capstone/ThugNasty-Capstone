@@ -23,6 +23,8 @@ const HomePage = () => {
       .then(filteredData => setObjectivesData(filteredData))
   }, [user]);
 
+  console.log(user)
+
   return (
     <div>
       <ButtonAppBar />

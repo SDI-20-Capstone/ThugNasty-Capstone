@@ -21,6 +21,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddObj from "./AddObj";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([]);
@@ -32,15 +37,16 @@ const OrgOkr = () => {
   const [newMeasurement, setNewMeasurement] = useState();
   const [title, setTitle] = useState("");
   const [missionImpact, setMissionImpact] = useState('');
+  const [notes, setNotes] = useState("");
+  const [date, setDate] = useState("")
+  const [keyResultsId, setKeyResultsId] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8081/home_orginfo")
       .then((res) => res.json())
       .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
-  }, [user]);
-
-  console.log(orgOkr)
+  }, [measurementValue]);
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -52,26 +58,60 @@ const OrgOkr = () => {
     setAddDialog(false);
     setMeasurementValue("");
   };
-
+  console.log(keyResultsId)
   const handleAddDialogSubmit = (event) => {
     event.preventDefault();
     let jsonMeasuredData = {
-      target_value: newMeasurement.target_value,
-      successCount: newMeasurement.successCount
+      key_result_id: keyResultsId,
+      date: date.format('YYYY-MM-DD'),
+      count: measurementValue,
+      success: successOrFail,
+      notes: notes
     };
 
-    fetch("http://localhost:8081/key_results", {
+    let jsonPatchData = {
+      key_result_id: keyResultsId,
+      count: getCount(keyResultsId),
+      success: successOrFail
+    }
+    console.log(jsonPatchData)
+    fetch("http://localhost:8081/measurements", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jsonMeasuredData),
         })
         .then((response) => {
-          if (response.status === 200)
-          setTitle("");
-          setMissionImpact("");
-          alert('OBJ added succesfully');
+          if (response.status === 201){
+          alert('Measurement added succesfully');
+          handleAddDialogClose();
+          }
         })
+    fetch("http://localhost:8081/key_results", {
+      method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonPatchData),
+    })
+    .then((response) => {
+      if (response.status === 201){
+      setDate("")
+      setKeyResultsId("")
+      setNotes("")
+      setSuccessOrFail("")
+      setMeasurementValue("")
+      }
+    })
+  }
 
+  const getCount = (kr_id) => {
+    let krData = orgOkr.map(entry => entry.objectives.filter(kr => kr.kr_id === kr_id))
+    let success_count = krData[0][0].success_count
+    let fail_count = krData[0][0].fail_count
+    let currentCount = parseInt(measurementValue)
+    if (successOrFail === true){
+      return currentCount + success_count
+    } else {
+      return currentCount + fail_count
+    }
   }
 
   return (
@@ -110,7 +150,9 @@ const OrgOkr = () => {
                   }}
                 >
                 <IconButton
-                  onClick={handleAddMeasurement}
+                  onClick={() => {
+                    setKeyResultsId(entry.kr_id)
+                    handleAddMeasurement()}}
                   color="primary"
                   aria-label="add measurement"
                 >
@@ -133,7 +175,7 @@ const OrgOkr = () => {
                     />
                     Success or Fail
                     <Select
-                      value=""
+                      value={successOrFail}
                       onChange={(e) => setSuccessOrFail(e.target.value)}
                       fullWidth
                       autoFocus
@@ -141,14 +183,25 @@ const OrgOkr = () => {
                       variant="outlined"
                       label=""
                     >
-                      <MenuItem value={10}> Success</MenuItem>
-                      <MenuItem value={10}> Failure</MenuItem>
+                      <MenuItem value={true}> Success</MenuItem>
+                      <MenuItem value={false}> Failure</MenuItem>
                     </Select>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['DatePicker']}>
+                        <DatePicker
+                          label="Date"
+                          value={date}
+                          onChange={(newValue) => setDate(newValue)}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
                     Notes
                     <TextField
                       label=""
                       variant="filled"
                       type="text"
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
                       multiline
                       fullWidth
                       rows={8}
