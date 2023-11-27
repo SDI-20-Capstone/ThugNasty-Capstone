@@ -118,7 +118,7 @@ const OrgOkr = () => {
                 </IconButton>
                 <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
                 <Dialog open={addDialog} onClose={handleAddDialogClose}>
-                  <DialogTitle>Organization: Org here</DialogTitle>
+                  <DialogTitle>Organization: {row.organization_name}</DialogTitle>
                   <DialogContent>
                     Number of Measurements
                     <TextField
