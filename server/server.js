@@ -49,11 +49,7 @@ app.patch('/userinfo', (req, res) => {
 
 app.get('/SignIn', (req, res) => {
   knex('userinfo')
-<<<<<<< HEAD
-    .select('email', 'password', 'organization_id', 'role', 'id')
-=======
     .select('email', 'password', 'organization_id', 'role','id')
->>>>>>> 5fe8927706f82bcea85f242ed91cb8125752d932
     .then(data => {
       res.json(data)
     })
@@ -192,7 +188,6 @@ app.get('/key_results', (req, res) => {
     })
 })
 
-<<<<<<< HEAD
 app.patch('/key_results', (req, res) => {
   const {
     key_result_id,
@@ -203,7 +198,8 @@ app.patch('/key_results', (req, res) => {
   .then(data => {
     res.status(201).json(data)
   })
-=======
+})
+
 app.post('/key_results', (req,res) => {
   const {
     newKrTitle,
@@ -218,8 +214,7 @@ app.post('/key_results', (req,res) => {
     .catch((error) => {
       console.error(error);
       res.status(500).json({ success: false, message: 'Error adding key result'})
-    });
->>>>>>> 5fe8927706f82bcea85f242ed91cb8125752d932
+    })
 })
 
 app.get('/organization_page', (req, res) => {

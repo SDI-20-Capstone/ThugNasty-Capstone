@@ -59,7 +59,6 @@ const OrgOkr = () => {
     setAddDialog(false);
     setMeasurementValue("");
   };
-  console.log(keyResultsId)
   const handleAddDialogSubmit = (event) => {
     event.preventDefault();
     let jsonMeasuredData = {
@@ -110,7 +109,7 @@ const OrgOkr = () => {
     let currentCount = parseInt(measurementValue)
     if (successOrFail === true){
       return currentCount + success_count
-    } else if (successOrFail === false) {
+    } else {
       return currentCount + fail_count
     }
   }
