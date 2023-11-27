@@ -49,7 +49,7 @@ app.patch('/userinfo', (req, res) => {
 
 app.get('/SignIn', (req, res) => {
   knex('userinfo')
-    .select('email', 'password', 'organization_id', 'role')
+    .select('email', 'password', 'organization_id', 'role','id')
     .then(data => {
       res.json(data)
     })
@@ -140,11 +140,15 @@ app.post('/objectives', (req,res) => {
   const {
     newObjectiveTitle,
     newMissionImpact,
+    userid,
+    organizationid,
   } = req.body;
 
   knex('objectives')
   .insert({
-    title:newObjectiveTitle,
+    user_id: userid,
+    organization_id: organizationid,
+    title: newObjectiveTitle,
     mission_impact: newMissionImpact,
   })
   .returning('*')
@@ -182,6 +186,23 @@ app.get('/key_results', (req, res) => {
     .then(data => {
       res.json(data)
     })
+})
+
+app.post('/key_results', (req,res) => {
+  const {
+    newKrTitle,
+  } = req.body;
+
+  knex('key_results')
+  .insert({
+    title: newKrTitle,
+  })
+  returning('*')
+    .then((data) => res.status(201).json(data))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error adding key result'})
+    });
 })
 
 app.get('/organization_page', (req, res) => {
