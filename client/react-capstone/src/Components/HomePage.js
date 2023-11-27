@@ -32,11 +32,9 @@ const HomePage = () => {
     objectivesData.map(entry => (
       completedObj += (entry.success_count)
     ))
-    console.log(completedObj)
     objectivesData.map(entry => (
       totalObj += entry.target_value
     ))
-    console.log(totalObj)
 
     }
 

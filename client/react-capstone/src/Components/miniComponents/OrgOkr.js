@@ -73,7 +73,6 @@ const OrgOkr = () => {
       count: getCount(keyResultsId),
       success: successOrFail
     }
-    console.log(jsonPatchData)
     fetch("http://localhost:8081/measurements", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -105,9 +104,7 @@ const OrgOkr = () => {
     let krData = orgOkr.map(entry => entry.objectives.filter(kr => kr.kr_id === kr_id))
     let filteredKrData = krData.filter(entry => entry.length === 1);
     let success_count = filteredKrData[0][0].success_count
-    console.log(success_count)
     let fail_count = filteredKrData[0][0].fail_count
-    console.log(fail_count)
     let currentCount = parseInt(measurementValue)
     if (successOrFail === true){
       return currentCount + success_count

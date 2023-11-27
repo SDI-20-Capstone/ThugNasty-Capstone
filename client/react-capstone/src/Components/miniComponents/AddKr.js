@@ -20,11 +20,12 @@ import { UserContext } from "../UserContext";
 export default function AddKr() {
  const [open, setOpen] = useState(false);
  const [newKrTitle, setNewKrTitle] = useState();
- const [newStartDate, setNewStartDate] = useState();
- const [newEndDate, setNewEndDate] = useState();
+//  const [newStartDate, setNewStartDate] = useState();
+//  const [newEndDate, setNewEndDate] = useState();
  const [newTargetValue, setNewTargetValue] = useState();
- const [newSuccessCount, setNewSuccessCount] = useState();
- const [newFailcount, setNewFailCount] = useState();
+//  const [newSuccessCount, setNewSuccessCount] = useState();
+//  const [newFailcount, setNewFailCount] = useState();
+  const [toggled, setToggled] = useState(false)
   const { user } = useContext(UserContext);
 
 
@@ -39,71 +40,75 @@ export default function AddKr() {
    setOpen(false);
  };
 
+ const handleToggle = () => {
+  setToggled(!toggled)
+ }
+
+ console.log(toggled)
 
  const handleSubmit = async () => {
    let jsonData = {
      newKrTitle: newKrTitle,
-     user: user.objective_id,
-     newStartDate: newStartDate,
-     newEndDate: newEndDate,
+     user: user.id,
+     org: user.organization_id,
+     newStartDate: value[0].format('YYYY-MM-DD'),
+     newEndDate: value[1].format('YYYY-MM-DD'),
      newTargetValue: newTargetValue,
-     newSuccessCount: newSuccessCount,
-     newFailcount: newFailcount,
+     newSuccessCount: 0,
+     newFailcount: 0,
    };
-    try {
      const response = await fetch('http://localhost:8081/key_results', {
-       method: 'Post',
+       method: 'POST',
        headers: {"Content-Type": "application/json" },
        body: JSON.stringify(jsonData),
      });
       if (response.status === 201) {
        setNewKrTitle("");
-       setNewStartDate("");
-       setNewEndDate("");
+      //  setNewStartDate("");
+      //  setNewEndDate("");
        setNewTargetValue("");
-       setNewSuccessCount("");
-       setNewFailCount("");
+      //  setNewSuccessCount("");
+      //  setNewFailCount("");
        alert("New Kr Details added");
      } else {
        alert("New Kr has not been added");
        setNewKrTitle("");
-       setNewStartDate("");
-       setNewEndDate("");
+      //  setNewStartDate("");
+      //  setNewEndDate("");
        setNewTargetValue("");
-       setNewSuccessCount("");
-       setNewFailCount("");
+      //  setNewSuccessCount("");
+      //  setNewFailCount("");
      }
-   } catch (error) {
-     console.error("Error during Fetch", error);
-   }
- };
+  }
 
 
- const handleChange = async (event) => {
-   const {id, value } = event.target;
-   if (id === 'key_results') {
-   } else if (id === 'newKrTitle') {
-    setNewKrTitle(value);
-   } else if (id === 'newStartDate') {
-    setNewStartDate(value);
-   } else if (id === 'newEndDate') {
-    setNewEndDate(value);
-   } else if (id === 'newTargetValue') {
-    setNewTargetValue(value);
-   } else if (id === 'newSuccessCount') {
-     setNewSuccessCount(value);
-   } else if (id === 'newFailCount') {
-     setNewFailCount(value);
-   }
- }
+//  const handleChange = async (event) => {
+//    const {id, value } = event.target;
+//    if (id === 'key_results') {
+//    } else if (id === 'newKrTitle') {
+//     setNewKrTitle(value);
+//    }
+//   //  } else if (id === 'newStartDate') {
+//   //   setNewStartDate(value);
+//   //  } else if (id === 'newEndDate') {
+//   //   setNewEndDate(value);
+//     else if (id === 'newTargetValue') {
+//     setNewTargetValue(value);
+//     }
+//   //  } else if (id === 'newSuccessCount') {
+//   //    setNewSuccessCount(value);
+//   //  } else if (id === 'newFailCount') {
+//   //    setNewFailCount(value);
+//   //  }
+//  }
 
 
   const [value, setValue] = React.useState([
-    dayjs('2022-04-17'),
-    dayjs('2022-04-21'),
+    dayjs('2023-11-27'),
+    dayjs('2023-11-28'),
   ]);
 
-  console.log(value)
+
 
   return (
     <div>
@@ -123,6 +128,8 @@ export default function AddKr() {
           label='Title'
           type='Title'
           fullWidth
+          value={newKrTitle}
+          onChange={(e) => setNewKrTitle(e.target.value)}
           />
           <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -136,10 +143,10 @@ export default function AddKr() {
       </DemoContainer>
     </LocalizationProvider>
     <div style={{display: 'flex', justifyContent: 'center'}}>
-      target_percent  <Toggle/> target_value
+      target_percent  <Toggle onClick={handleToggle}/> target_value
     </div>
         </div>
-        
+
           <TextField
           autoFocus
           margin='dense'
@@ -156,13 +163,15 @@ export default function AddKr() {
           label='Value Input'
           type='number'
           fullWidth
+          value={newTargetValue}
+          onChange={(e) => setNewTargetValue(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Submit
           </Button>
         </DialogActions>

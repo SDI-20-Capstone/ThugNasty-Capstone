@@ -203,18 +203,32 @@ app.patch('/key_results', (req, res) => {
 app.post('/key_results', (req,res) => {
   const {
     newKrTitle,
+    user,
+    org,
+    newStartDate,
+    newEndDate,
+    newTargetValue,
+    newSuccessCount,
+    newFailCount
   } = req.body;
+
+  const objId = knex('objectives').select('objectives.id').where('objectives.user_id', '=', user).andWhere('objectives.organization_id', '=', org)
 
   knex('key_results')
   .insert({
     title: newKrTitle,
+    objective_id: objId,
+    start_date: newStartDate,
+    end_date: newEndDate,
+    target_value: newTargetValue,
+    success_count: newSuccessCount,
+    fail_count: newFailCount
   })
-  returning('*')
-    .then((data) => res.status(201).json(data))
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Error adding key result'})
-    })
+  .then((data) => res.status(201).json(data))
+  .catch((error) => {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error adding key result'})
+  })
 })
 
 app.get('/organization_page', (req, res) => {
@@ -439,7 +453,7 @@ app.get('/personal_objectives/:userId', (req, res) => {
 
   knex('personal_objectives')
     .select('*')
-    .where('user_id', '=', userId)  
+    .where('user_id', '=', userId)
     .then(data => {
       console.log('Personal objectives fetched successfully:', data);
       res.json(data);
@@ -453,7 +467,7 @@ app.get('/personal_objectives/:userId', (req, res) => {
 app.get('/personal_key_results/:userId', (req, res) => {
   const userId = req.params.userId;
 
-  knex('personal_key_results')  
+  knex('personal_key_results')
     .select('*')
     .join('personal_objectives', 'personal_key_results.personal_objective_id', '=', 'personal_objectives.id')
     .where('personal_objectives.user_id', '=', userId)
