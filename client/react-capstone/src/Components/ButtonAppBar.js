@@ -95,7 +95,7 @@ export default function ButtonAppBar() {
             <></> }
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            OKR Tracker
+            My OKRA
           </Typography>
           <Button color="inherit" onClick={() => logout()}>logout</Button>
         </Toolbar>
