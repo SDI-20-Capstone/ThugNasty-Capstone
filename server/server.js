@@ -433,7 +433,7 @@ app.get('/personal_objectives', (req, res) => {
       'personal_key_results.title as key_result_title',
       'personal_key_results.start_date',
       'personal_key_results.end_date',
-      'personal_key_results.target_value',
+      'personal_key_results.target_value ',
       'personal_key_results.success_count',
       'personal_key_results.fail_count'
     )
