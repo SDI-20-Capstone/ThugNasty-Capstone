@@ -59,7 +59,8 @@ export default function SignIn() {
                     loggedIn: true,
                     email: filteredInfo[0].email,
                     organization_id: filteredInfo[0].organization_id,
-                    role: filteredInfo[0].role
+                    role: filteredInfo[0].role,
+                    id: filteredInfo[0].id
                 }))
               navigate('/Home');
             } else {

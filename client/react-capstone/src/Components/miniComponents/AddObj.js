@@ -7,15 +7,17 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddIcon from '@mui/icons-material/Add';
-import { useState, } from "react";
+import { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
+
 
 export default function AddObj() {
   const [openAdd, setOpenAdd] = useState(false);
   const navigate = useNavigate();
   const [newMissionImpact, setNewMissionImpact] = useState(''); 
   const [newObjectiveTitle, setNewObjectiveTitle] = useState(''); 
-
+  const { user } = useContext(UserContext);
   const handleOpen = () => {
     setOpenAdd(true);
   };
@@ -30,6 +32,8 @@ export default function AddObj() {
     let jsonData = {
       newMissionImpact: newMissionImpact,
       newObjectiveTitle: newObjectiveTitle,
+      userid: user.id,
+      organizationid: user.organization_id,
     };
 
     try {
@@ -46,7 +50,7 @@ export default function AddObj() {
         alert("Information added successfully");
       } else {
         alert("Information not added");
-       setNewMissionImpact();
+       setNewMissionImpact("");
        setNewObjectiveTitle("");
       }
     } catch (error) {
@@ -56,7 +60,7 @@ export default function AddObj() {
 
   const handleChange = (event) => {
     const { id, value } = event.target;
-    if (id === 'objective') {
+    if (id === 'objectives') {
     } else if (id === 'newMissionImpact') { 
       setNewMissionImpact(value);
     } else if (id === 'newObjectiveTitle') { 
