@@ -12,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function AddObj() {
   const [openAdd, setOpenAdd] = useState(false);
-  const [title, setTitle] = useState("");
-  const [missionImpact, setMissionImpact] = useState('');
   const navigate = useNavigate();
+  const [newMissionImpact, setNewMissionImpact] = useState(''); 
+  const [newObjectiveTitle, setNewObjectiveTitle] = useState(''); 
 
   const handleOpen = () => {
     setOpenAdd(true);
@@ -22,14 +22,14 @@ export default function AddObj() {
 
   const handleClose = () => {
     setOpenAdd(false);
-    setTitle("");
-    setMissionImpact("");
+    setNewObjectiveTitle("");
+    setNewMissionImpact("");
   };
 
   const handleSubmit = async () => {
     let jsonData = {
-      title: title,
-      missionImpact: missionImpact
+      newMissionImpact: newMissionImpact,
+      newObjectiveTitle: newObjectiveTitle,
     };
 
     try {
@@ -39,30 +39,31 @@ export default function AddObj() {
         body: JSON.stringify(jsonData),
       });
 
-      if (response.status === 200) {
-        setTitle("");
-        setMissionImpact("");
-        navigate("/Personal"); 
+      if (response.status === 201) {
+        setNewMissionImpact("");
+        setNewObjectiveTitle("");
+        navigate("/Home"); 
         alert("Information added successfully");
       } else {
         alert("Information not added");
-        setTitle("");
-        setMissionImpact("");
+       setNewMissionImpact();
+       setNewObjectiveTitle("");
       }
     } catch (error) {
       console.error('Error during fetch:', error);
-
     }
   };
 
   const handleChange = (event) => {
     const { id, value } = event.target;
     if (id === 'objective') {
-      setTitle(value);
-    } else if (id === 'missionImpact') {
-      setMissionImpact(value);
+    } else if (id === 'newMissionImpact') { 
+      setNewMissionImpact(value);
+    } else if (id === 'newObjectiveTitle') { 
+      setNewObjectiveTitle(value);
     }
   }
+  
 
   return (
     <div>
@@ -82,22 +83,22 @@ export default function AddObj() {
         <TextField
           autoFocus
           margin="dense"
-          id="objective"
-          label=""
+          id="newObjectiveTitle"
+          label="New Objective Title"
           fullWidth
           variant="outlined"
-          value={title}
+          value={newObjectiveTitle}
           onChange={handleChange}
         />
         Mission Impact
         <TextField
           autoFocus
           margin="dense"
-          id="missionImpact"
-          label=""
+          id="newMissionImpact"
+          label=" New Mission Impact"
           fullWidth
           variant="outlined"
-          value={missionImpact}
+          value={newMissionImpact}
           onChange={handleChange}
         />
         <DialogActions>
