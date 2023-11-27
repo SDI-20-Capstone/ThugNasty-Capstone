@@ -17,7 +17,7 @@ import Toggle from './Toggle';
 import { UserContext } from "../UserContext";
 
 
-export default function AddKr() {
+export default function AddKr({obj_title}) {
  const [open, setOpen] = useState(false);
  const [newKrTitle, setNewKrTitle] = useState();
 //  const [newStartDate, setNewStartDate] = useState();
@@ -49,18 +49,17 @@ export default function AddKr() {
  const handleSubmit = async () => {
    let jsonData = {
      newKrTitle: newKrTitle,
-     user: user.id,
-     org: user.organization_id,
-     newStartDate: value[0].format('YYYY-MM-DD'),
-     newEndDate: value[1].format('YYYY-MM-DD'),
-     newStartDate: newStartDate,
-     newEndDate: newEndDate,
+     title: obj_title,
+     newStartDate: dateValue[0].format('YYYY-MM-DD'),
+     newEndDate: dateValue[1].format('YYYY-MM-DD'),
+    //  newStartDate: newStartDate,
+    //  newEndDate: newEndDate,
      newTargetValue: newTargetValue,
      newSuccessCount: 0,
      newFailcount: 0,
    };
    console.log(jsonData)
-    try {
+    // try {
      const response = await fetch('http://localhost:8081/key_results', {
        method: 'POST',
        headers: {"Content-Type": "application/json" },
@@ -83,7 +82,7 @@ export default function AddKr() {
       //  setNewSuccessCount("");
       //  setNewFailCount("");
      }
-  }
+  // }
 }
 
 
@@ -108,8 +107,8 @@ export default function AddKr() {
 
 
   const [dateValue, setDateValue] = React.useState([
-    dayjs('2022-04-17'),
-    dayjs('2022-04-21'),
+    dayjs('2023-11-27'),
+    dayjs('2023-11-28'),
   ]);
 
 
@@ -133,7 +132,7 @@ export default function AddKr() {
           fullWidth
           value={newKrTitle}
           onChange={(e) => setNewKrTitle(e.target.value)}
-          onChange={handleChange}
+          // onChange={handleChange}
           />
           <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>

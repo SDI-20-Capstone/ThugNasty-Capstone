@@ -40,7 +40,7 @@ const OrgOkr = () => {
       .then((res) => res.json())
       .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
-  }, [user, measurementValue]);
+  }, [user, keyResultsId]);
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -216,7 +216,7 @@ const OrgOkr = () => {
               successCount={entry.success_count}
             targetValue={entry.target_value}/>
               <div>
-                <AddKr />
+                <AddKr obj_title={row.objective_title}/>
               </div>
           </AccordionDetails>
               ))}
