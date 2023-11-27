@@ -50,7 +50,6 @@ const OrgOkr = () => {
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
-    console.log(successOrFail)
   };
 
   const [addDialog, setAddDialog] = useState(false);
@@ -104,8 +103,11 @@ const OrgOkr = () => {
 
   const getCount = (kr_id) => {
     let krData = orgOkr.map(entry => entry.objectives.filter(kr => kr.kr_id === kr_id))
-    let success_count = krData[0][0].success_count
-    let fail_count = krData[0][0].fail_count
+    let filteredKrData = krData.filter(entry => entry.length === 1);
+    let success_count = filteredKrData[0][0].success_count
+    console.log(success_count)
+    let fail_count = filteredKrData[0][0].fail_count
+    console.log(fail_count)
     let currentCount = parseInt(measurementValue)
     if (successOrFail === true){
       return currentCount + success_count
