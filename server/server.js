@@ -203,18 +203,31 @@ app.patch('/key_results', (req, res) => {
 app.post('/key_results', (req,res) => {
   const {
     newKrTitle,
+    title,
+    newStartDate,
+    newEndDate,
+    newTargetValue,
+    newSuccessCount,
+    newFailCount
   } = req.body;
+
+  const objId = knex('objectives').select('id').where('title', '=', title)
 
   knex('key_results')
   .insert({
     title: newKrTitle,
+    objective_id: objId,
+    start_date: newStartDate,
+    end_date: newEndDate,
+    target_value: newTargetValue,
+    success_count: newSuccessCount,
+    fail_count: newFailCount
   })
-  returning('*')
-    .then((data) => res.status(201).json(data))
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Error adding key result'})
-    })
+  .then((data) => res.status(201).json(data))
+  .catch((error) => {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error adding key result'})
+  })
 })
 
 app.get('/organization_page', (req, res) => {
@@ -293,7 +306,7 @@ app.delete('/removeMember', (req, res) => {
       res.status(200).json({ success: true, message: 'Member deleted successfully' });
     })
     .catch((error) => {
-      console.error(error); 
+      console.error(error);
       res.status(500).json({ success: false, message: 'Internal server error' });
     });
 });
@@ -308,7 +321,7 @@ app.delete('/removeUnit', (req, res) => {
       res.status(200).json({ success: true, message: 'Unit deleted successfully' });
     })
     .catch((error) => {
-      console.error(error); 
+      console.error(error);
       res.status(500).json({ success: false, message: 'Internal server error' });
     });
 });
@@ -439,7 +452,7 @@ app.get('/personal_objectives/:userId', (req, res) => {
 
   knex('personal_objectives')
     .select('*')
-    .where('user_id', '=', userId)  
+    .where('user_id', '=', userId)
     .then(data => {
       console.log('Personal objectives fetched successfully:', data);
       res.json(data);
@@ -453,7 +466,7 @@ app.get('/personal_objectives/:userId', (req, res) => {
 app.get('/personal_key_results/:userId', (req, res) => {
   const userId = req.params.userId;
 
-  knex('personal_key_results')  
+  knex('personal_key_results')
     .select('*')
     .join('personal_objectives', 'personal_key_results.personal_objective_id', '=', 'personal_objectives.id')
     .where('personal_objectives.user_id', '=', userId)
@@ -466,6 +479,14 @@ app.get('/personal_key_results/:userId', (req, res) => {
       res.status(500).json({ success: false, message: 'Error fetching personal key results' });
     });
 });
+
+app.get('/objinfo', (req, res) => {
+  knex('objectives')
+  .select('*')
+  .then(data => {
+    res.send(data)
+  })
+})
 
 app.listen(port, () => {
   console.log(`this is running on ${port}`)
