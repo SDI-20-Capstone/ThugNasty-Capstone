@@ -12,8 +12,8 @@ const OrganizationGraph = ({ success, fail, total }) => {
   }
   const data = [
     { id: 0, value: success, label: 'Success', color: "#00C7CA"},
-    { id: 1, value: fail, label: 'Failure', color: "DB5308" },
-    { id: 2, value: remaining, label: 'Incomplete', color: "786CD2" },
+    { id: 1, value: fail, label: 'Failure', color: "#DB5308" },
+    { id: 2, value: remaining, label: 'Incomplete', color: "#786CD2" },
   ];
 
   return (
