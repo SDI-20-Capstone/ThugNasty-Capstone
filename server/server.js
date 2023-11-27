@@ -136,6 +136,25 @@ app.get('/objectives', (req, res) => {
   })
 })
 
+app.post('/objectives', (req,res) => {
+  const {
+    newObjectiveTitle,
+    newMissionImpact,
+  } = req.body;
+
+  knex('objectives')
+  .insert({
+    title:newObjectiveTitle,
+    mission_impact: newMissionImpact,
+  })
+  .returning('*')
+    .then((data) => res.status(201).json(data))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error adding objective' });
+    });
+})
+
 app.get('/memberrows', (req, res) => {
   knex('organization')
     .join('userinfo', 'organization.id', '=', 'userinfo.organization_id')
