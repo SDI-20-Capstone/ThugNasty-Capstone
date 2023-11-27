@@ -23,20 +23,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import AddObj from "./AddObj";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([]);
   const { user } = useContext(UserContext);
-  const [measurementCount, setMeasurementCount] = useState(0);
-  const [successCount, setSuccessCount] = useState(0);
   const [measurementValue, setMeasurementValue] = useState("");
   const [successOrFail, setSuccessOrFail] = useState("");
-  const [newMeasurement, setNewMeasurement] = useState();
-  const [title, setTitle] = useState("");
-  const [missionImpact, setMissionImpact] = useState('');
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState("")
   const [keyResultsId, setKeyResultsId] = useState("");

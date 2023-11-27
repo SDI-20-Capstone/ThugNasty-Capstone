@@ -53,10 +53,14 @@ export default function AddKr() {
      org: user.organization_id,
      newStartDate: value[0].format('YYYY-MM-DD'),
      newEndDate: value[1].format('YYYY-MM-DD'),
+     newStartDate: newStartDate,
+     newEndDate: newEndDate,
      newTargetValue: newTargetValue,
      newSuccessCount: 0,
      newFailcount: 0,
    };
+   console.log(jsonData)
+    try {
      const response = await fetch('http://localhost:8081/key_results', {
        method: 'POST',
        headers: {"Content-Type": "application/json" },
@@ -80,34 +84,33 @@ export default function AddKr() {
       //  setNewFailCount("");
      }
   }
+}
 
 
-//  const handleChange = async (event) => {
-//    const {id, value } = event.target;
-//    if (id === 'key_results') {
-//    } else if (id === 'newKrTitle') {
-//     setNewKrTitle(value);
-//    }
-//   //  } else if (id === 'newStartDate') {
-//   //   setNewStartDate(value);
-//   //  } else if (id === 'newEndDate') {
-//   //   setNewEndDate(value);
-//     else if (id === 'newTargetValue') {
-//     setNewTargetValue(value);
-//     }
-//   //  } else if (id === 'newSuccessCount') {
-//   //    setNewSuccessCount(value);
-//   //  } else if (id === 'newFailCount') {
-//   //    setNewFailCount(value);
-//   //  }
-//  }
+ const handleChange = async (event) => {
+   const {id, value } = event.target;
+   if (id === 'key_results') {
+   } else if (id === 'newKrTitle') {
+    setNewKrTitle(value);
+  //  } else if (id === 'newStartDate') {
+  //   setNewStartDate(value);
+  //  } else if (id === 'newEndDate') {
+  //   setNewEndDate(value);
+  //  } else if (id === 'newTargetValue') {
+  //   setNewTargetValue(value);
+  //  } else if (id === 'newSuccessCount') {
+  //    setNewSuccessCount(value);
+  //  } else if (id === 'newFailCount') {
+  //    setNewFailCount(value);
+   }
+   console.log(value)
+ }
 
 
-  const [value, setValue] = React.useState([
-    dayjs('2023-11-27'),
-    dayjs('2023-11-28'),
+  const [dateValue, setDateValue] = React.useState([
+    dayjs('2022-04-17'),
+    dayjs('2022-04-21'),
   ]);
-
 
 
   return (
@@ -130,14 +133,15 @@ export default function AddKr() {
           fullWidth
           value={newKrTitle}
           onChange={(e) => setNewKrTitle(e.target.value)}
+          onChange={handleChange}
           />
           <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
         <DemoItem  component="DateRangePicker">
           <DateRangePicker
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={dateValue}
+            onChange={(newValue) => setDateValue(newValue)}
           />
         </DemoItem>
       </DemoContainer>
