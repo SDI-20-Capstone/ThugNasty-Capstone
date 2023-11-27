@@ -32,6 +32,8 @@ export default function AddKr() {
     dayjs('2022-04-21'),
   ]);
 
+  console.log(value)
+
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -66,7 +68,7 @@ export default function AddKr() {
       target_percent  <Toggle/> target_value
     </div>
         </div>
-        
+
           <TextField
           autoFocus
           margin='dense'

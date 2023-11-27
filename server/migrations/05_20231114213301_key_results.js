@@ -7,8 +7,8 @@ exports.up = function(knex) {
     table.increments();
     table.string('title');
     table.integer('objective_id').references('id').inTable('objectives');
-    table.date('start_date');
-    table.date('end_date');
+    table.string('start_date');
+    table.string('end_date');
     table.integer('target_value')
     table.integer('success_count')
     table.integer('fail_count')
