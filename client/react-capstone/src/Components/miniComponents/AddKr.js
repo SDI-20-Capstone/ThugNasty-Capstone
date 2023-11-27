@@ -12,20 +12,91 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Toggle from './Toggle';
+import { UserContext } from "../UserContext";
 
 
 export default function AddKr() {
-  const [open, setOpen] = useState(false);
+ const [open, setOpen] = useState(false);
+ const [newKrTitle, setNewKrTitle] = useState();
+ const [newStartDate, setNewStartDate] = useState();
+ const [newEndDate, setNewEndDate] = useState();
+ const [newTargetValue, setNewTargetValue] = useState();
+ const [newSuccessCount, setNewSuccessCount] = useState();
+ const [newFailcount, setNewFailCount] = useState();
+  const { user } = useContext(UserContext);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+
+
+ const handleClickOpen = () => {
+   setOpen(true);
+ };
+
+
+ const handleClose = () => {
+   setOpen(false);
+ };
+
+
+ const handleSubmit = async () => {
+   let jsonData = {
+     newKrTitle: newKrTitle,
+     user: user.objective_id,
+     newStartDate: newStartDate,
+     newEndDate: newEndDate,
+     newTargetValue: newTargetValue,
+     newSuccessCount: newSuccessCount,
+     newFailcount: newFailcount,
+   };
+    try {
+     const response = await fetch('http://localhost:8081/key_results', {
+       method: 'Post',
+       headers: {"Content-Type": "application/json" },
+       body: JSON.stringify(jsonData),
+     });
+      if (response.status === 201) {
+       setNewKrTitle("");
+       setNewStartDate("");
+       setNewEndDate("");
+       setNewTargetValue("");
+       setNewSuccessCount("");
+       setNewFailCount("");
+       alert("New Kr Details added");
+     } else {
+       alert("New Kr has not been added");
+       setNewKrTitle("");
+       setNewStartDate("");
+       setNewEndDate("");
+       setNewTargetValue("");
+       setNewSuccessCount("");
+       setNewFailCount("");
+     }
+   } catch (error) {
+     console.error("Error during Fetch", error);
+   }
+ };
+
+
+ const handleChange = async (event) => {
+   const {id, value } = event.target;
+   if (id === 'key_results') {
+   } else if (id === 'newKrTitle') {
+    setNewKrTitle(value);
+   } else if (id === 'newStartDate') {
+    setNewStartDate(value);
+   } else if (id === 'newEndDate') {
+    setNewEndDate(value);
+   } else if (id === 'newTargetValue') {
+    setNewTargetValue(value);
+   } else if (id === 'newSuccessCount') {
+     setNewSuccessCount(value);
+   } else if (id === 'newFailCount') {
+     setNewFailCount(value);
+   }
+ }
+
 
   const [value, setValue] = React.useState([
     dayjs('2022-04-17'),
@@ -68,7 +139,7 @@ export default function AddKr() {
       target_percent  <Toggle/> target_value
     </div>
         </div>
-
+        
           <TextField
           autoFocus
           margin='dense'
