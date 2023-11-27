@@ -11,8 +11,8 @@ const SummaryGraph = ({ complete, total }) => {
     remaining = 0
   }
   const data = [
-    { id: 0, value: complete, label: 'Complete', color: "#02F311"},
-    { id: 1, value: remaining, label: 'Incomplete', color: "gray" },
+    { id: 0, value: complete, label: 'Complete', color: "#00C7CA"},
+    { id: 1, value: remaining, label: 'Incomplete', color: "#DB5308" },
   ];
 
   return (
