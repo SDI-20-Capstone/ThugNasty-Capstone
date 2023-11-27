@@ -1,4 +1,4 @@
-const { createNewUser, updateMember } = require("./Helpers")
+const { createNewUser, updateMember, createNewMeasurement, patchKeyResult } = require("./Helpers")
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -188,6 +188,18 @@ app.get('/key_results', (req, res) => {
     })
 })
 
+app.patch('/key_results', (req, res) => {
+  const {
+    key_result_id,
+    count,
+    success
+  } = req.body;
+  patchKeyResult(key_result_id, count, success)
+  .then(data => {
+    res.status(201).json(data)
+  })
+})
+
 app.post('/key_results', (req,res) => {
   const {
     newKrTitle,
@@ -202,7 +214,7 @@ app.post('/key_results', (req,res) => {
     .catch((error) => {
       console.error(error);
       res.status(500).json({ success: false, message: 'Error adding key result'})
-    });
+    })
 })
 
 app.get('/organization_page', (req, res) => {
@@ -321,7 +333,7 @@ app.get('/home_orginfo', (req, res) => {
     'objectives.organization_id',
     'organization.name as organization_name',
     'objectives.user_id',
-    'key_results.id',
+    'key_results.id as kr_id',
     'key_results.title as kr_title',
     'key_results.target_value',
     'key_results.success_count',
@@ -349,14 +361,15 @@ app.get('/home_orginfo', (req, res) => {
         };
       }
 
-        result[key].objectives.push({
-          kr_title: item.kr_title,
-          target_value: item.target_value,
-          success_count: item.success_count,
-          start_date: item.start_date,
-          end_date: item.end_date,
-          fail_count: item.fail_count,
-        });
+      result[key].objectives.push({
+        kr_id: item.kr_id,
+        kr_title: item.kr_title,
+        target_value: item.target_value,
+        success_count: item.success_count,
+        start_date: item.start_date,
+        end_date: item.end_date,
+        fail_count: item.fail_count,
+      });
 
         return result;
       }, {});
@@ -366,71 +379,27 @@ app.get('/home_orginfo', (req, res) => {
     })
 })
 
-app.get('/personal_key_results', (req, res) => {
-  knex('personal_key_results')
-    .select('*')
-    .then(data => {
-      res.json(data)
-    })
+app.get('/measurements', (req, res) => {
+  knex('measurement_table')
+  .select('*')
+  .then(data => {
+    res.send(data)
+  })
 })
 
-app.get('/personal_objectives', (req, res) => {
-  knex('personal_objectives')
-    .select(
-      'personal_objectives.id',
-      'personal_objectives.user_id',
-      'personal_objectives.objective',
-      'personal_objectives.impact',
-      'personal_key_results.id as key_result_id',
-      'personal_key_results.title as key_result_title',
-      'personal_key_results.start_date',
-      'personal_key_results.end_date',
-      'personal_key_results.target_value',
-      'personal_key_results.success_count',
-      'personal_key_results.fail_count'
-    )
-    .leftJoin('personal_key_results', 'personal_objectives.id', '=', 'personal_key_results.personal_objective_id')
-    .then(data => {
-      res.json(data);
-    })
-    .catch(error => {
-      console.error('Error fetching personal objectives:', error);
-      res.status(500).json({ success: false, message: 'Error fetching personal objectives' });
-    });
-});
-
-app.get('/personal_objectives/:userId', (req, res) => {
-  const userId = req.params.userId;
-
-  knex('personal_objectives')
-    .select('*')
-    .where('user_id', '=', userId)  
-    .then(data => {
-      console.log('Personal objectives fetched successfully:', data);
-      res.json(data);
-    })
-    .catch(error => {
-      console.error('Error fetching personal objectives:', error);
-      res.status(500).json({ success: false, message: 'Error fetching personal objectives' });
-    });
-});
-
-app.get('/personal_key_results/:userId', (req, res) => {
-  const userId = req.params.userId;
-
-  knex('personal_key_results')  
-    .select('*')
-    .join('personal_objectives', 'personal_key_results.personal_objective_id', '=', 'personal_objectives.id')
-    .where('personal_objectives.user_id', '=', userId)
-    .then(data => {
-      console.log('Personal key results fetched successfully:', data);
-      res.json(data);
-    })
-    .catch(error => {
-      console.error('Error fetching personal key results:', error);
-      res.status(500).json({ success: false, message: 'Error fetching personal key results' });
-    });
-});
+app.post('/measurements', (req, res) => {
+  const {
+    key_result_id,
+    date,
+    count,
+    success,
+    notes
+  } = req.body;
+  createNewMeasurement(key_result_id, date, count, success, notes)
+  .then(result => {
+    res.status(201).json(result)
+  })
+})
 
 app.listen(port, () => {
   console.log(`this is running on ${port}`)
