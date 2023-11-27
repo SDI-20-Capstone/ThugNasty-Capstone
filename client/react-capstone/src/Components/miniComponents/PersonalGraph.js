@@ -1,21 +1,29 @@
 import React from 'react';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { PieChart } from '@mui/x-charts/PieChart';
 
-const PersonalGraph = ({ success, fail }) => {
+const PersonalGraph = ({ success, fail, total }) => {
+  let remaining = total - (success + fail)
+  if (remaining < 0){
+    remaining = 0
+  }
   const data = [
-    { id: 0, category: 'Success', value: success, color: '#02F311' },
-    { id: 1, category: 'Failure', value: fail, color: 'red' },
+    { id: 0, value: success, label: 'Success', color: "#02F311"},
+    { id: 1, value: fail, label: 'Failure', color: "red" },
+    { id: 2, value: remaining, label: 'Incomplete', color: "gray" },
   ];
 
   return (
-    <BarChart
-      data={data}
-      x="category"
-      y="value"
-      color="color"
-      height={150}
+    <PieChart
+    series={[
+        {
+            data,
+            highlightScope: { faded: 'global', highlighted: 'item' },
+          faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+        },
+    ]}
+    height={150}
     />
-  );
+  )
 }
 
 export default PersonalGraph;

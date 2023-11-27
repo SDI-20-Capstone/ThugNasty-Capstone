@@ -12,6 +12,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList';
 import TabContext from '@mui/lab/TabContext';
 import { UserContext } from "./UserContext";
+import PersonalGraph from './miniComponents/PersonalGraph';
 
 export default function Personal() {
   const { user } = useContext(UserContext);
@@ -73,7 +74,12 @@ export default function Personal() {
                       <Typography>Fail Count: {objective.fail_count}</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      {/* Include additional information or components for personal objectives */}
+                    <PersonalGraph
+                        key={objective.id}
+                        success={objective.success_count}
+                        fail={objective.fail_count}
+                        total={objective.target_value}
+                      />
                     </Grid>
                   </Grid>
                 </Paper>
