@@ -43,13 +43,14 @@ export default function AddKr() {
  const handleSubmit = async () => {
    let jsonData = {
      newKrTitle: newKrTitle,
-     user: user.objective_id,
+     user: user.id,
      newStartDate: newStartDate,
      newEndDate: newEndDate,
      newTargetValue: newTargetValue,
      newSuccessCount: newSuccessCount,
      newFailcount: newFailcount,
    };
+   console.log(jsonData)
     try {
      const response = await fetch('http://localhost:8081/key_results', {
        method: 'Post',
@@ -84,26 +85,26 @@ export default function AddKr() {
    if (id === 'key_results') {
    } else if (id === 'newKrTitle') {
     setNewKrTitle(value);
-   } else if (id === 'newStartDate') {
-    setNewStartDate(value);
-   } else if (id === 'newEndDate') {
-    setNewEndDate(value);
-   } else if (id === 'newTargetValue') {
-    setNewTargetValue(value);
-   } else if (id === 'newSuccessCount') {
-     setNewSuccessCount(value);
-   } else if (id === 'newFailCount') {
-     setNewFailCount(value);
+  //  } else if (id === 'newStartDate') {
+  //   setNewStartDate(value);
+  //  } else if (id === 'newEndDate') {
+  //   setNewEndDate(value);
+  //  } else if (id === 'newTargetValue') {
+  //   setNewTargetValue(value);
+  //  } else if (id === 'newSuccessCount') {
+  //    setNewSuccessCount(value);
+  //  } else if (id === 'newFailCount') {
+  //    setNewFailCount(value);
    }
+   console.log(value)
  }
 
 
-  const [value, setValue] = React.useState([
+  const [dateValue, setDateValue] = React.useState([
     dayjs('2022-04-17'),
     dayjs('2022-04-21'),
   ]);
 
-  console.log(value)
 
   return (
     <div>
@@ -123,14 +124,15 @@ export default function AddKr() {
           label='Title'
           type='Title'
           fullWidth
+          onChange={handleChange}
           />
           <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
         <DemoItem  component="DateRangePicker">
           <DateRangePicker
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={dateValue}
+            onChange={(newValue) => setDateValue(newValue)}
           />
         </DemoItem>
       </DemoContainer>
@@ -162,7 +164,7 @@ export default function AddKr() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Submit
           </Button>
         </DialogActions>

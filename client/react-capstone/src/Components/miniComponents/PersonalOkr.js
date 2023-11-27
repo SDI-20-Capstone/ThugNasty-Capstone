@@ -28,14 +28,14 @@ const PersonalOkr = () => {
   const [measurementValue, setMeasurementValue] = useState('');
   const [successOrFail, setSuccessOrFail] = useState('');
   const [addDialog, setAddDialog] = useState(false);
-  const [orgOkr, setOrgOkr] = useState([{}]);
+  const [personalOkr, setPersonalOkr] = useState([{}]);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetch("http://localhost:8081/objectives")
+    fetch("http://localhost:8081/personal_objectives")
       .then((res) => res.json())
       .then((data) => data.filter((entry) => entry.id === user.organization_id))
-      .then((filteredData) => setOrgOkr(filteredData));
+      .then((filteredData) => setPersonalOkr(filteredData));
   }, [user]);
 
   const handleAddMeasurement = () => {
@@ -66,10 +66,10 @@ const PersonalOkr = () => {
     <Paper>
         <AddPersObj/>
         {/* {orgOkr should be personal once data has been made} */}
-      {orgOkr.map((row, index) => (
+      {personalOkr.map((row, index) => (
         <Accordion key={index}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>{row.title}</Typography>
+            <Typography>{row.objective}</Typography>
           </AccordionSummary>
           <AccordionDetails 
           style={{ 
@@ -85,7 +85,7 @@ const PersonalOkr = () => {
             </div>
             <div>
              
-               <Typography>{row.mission_impact} </Typography>
+               <Typography>{row.impact} </Typography>
             </div>
             <div style={{ display: 'flex',
              flexDirection: 'row', 
