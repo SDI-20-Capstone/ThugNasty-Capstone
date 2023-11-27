@@ -46,10 +46,11 @@ const OrgOkr = () => {
       .then((res) => res.json())
       .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
-  }, [measurementValue]);
+  }, [user, measurementValue]);
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
+    console.log(successOrFail)
   };
 
   const [addDialog, setAddDialog] = useState(false);
@@ -109,7 +110,7 @@ const OrgOkr = () => {
     let currentCount = parseInt(measurementValue)
     if (successOrFail === true){
       return currentCount + success_count
-    } else {
+    } else if (successOrFail === false) {
       return currentCount + fail_count
     }
   }

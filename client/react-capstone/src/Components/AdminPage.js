@@ -3,14 +3,18 @@ import ButtonAppBar from './ButtonAppBar';
 import { DataGrid } from '@mui/x-data-grid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import AddMemberModal from './miniComponents/AdminModal';
 import { UserContext } from './UserContext';
+import AddMemberModal from './miniComponents/AdminModal';
 import AddUnitModal from './miniComponents/UnitModal';
+import RemoveMemberModal from './miniComponents/RemoveMemberModal';
+import RemoveUnitModal from './miniComponents/RemoveUnitModal';
 
 export default function AdminPage() {
     const [currentTab, setCurrentTab] = useState(0);
     const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
     const [isAddUnitModalOpen, setAddUnitModalOpen] = useState(false);
+    const [isRemoveMemberModalOpen, setRemoveMemberModalOpen] = useState(false);
+    const [isRemoveUnitModalOpen, setRemoveUnitModalOpen] = useState(false);
     const { user } = useContext(UserContext);
     const [memberRows, setMemberRows] = useState([]);
     const [unitRows, setUnitRows] = useState([]);
@@ -31,6 +35,7 @@ export default function AdminPage() {
         { field: 'email', headerName: 'Email', width: 350 },
         { field: 'name', headerName: 'Unit', width: 350 },
     ];
+
 
     const unitColumns = [
         { field: 'unit_name', headerName: 'Unit', width: 350 },
@@ -54,6 +59,32 @@ export default function AdminPage() {
     const handleCloseAddModal = () => {
         setAddMemberModalOpen(false);
         setAddUnitModalOpen(false);
+    };
+
+    const handleOpenRemoveMemberModal = () => {
+        if (currentTab === 0) {
+            setRemoveMemberModalOpen(true);
+        } else {
+            setRemoveUnitModalOpen(true);
+        }
+    };
+
+    const handleCloseRemoveMemberModal = () => {
+        setRemoveMemberModalOpen(false);
+        setRemoveUnitModalOpen(false);
+    };
+
+    const handleOpenRemoveUnitModal = () => {
+        if (currentTab === 0) {
+            setRemoveMemberModalOpen(true);
+        } else {
+            setRemoveUnitModalOpen(true);
+        }
+    };
+
+    const handleCloseRemoveUnitModal = () => {
+        setRemoveMemberModalOpen(false);
+        setRemoveUnitModalOpen(false);
     };
 
     const handleAdd = (newData) => {
@@ -103,7 +134,48 @@ export default function AdminPage() {
         }
     };
 
+    const handleRemoveMember = (memberId) => {
+        fetch('http://localhost:8081/removeMember', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: memberId }), // Assuming the member ID is sent in the request body
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    setMemberRows(prevMemberRows => prevMemberRows.filter((member) => member.id !== memberId));
+                } else {
+                    console.error(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
+
+    const handleRemoveUnit = (unitId) => {
+        fetch('http://localhost:8081/removeUnit', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: unitId }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    setUnitRows(prevUnitRows => prevUnitRows.filter((unit) => unit.id !== unitId));
+                } else {
+                    console.error(data.message);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
     const rows = currentTab === 0 ? memberRows : unitRows;
     const columns = currentTab === 0 ? memberColumns : unitColumns;
@@ -119,12 +191,21 @@ export default function AdminPage() {
                 <Tab label="Units" />
             </Tabs>
 
-            <button
-                onClick={handleOpenAddModal}
-                style={{ backgroundColor: '#3385ff', color: 'white', marginRight: '1600px' }}
-            >
-                {addButtonLabel}
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <button
+                    onClick={handleOpenAddModal}
+                    style={{ backgroundColor: '#3385ff', color: 'white', marginRight: '16px' }}
+                >
+                    {addButtonLabel}
+                </button>
+
+                <button
+                    onClick={handleOpenRemoveUnitModal}
+                    style={{ backgroundColor: '#ff4d4d', color: 'white' }}
+                >
+                    Remove {currentTab === 0 ? 'Member' : 'Unit'}
+                </button>
+            </div>
 
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
@@ -150,6 +231,18 @@ export default function AdminPage() {
                 open={isAddUnitModalOpen}
                 onClose={handleCloseAddModal}
                 onAddUnit={handleAdd}
+            />
+            <RemoveMemberModal
+                open={isRemoveMemberModalOpen}
+                onClose={handleCloseRemoveMemberModal}
+                onRemoveMember={handleRemoveMember} // Pass the function to handle member removal
+                memberList={memberRows} // Pass the list of members for search
+            />
+            <RemoveUnitModal
+                open={isRemoveUnitModalOpen}
+                onClose={handleCloseRemoveUnitModal}
+                onRemoveUnit={handleRemoveUnit} // Pass the function to handle member removal
+                unitList={unitRows} // Pass the list of members for search
             />
         </div>
 

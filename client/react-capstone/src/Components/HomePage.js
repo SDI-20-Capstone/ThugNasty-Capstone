@@ -8,13 +8,16 @@ import PersonalGraph from "./miniComponents/PersonalGraph";
 import OrganizationGraph from "./miniComponents/OrganizationGraph";
 import Divider from '@mui/material/Divider';
 import { UserContext } from "./UserContext";
+import SummaryGraph from "./miniComponents/summaryGraph";
 
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
+let completedObj = 0;
+let totalObj = 0;
 const HomePage = () => {
   const [objectivesData, setObjectivesData] = useState([]);
   const { user } = useContext(UserContext);
+
 
   useEffect(() => {
     fetch("http://localhost:8081/objectives")
@@ -23,7 +26,19 @@ const HomePage = () => {
       .then(filteredData => setObjectivesData(filteredData))
   }, [user]);
 
-  console.log(user)
+  const setSummaryValues = () => {
+    completedObj = 0;
+    totalObj = 0;
+    objectivesData.map(entry => (
+      completedObj += (entry.success_count)
+    ))
+    console.log(completedObj)
+    objectivesData.map(entry => (
+      totalObj += entry.target_value
+    ))
+    console.log(totalObj)
+
+    }
 
   return (
     <div>
@@ -69,7 +84,8 @@ const HomePage = () => {
           >
             <Grid item xs={25}>
               {/* Grid 3 */}
-              <OrganizationGraph />
+              {setSummaryValues()}
+              <SummaryGraph complete={completedObj} total={totalObj}/>
             </Grid>
             <Grid item xs={25}>
               {/* Grid 4 */}
@@ -81,6 +97,7 @@ const HomePage = () => {
     </div>
   );
 };
+
 
 export default HomePage;
 

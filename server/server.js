@@ -49,7 +49,11 @@ app.patch('/userinfo', (req, res) => {
 
 app.get('/SignIn', (req, res) => {
   knex('userinfo')
+<<<<<<< HEAD
     .select('email', 'password', 'organization_id', 'role', 'id')
+=======
+    .select('email', 'password', 'organization_id', 'role','id')
+>>>>>>> 5fe8927706f82bcea85f242ed91cb8125752d932
     .then(data => {
       res.json(data)
     })
@@ -114,7 +118,7 @@ app.post('/organization', (req, res) => {
 
 app.get('/objectives', (req, res) => {
   knex('objectives')
-  .select(
+    .select(
       'objectives.id ',
       'objectives.title as objective_title',
       'objectives.mission_impact',
@@ -128,23 +132,27 @@ app.get('/objectives', (req, res) => {
       'key_results.start_date',
       'key_results.end_date',
       'key_results.fail_count',
-  )
-  .from('objectives')
-  .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
-  .then(data => {
-    res.json(data)
-  })
+    )
+    .from('objectives')
+    .leftJoin('key_results', 'objectives.id', '=', 'key_results.objective_id')
+    .then(data => {
+      res.json(data)
+    })
 })
 
-app.post('/objectives', (req,res) => {
+app.post('/objectives', (req, res) => {
   const {
     newObjectiveTitle,
     newMissionImpact,
+    userid,
+    organizationid,
   } = req.body;
 
   knex('objectives')
   .insert({
-    title:newObjectiveTitle,
+    user_id: userid,
+    organization_id: organizationid,
+    title: newObjectiveTitle,
     mission_impact: newMissionImpact,
   })
   .returning('*')
@@ -184,6 +192,7 @@ app.get('/key_results', (req, res) => {
     })
 })
 
+<<<<<<< HEAD
 app.patch('/key_results', (req, res) => {
   const {
     key_result_id,
@@ -194,6 +203,23 @@ app.patch('/key_results', (req, res) => {
   .then(data => {
     res.status(201).json(data)
   })
+=======
+app.post('/key_results', (req,res) => {
+  const {
+    newKrTitle,
+  } = req.body;
+
+  knex('key_results')
+  .insert({
+    title: newKrTitle,
+  })
+  returning('*')
+    .then((data) => res.status(201).json(data))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error adding key result'})
+    });
+>>>>>>> 5fe8927706f82bcea85f242ed91cb8125752d932
 })
 
 app.get('/organization_page', (req, res) => {
@@ -262,6 +288,36 @@ app.post('/addMember', (req, res) => {
     });
 });
 
+app.delete('/removeMember', (req, res) => {
+  const { id } = req.body;
+
+  knex('userinfo')
+    .where('id', '=', id)
+    .del()
+    .then(() => {
+      res.status(200).json({ success: true, message: 'Member deleted successfully' });
+    })
+    .catch((error) => {
+      console.error(error); // Log the error
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    });
+});
+
+app.delete('/removeUnit', (req, res) => {
+  const { id } = req.body;
+
+  knex('organization')
+    .where('id', '=', id)
+    .del()
+    .then(() => {
+      res.status(200).json({ success: true, message: 'Unit deleted successfully' });
+    })
+    .catch((error) => {
+      console.error(error); // Log the error
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    });
+});
+
 app.get('/organization/:id/objectives', (req, res) => {
   const organizationId = req.params.id;
   knex('objectives')
@@ -273,7 +329,7 @@ app.get('/organization/:id/objectives', (req, res) => {
     })
 });
 
-app.get('/home_orginfo', (req,res) => {
+app.get('/home_orginfo', (req, res) => {
   knex('objectives')
   .select(
     'objectives.id ',
@@ -320,12 +376,12 @@ app.get('/home_orginfo', (req,res) => {
         fail_count: item.fail_count,
       });
 
-      return result;
-    }, {});
+        return result;
+      }, {});
 
-    const groupedArray = Object.values(groupedData);
-    res.json(groupedArray);
-  })
+      const groupedArray = Object.values(groupedData);
+      res.json(groupedArray);
+    })
 })
 
 app.get('/measurements', (req, res) => {
