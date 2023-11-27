@@ -1,4 +1,4 @@
-const { createNewUser, updateMember } = require("./Helpers")
+const { createNewUser, updateMember, createNewMeasurement, patchKeyResult } = require("./Helpers")
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -188,6 +188,18 @@ app.get('/key_results', (req, res) => {
     })
 })
 
+app.patch('/key_results', (req, res) => {
+  const {
+    key_result_id,
+    count,
+    success
+  } = req.body;
+  patchKeyResult(key_result_id, count, success)
+  .then(data => {
+    res.status(201).json(data)
+  })
+})
+
 app.post('/key_results', (req,res) => {
   const {
     newKrTitle,
@@ -202,7 +214,7 @@ app.post('/key_results', (req,res) => {
     .catch((error) => {
       console.error(error);
       res.status(500).json({ success: false, message: 'Error adding key result'})
-    });
+    })
 })
 
 app.get('/organization_page', (req, res) => {
@@ -321,7 +333,7 @@ app.get('/home_orginfo', (req, res) => {
     'objectives.organization_id',
     'organization.name as organization_name',
     'objectives.user_id',
-    'key_results.id',
+    'key_results.id as kr_id',
     'key_results.title as kr_title',
     'key_results.target_value',
     'key_results.success_count',
@@ -349,14 +361,15 @@ app.get('/home_orginfo', (req, res) => {
         };
       }
 
-        result[key].objectives.push({
-          kr_title: item.kr_title,
-          target_value: item.target_value,
-          success_count: item.success_count,
-          start_date: item.start_date,
-          end_date: item.end_date,
-          fail_count: item.fail_count,
-        });
+      result[key].objectives.push({
+        kr_id: item.kr_id,
+        kr_title: item.kr_title,
+        target_value: item.target_value,
+        success_count: item.success_count,
+        start_date: item.start_date,
+        end_date: item.end_date,
+        fail_count: item.fail_count,
+      });
 
         return result;
       }, {});
@@ -364,6 +377,28 @@ app.get('/home_orginfo', (req, res) => {
       const groupedArray = Object.values(groupedData);
       res.json(groupedArray);
     })
+})
+
+app.get('/measurements', (req, res) => {
+  knex('measurement_table')
+  .select('*')
+  .then(data => {
+    res.send(data)
+  })
+})
+
+app.post('/measurements', (req, res) => {
+  const {
+    key_result_id,
+    date,
+    count,
+    success,
+    notes
+  } = req.body;
+  createNewMeasurement(key_result_id, date, count, success, notes)
+  .then(result => {
+    res.status(201).json(result)
+  })
 })
 
 app.listen(port, () => {

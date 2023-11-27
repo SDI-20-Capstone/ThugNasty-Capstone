@@ -69,7 +69,8 @@ export default function SignIn() {
                   loggedIn: false,
                   email: '',
                   organization_id: "",
-                  role: ""
+                  role: "",
+                  id: ""
                 })
                 setEmail('');
                 setPassword('');

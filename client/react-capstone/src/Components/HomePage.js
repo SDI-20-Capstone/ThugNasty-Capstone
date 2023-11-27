@@ -37,7 +37,7 @@ const HomePage = () => {
       totalObj += entry.target_value
     ))
     console.log(totalObj)
-    
+
     }
 
   return (

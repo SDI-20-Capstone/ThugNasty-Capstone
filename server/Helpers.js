@@ -23,4 +23,29 @@ const updateMember = (email, unit) => {
           .update({organization_id: updateOrgId})
 }
 
-module.exports = {createNewUser, updateMember}
+const createNewMeasurement = (key_result_id, date, count, success, notes) => {
+  return knex("measurement_table").insert([{
+    key_result_id: key_result_id,
+    date: date,
+    count: count,
+    success: success,
+    notes: notes
+  }])
+}
+
+const patchKeyResult = (key_result_id, count, success) => {
+
+  if(success === true){
+    return knex('key_results')
+    .select('*')
+    .where('id', '=', key_result_id)
+    .update({success_count: count})
+  } else {
+    return knex('key_results')
+    .select('*')
+    .where('id', '=', key_result_id)
+    .update({fail_count: count})
+  }
+}
+
+module.exports = {createNewUser, updateMember, createNewMeasurement, patchKeyResult}
