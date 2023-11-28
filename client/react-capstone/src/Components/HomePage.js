@@ -55,25 +55,25 @@ const HomePage = () => {
         justifyContent="space-evenly"
         alignItems="stretch"
       >
-         {/* <Switch {...label} /> */}
+         {/* <Switch {...label} /> archive functionality would go here*/}
         {/* First row */}
         <Grid item xs={25}>
           <Grid
             container
             direction="column"
             justifyContent="space-evenly"
-            alignItems="stretch"
+           alignItems="stretch"
             height="100%"
           >
             <Grid item xs={25}>
               <OrgOkr/>
             </Grid>
 
-            <Grid item xs={25} >
+            <Grid item xs={50}  >
               <PersonalOkr/>
             </Grid>
 
-            <Divider orientation="vertical" flexItem />
+            {/* <Divider orientation="vertical" flexItem /> */}
           </Grid>
         </Grid>
 
