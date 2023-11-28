@@ -300,6 +300,8 @@ app.delete('/removeMember', (req, res) => {
   knex('userinfo')
     .where('id', '=', id)
     .del()
+  knex('personal_objectives')
+    .where('user_id', '=', id)
     .then(() => {
       res.status(200).json({ success: true, message: 'Member deleted successfully' });
     })
@@ -315,6 +317,8 @@ app.delete('/removeUnit', (req, res) => {
   knex('organization')
     .where('id', '=', id)
     .del()
+  knex('objectives')
+    .where('objectives.organization_id', '=', id)
     .then(() => {
       res.status(200).json({ success: true, message: 'Unit deleted successfully' });
     })
