@@ -37,7 +37,7 @@ const PersonalOkr = () => {
   useEffect(() => {
     fetch("http://localhost:8081/homepersonal_info")
       .then((res) => res.json())
-      .then((data) => data.filter((entry) => entry.user_id === user.id)) // Adjust to use user.id
+      .then((data) => data.filter((entry) => entry.user_id === user.id)) 
       .then((filteredData) => setPersonalOkr(filteredData));
   }, [user, keyResultsId, objAdded, krAdded]);
 
@@ -201,7 +201,7 @@ const PersonalOkr = () => {
                 targetValue={entry.target_value}
               />
               <div>
-                <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded} />
+                <AddKr objTitle={row.objective} krAdded={krAdded} setKrAdded={setKrAdded} />
               </div>
             </AccordionDetails>
           ))}
