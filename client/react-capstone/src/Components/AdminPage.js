@@ -140,7 +140,7 @@ export default function AdminPage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id: memberId }), 
+            body: JSON.stringify({ id: memberId }),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -235,14 +235,14 @@ export default function AdminPage() {
             <RemoveMemberModal
                 open={isRemoveMemberModalOpen}
                 onClose={handleCloseRemoveMemberModal}
-                onRemoveMember={handleRemoveMember} 
-                memberList={memberRows} 
+                onRemoveMember={handleRemoveMember}
+                memberList={memberRows}
             />
             <RemoveUnitModal
                 open={isRemoveUnitModalOpen}
                 onClose={handleCloseRemoveUnitModal}
-                onRemoveUnit={handleRemoveUnit} 
-                unitList={unitRows} 
+                onRemoveUnit={handleRemoveUnit}
+                unitList={unitRows}
             />
         </div>
 
