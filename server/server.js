@@ -600,7 +600,7 @@ app.post('/personal_key_results', (req,res) => {
   knex('personal_key_results')
   .insert({
     title: newKrTitle,
-    objective_id: objId,
+    personal_objective_id: objId,
     start_date: newStartDate,
     end_date: newEndDate,
     target_value: newTargetValue,
@@ -613,6 +613,23 @@ app.post('/personal_key_results', (req,res) => {
     res.status(500).json({ success: false, message: 'Error adding key result'})
   })
 })
+
+app.post('/personal_objectives', (req, res) => {
+  const { objective, impact, user_id } = req.body;
+
+  knex('personal_objectives')
+    .insert({
+      user_id,
+      objective,
+      impact,
+    })
+    .returning('*')
+    .then((data) => res.status(201).json(data))
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Error adding personal objective' });
+    });
+});
 
 app.listen(port, () => {
   console.log(`this is running on ${port}`)
