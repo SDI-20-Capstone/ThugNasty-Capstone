@@ -114,13 +114,14 @@ const PersonalOkr = () => {
 
     <Paper>
       {personalOkr.map((row, index) => (
-        <Accordion key={row.user_id}>
+        <Accordion key={row.user_id} style={{backgroundColor:'white', border: '1px solid #92cbff'}}>
           <AccordionSummary
+            
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-${row.objective}-content`}
             id={`panel-${row.objective}-header`}
           >
-            <Typography>{row.objective}</Typography>
+            <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective}</Typography>
           </AccordionSummary>
           {row.objectives.map((entry) => (
             <AccordionDetails
@@ -133,10 +134,10 @@ const PersonalOkr = () => {
               key={entry.kr_id}
             >
               <div>
-                <Typography>{row.mission_impact} </Typography>
+                <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.mission_impact} </Typography>
               </div>
               <div>
-                <Typography>{entry.kr_title} </Typography>
+                <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px', textAlign:'left'}}>{entry.kr_title} </Typography>
               </div>
               <div
                 style={{

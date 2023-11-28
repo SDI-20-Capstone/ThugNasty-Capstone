@@ -39,9 +39,9 @@ export default function ButtonAppBar() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+    <Box sx={{ flexGrow: 1 }} >
+      <AppBar position="static" style={{backgroundColor:'#2b659b'}} >
+        <Toolbar >
           <IconButton
             size="large"
             edge="start"
@@ -67,24 +67,28 @@ export default function ButtonAppBar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
+            <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <MenuItem onClick={handleClose}>
               <AccountBoxIcon />
-              <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
-                Home
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <PersonIcon />
-              <Link to="/Personal" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Home
+                </MenuItem>
+             </Link>
+            
+             
+            <Link to="/Personal" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <MenuItem onClick={handleClose}>
+              <PersonIcon  />
                 Personal Objectives
-              </Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+             </Link>
+             
+            <Link to="/Organization" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <MenuItem onClick={handleClose}>
               <WorkIcon />
-              <Link to="/Organization" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Organization Objectives
-              </Link>
             </MenuItem>
+            </Link>
+
             {user.role !== "user" ?
             <MenuItem onClick={handleClose}>
               <PersonIcon />
@@ -93,8 +97,9 @@ export default function ButtonAppBar() {
               </Link>
             </MenuItem> :
             <></> }
+            
           </Menu>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} >
             My OKRA
           </Typography>
           <Button color="inherit" onClick={() => logout()}>logout</Button>
