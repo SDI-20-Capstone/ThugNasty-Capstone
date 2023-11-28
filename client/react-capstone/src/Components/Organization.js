@@ -115,13 +115,13 @@ export default function Organization() {
                 <Paper key={objective.id} elevation={3} style={{ padding: 16, marginBottom: 16 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={6}>
-                      <Typography variant="h6">Key Result: {objective.title}</Typography>
-                      <Typography>Mission Impact: {objective.mission_impact}</Typography>
-                      <Typography>Start Date: {objective.start_date}</Typography>
-                      <Typography>End Date: {objective.end_date}</Typography>
-                      <Typography>Target Value: {objective.target_value}</Typography>
-                      <Typography>Success Count: {objective.success_count}</Typography>
-                      <Typography>Fail Count: {objective.fail_count}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>Key Result: {objective.title}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>Mission Impact: {objective.mission_impact}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>Start Date: {objective.start_date}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>End Date: {objective.end_date}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>Target Value: {objective.target_value}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>Success Count: {objective.success_count}</Typography>
+                      <Typography variant="h6" style={{ fontFamily: 'Georgia', textAlign: 'left'}}>Fail Count: {objective.fail_count}</Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <OrganizationGraph
