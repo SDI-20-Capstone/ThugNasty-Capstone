@@ -112,7 +112,7 @@ const OrgOkr = () => {
   return (
     <Paper>
       {orgOkr.map((row,index) => (
-        <Accordion key={row.id} style={{backgroundColor:'white', border: '1px solid #92cbff'}}>
+        <Accordion key={row.id} style={{backgroundColor:'white', border: '1px solid #92cbff', width:'100%'}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-${row.objective_title}-content`}
@@ -127,6 +127,7 @@ const OrgOkr = () => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
+            
             }}
           >
             <div>

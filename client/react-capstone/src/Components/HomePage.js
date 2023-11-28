@@ -91,12 +91,13 @@ const HomePage = () => {
             justifyContent="space-evenly"
             alignItems="stretch"
             height="100%"
+            padding={1}
           >
             <Grid item xs={25}
               style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 marginBottom: '16px',
               }}
             >
@@ -107,7 +108,7 @@ const HomePage = () => {
               style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                 marginBottom: '16px',
               }}
             >

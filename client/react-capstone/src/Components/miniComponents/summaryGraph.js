@@ -24,7 +24,9 @@ const SummaryGraph = ({ complete, total }) => {
           faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
         },
     ]}
-    height={150}
+    height={240}
+    fullwidth
+    padding
     />
   )
 }
