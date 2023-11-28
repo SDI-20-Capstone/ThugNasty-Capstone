@@ -12,11 +12,11 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 
-export default function AddObj() {
+export default function AddObj({objAdded, setObjAdded}) {
   const [openAdd, setOpenAdd] = useState(false);
   const navigate = useNavigate();
-  const [newMissionImpact, setNewMissionImpact] = useState(''); 
-  const [newObjectiveTitle, setNewObjectiveTitle] = useState(''); 
+  const [newMissionImpact, setNewMissionImpact] = useState('');
+  const [newObjectiveTitle, setNewObjectiveTitle] = useState('');
   const { user } = useContext(UserContext);
   const handleOpen = () => {
     setOpenAdd(true);
@@ -44,10 +44,12 @@ export default function AddObj() {
       });
 
       if (response.status === 201) {
+        alert("Information added successfully");
+        setObjAdded(!objAdded)
+        handleClose();
         setNewMissionImpact("");
         setNewObjectiveTitle("");
-        navigate("/Home"); 
-        alert("Information added successfully");
+        // navigate("/Home");
       } else {
         alert("Information not added");
        setNewMissionImpact("");
@@ -61,13 +63,13 @@ export default function AddObj() {
   const handleChange = (event) => {
     const { id, value } = event.target;
     if (id === 'objectives') {
-    } else if (id === 'newMissionImpact') { 
+    } else if (id === 'newMissionImpact') {
       setNewMissionImpact(value);
-    } else if (id === 'newObjectiveTitle') { 
+    } else if (id === 'newObjectiveTitle') {
       setNewObjectiveTitle(value);
     }
   }
-  
+
 
   return (
     <div>
