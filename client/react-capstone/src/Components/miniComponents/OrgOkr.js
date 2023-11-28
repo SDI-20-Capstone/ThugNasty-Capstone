@@ -34,13 +34,15 @@ const OrgOkr = () => {
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState("")
   const [keyResultsId, setKeyResultsId] = useState("");
+  const [objAdded, setObjAdded] = useState(false)
+  const [krAdded, setKrAdded] = useState(false)
 
   useEffect(() => {
     fetch("http://localhost:8081/home_orginfo")
       .then((res) => res.json())
       .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
       .then((filteredData) => setOrgOkr(filteredData));
-  }, [user, keyResultsId]);
+  }, [user, keyResultsId, objAdded, krAdded]);
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -109,7 +111,7 @@ const OrgOkr = () => {
 
   return (
     <Paper>
-        <AddObj/>
+        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} />
       {orgOkr.map((row,index) => (
         <Accordion key={row.id}>
           <AccordionSummary
@@ -216,7 +218,7 @@ const OrgOkr = () => {
               successCount={entry.success_count}
             targetValue={entry.target_value}/>
               <div>
-                <AddKr obj_title={row.objective_title}/>
+                <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
               </div>
           </AccordionDetails>
               ))}
