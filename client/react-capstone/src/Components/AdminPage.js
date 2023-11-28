@@ -140,7 +140,7 @@ export default function AdminPage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id: memberId }), // Assuming the member ID is sent in the request body
+            body: JSON.stringify({ id: memberId }), 
         })
             .then((res) => res.json())
             .then((data) => {
@@ -235,14 +235,14 @@ export default function AdminPage() {
             <RemoveMemberModal
                 open={isRemoveMemberModalOpen}
                 onClose={handleCloseRemoveMemberModal}
-                onRemoveMember={handleRemoveMember} // Pass the function to handle member removal
-                memberList={memberRows} // Pass the list of members for search
+                onRemoveMember={handleRemoveMember} 
+                memberList={memberRows} 
             />
             <RemoveUnitModal
                 open={isRemoveUnitModalOpen}
                 onClose={handleCloseRemoveUnitModal}
-                onRemoveUnit={handleRemoveUnit} // Pass the function to handle member removal
-                unitList={unitRows} // Pass the list of members for search
+                onRemoveUnit={handleRemoveUnit} 
+                unitList={unitRows} 
             />
         </div>
 

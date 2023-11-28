@@ -82,6 +82,7 @@ export default function AddKr({obj_title}) {
       //  setNewSuccessCount("");
       //  setNewFailCount("");
      }
+     setOpen(false);
   // }
 }
 
