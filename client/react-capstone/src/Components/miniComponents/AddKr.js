@@ -17,7 +17,7 @@ import Toggle from './Toggle';
 import { UserContext } from "../UserContext";
 
 
-export default function AddKr({obj_title}) {
+export default function AddKr({obj_title, krAdded, setKrAdded}) {
  const [open, setOpen] = useState(false);
  const [newKrTitle, setNewKrTitle] = useState();
 //  const [newStartDate, setNewStartDate] = useState();
@@ -72,6 +72,8 @@ export default function AddKr({obj_title}) {
        setNewTargetValue("");
       //  setNewSuccessCount("");
       //  setNewFailCount("");
+       setKrAdded(!krAdded)
+       handleClose();
        alert("New Kr Details added");
      } else {
        alert("New Kr has not been added");
