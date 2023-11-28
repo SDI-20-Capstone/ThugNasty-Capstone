@@ -62,17 +62,16 @@ const PersonalOkr = () => {
 
   return (
 
-  
+
     <Paper>
-        <AddPersObj/>
       {personalOkr.map((row, index) => (
         <Accordion key={row.id}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>{row.objective}</Typography>
           </AccordionSummary>
-          <AccordionDetails 
-          style={{ 
-            display: 'flex', 
+          <AccordionDetails
+          style={{
+            display: 'flex',
             flexDirection: 'row',
              justifyContent: 'space-between',
               alignItems: 'center' }}
@@ -83,11 +82,11 @@ const PersonalOkr = () => {
               </Typography>
             </div>
             <div>
-             
+
                <Typography>{row.impact} </Typography>
             </div>
             <div style={{ display: 'flex',
-             flexDirection: 'row', 
+             flexDirection: 'row',
              justifyContent: 'space-between',
              alignItems: 'center' }}
               >
@@ -118,14 +117,14 @@ Number of Measurements
     margin='dense'
     variant='outlined'
     label=''
-    > 
+    >
     <MenuItem value={10}> Success</MenuItem>
     <MenuItem value={10}> Failure</MenuItem>
 
         </Select>
-        
-        
-          
+
+
+
 Notes
 <TextField
             label=""
@@ -137,7 +136,7 @@ Notes
             autoFocus
             margin="dense"
           />
-          
+
 
         </DialogContent>
                 <DialogActions>
@@ -146,10 +145,10 @@ Notes
                 </DialogActions>
               </Dialog>
             </div>
-            <CircularWithValueLabel 
+            <CircularWithValueLabel
             successCount={row.success_count}
             targetValue={row.target_value}
-            
+
             />
             <div>
               <AddKr />
@@ -157,6 +156,7 @@ Notes
           </AccordionDetails>
         </Accordion>
       ))}
+      <AddPersObj/>
     </Paper>
   );
 };

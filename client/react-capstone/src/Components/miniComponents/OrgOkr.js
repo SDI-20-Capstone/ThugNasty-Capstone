@@ -111,7 +111,6 @@ const OrgOkr = () => {
 
   return (
     <Paper>
-        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} />
       {orgOkr.map((row,index) => (
         <Accordion key={row.id}>
           <AccordionSummary
@@ -153,7 +152,9 @@ const OrgOkr = () => {
                 >
                   <AddIcon />
                 </IconButton>
-                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
+                {row.objective_id !== null ?
+                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography> :
+                <></> }
                 <Dialog open={addDialog} onClose={handleAddDialogClose}>
                   <DialogTitle>Organization: {row.organization_name}</DialogTitle>
                   <DialogContent>
@@ -213,10 +214,12 @@ const OrgOkr = () => {
                   </DialogActions>
                 </Dialog>
               </div>
+              {row.objective_id !== null ?
               <CircularWithValueLabel
 
               successCount={entry.success_count}
-            targetValue={entry.target_value}/>
+            targetValue={entry.target_value}/> :
+            <></> }
               <div>
                 <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
               </div>
@@ -224,6 +227,9 @@ const OrgOkr = () => {
               ))}
         </Accordion>
       ))}
+      {user.role !== 'user' ?
+        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} /> :
+          <></>}
     </Paper>
   );
 };
