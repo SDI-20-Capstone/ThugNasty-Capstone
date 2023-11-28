@@ -6,7 +6,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('personal_measurement_table', table => {
       table.increments();
       table.integer('personal_key_result_id').references('id').inTable('personal_key_results');
-      table.integer('date');
+      table.string('date');
       table.integer('count');
       table.boolean('success');
       table.string('notes');
