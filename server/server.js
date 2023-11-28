@@ -2,8 +2,6 @@ const { createNewUser, updateMember, createNewMeasurement, patchKeyResult } = re
 const express = require('express');
 const app = express();
 const port = 8081;
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
 const cors = require('cors');
 
 app.use(express.json());

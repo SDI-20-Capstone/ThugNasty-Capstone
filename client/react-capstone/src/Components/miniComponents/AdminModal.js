@@ -36,7 +36,7 @@ const AddMemberModal = ({ open, onClose, onAddMember }) => {
                     setFirstName("");
                     setLastName("");
                     setEmail("");
-                    setPassword("");  // Clear the password state
+                    setPassword("");  
                     setOrganization_id("");
                     setRank("");
                     alert("Member added to unit successfully");
@@ -44,7 +44,7 @@ const AddMemberModal = ({ open, onClose, onAddMember }) => {
                     setFirstName("");
                     setLastName("");
                     setEmail("");
-                    setPassword("");  // Clear the password state
+                    setPassword("");  
                     setOrganization_id("");
                     setRank("");
                     alert("Something went wrong, please try again");
