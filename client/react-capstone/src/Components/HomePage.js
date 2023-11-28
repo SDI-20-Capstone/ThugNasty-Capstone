@@ -55,7 +55,7 @@ const HomePage = () => {
         justifyContent="space-evenly"
         alignItems="stretch"
       >
-         <Switch {...label} />
+         {/* <Switch {...label} /> */}
         {/* First row */}
         <Grid item xs={25}>
           <Grid
@@ -66,16 +66,14 @@ const HomePage = () => {
             height="100%"
           >
             <Grid item xs={25}>
-
-            <OrgOkr/>
+              <OrgOkr/>
             </Grid>
+
             <Grid item xs={25} >
-
-
-    <PersonalOkr/>
-      <Divider orientation="vertical" flexItem />
+              <PersonalOkr/>
             </Grid>
 
+            <Divider orientation="vertical" flexItem />
           </Grid>
         </Grid>
 
