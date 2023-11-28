@@ -16,6 +16,7 @@ let completedObj = 0;
 let totalObj = 0;
 const HomePage = () => {
   const [objectivesData, setObjectivesData] = useState([]);
+  const [personalData, setPersonalData] = useState([]);
   const { user } = useContext(UserContext);
 
 
@@ -26,13 +27,20 @@ const HomePage = () => {
       .then(filteredData => setObjectivesData(filteredData))
   }, [user]);
 
-  const setSummaryValues = () => {
+  useEffect(() => {
+    fetch("http://localhost:8081/Personal_objectives")
+      .then((res) => res.json())
+      .then((allData) =>  allData.filter(entry => entry.user_id === user.id))
+      .then(filteredData => setPersonalData(filteredData))
+  }, [user]);
+
+  const setSummaryValues = (data) => {
     completedObj = 0;
     totalObj = 0;
-    objectivesData.map(entry => (
+    data.map(entry => (
       completedObj += (entry.success_count)
     ))
-    objectivesData.map(entry => (
+    data.map(entry => (
       totalObj += entry.target_value
     ))
 
@@ -47,7 +55,7 @@ const HomePage = () => {
         justifyContent="space-evenly"
         alignItems="stretch"
       >
-         <Switch {...label} />
+         {/* <Switch {...label} /> */}
         {/* First row */}
         <Grid item xs={25}>
           <Grid
@@ -58,16 +66,14 @@ const HomePage = () => {
             height="100%"
           >
             <Grid item xs={25}>
-
-            <OrgOkr/>
+              <OrgOkr/>
             </Grid>
+
             <Grid item xs={25} >
-
-
-    <PersonalOkr/>
-      <Divider orientation="vertical" flexItem />
+              <PersonalOkr/>
             </Grid>
 
+            <Divider orientation="vertical" flexItem />
           </Grid>
         </Grid>
 
@@ -82,12 +88,13 @@ const HomePage = () => {
           >
             <Grid item xs={25}>
               {/* Grid 3 */}
-              {setSummaryValues()}
+              {setSummaryValues(objectivesData)}
               <SummaryGraph complete={completedObj} total={totalObj}/>
             </Grid>
             <Grid item xs={25}>
               {/* Grid 4 */}
-              <PersonalGraph/>
+              {setSummaryValues(personalData)}
+              <SummaryGraph complete={completedObj} total={totalObj}/>
             </Grid>
           </Grid>
         </Grid>
