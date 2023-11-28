@@ -486,6 +486,130 @@ app.get('/objinfo', (req, res) => {
   })
 })
 
+app.get('/homepersonal_info', (req, res) => {
+  knex('personal_objectives')
+    .select(
+      'personal_objectives.id',
+      'personal_objectives.user_id',
+      'personal_objectives.objective',
+      'personal_objectives.impact',
+      'personal_key_results.id as kr_id',
+      'personal_key_results.title as kr_title',
+      'personal_key_results.start_date',
+      'personal_key_results.end_date',
+      'personal_key_results.target_value',
+      'personal_key_results.success_count',
+      'personal_key_results.fail_count'
+    )
+    .leftJoin('personal_key_results', 'personal_objectives.id', '=', 'personal_key_results.personal_objective_id')
+    .leftJoin('personal_measurement_table', 'personal_key_results.id', '=', 'personal_measurement_table.personal_key_result_id')
+    .groupBy(
+      'personal_objectives.id',
+      'personal_key_results.id'
+    )
+    .then(data => {
+      const groupedData = data.reduce((result, item) => {
+        const key = `${item.objective}-${item.impact}-${item.user_id}-${item.id}`;
+        if (!result[key]) {
+          result[key] = {
+            id: item.id,
+            user_id: item.user_id,
+            objective: item.objective,
+            impact: item.impact,
+            objectives: [],
+          };
+        }
+
+        result[key].objectives.push({
+          kr_id: item.kr_id,
+          kr_title: item.kr_title,
+          start_date: item.start_date,
+          end_date: item.end_date,
+          target_value: item.target_value,
+          success_count: item.success_count,
+          fail_count: item.fail_count,
+        });
+
+        return result;
+      }, {});
+
+      const groupedArray = Object.values(groupedData);
+      res.json(groupedArray);
+    })
+});
+
+app.get('/personal_measurements', (req, res) => {
+  knex('personal_measurement_table')
+  .select('*')
+  .then(data => {
+    res.send(data)
+  })
+})
+
+app.post('/personal_measurements', (req, res) => {
+  const {
+    key_result_id,
+    date,
+    count,
+    success,
+    notes
+  } = req.body;
+  createNewMeasurement(key_result_id, date, count, success, notes)
+  .then(result => {
+    res.status(201).json(result)
+  })
+})
+
+app.get('/personal_key_results', (req, res) => {
+  knex('personal_key_results')
+    .select('*')
+    .then(data => {
+      res.json(data)
+    })
+})
+
+app.patch('/personal_key_results', (req, res) => {
+  const {
+    key_result_id,
+    count,
+    success
+  } = req.body;
+  patchKeyResult(key_result_id, count, success)
+  .then(data => {
+    res.status(201).json(data)
+  })
+})
+
+app.post('/personal_key_results', (req,res) => {
+  const {
+    newKrTitle,
+    title,
+    newStartDate,
+    newEndDate,
+    newTargetValue,
+    newSuccessCount,
+    newFailCount
+  } = req.body;
+
+  const objId = knex('personal_objectives').select('id').where('objective', '=', title)
+
+  knex('personal_key_results')
+  .insert({
+    title: newKrTitle,
+    objective_id: objId,
+    start_date: newStartDate,
+    end_date: newEndDate,
+    target_value: newTargetValue,
+    success_count: newSuccessCount,
+    fail_count: newFailCount
+  })
+  .then((data) => res.status(201).json(data))
+  .catch((error) => {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error adding key result'})
+  })
+})
+
 app.listen(port, () => {
   console.log(`this is running on ${port}`)
 })

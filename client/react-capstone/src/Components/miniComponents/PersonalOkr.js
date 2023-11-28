@@ -23,20 +23,23 @@ import AddPersObj from './AddPersObj';
 import { UserContext } from "../UserContext";
 
 const PersonalOkr = () => {
-  const [measurementCount, setMeasurementCount] = useState(0);
-  const [successCount, setSuccessCount] = useState(0);
-  const [measurementValue, setMeasurementValue] = useState('');
-  const [successOrFail, setSuccessOrFail] = useState('');
-  const [addDialog, setAddDialog] = useState(false);
-  const [personalOkr, setPersonalOkr] = useState([{}]);
+  const [personalOkr, setPersonalOkr] = useState([]);
   const { user } = useContext(UserContext);
+  const [successOrFail, setSuccessOrFail] = useState("");
+  const [notes, setNotes] = useState("");
+  const [date, setDate] = useState("");
+  const [measurementValue, setMeasurementValue] = useState("");
+  const [keyResultsId, setKeyResultsId] = useState("");
+  const [objAdded, setObjAdded] = useState(false);
+  const [krAdded, setKrAdded] = useState(false);
+  const [addDialog, setAddDialog] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:8081/personal_objectives")
+    fetch("http://localhost:8081/homepersonal_info")
       .then((res) => res.json())
-      .then((data) => data.filter((entry) => entry.id === user.organization_id))
+      .then((data) => data.filter((entry) => entry.user_id === user.id)) // Adjust to use user.id
       .then((filteredData) => setPersonalOkr(filteredData));
-  }, [user]);
+  }, [user, keyResultsId, objAdded, krAdded]);
 
   const handleAddMeasurement = () => {
     setAddDialog(true);
@@ -45,115 +48,163 @@ const PersonalOkr = () => {
   const handleAddDialogClose = () => {
     setAddDialog(false);
     setMeasurementValue('');
-    setSuccessOrFail('');
   };
 
-  const handleAddDialogSubmit = () => {
-    const measurement = parseFloat(measurementValue);
-    if (!isNaN(measurement)) {
-      setMeasurementCount(measurementCount + measurement);
-      setSuccessCount(successCount + (measurement > 0 ? 1 : 0));
-    }
+  const handleAddDialogSubmit = (event) => {
+    event.preventDefault();
+    let jsonMeasuredData = {
+      key_result_id: keyResultsId,
+      date: date,
+      count: measurementValue,
+      success: successOrFail,
+      notes: notes,
+    };
 
-    setAddDialog(false);
-    setMeasurementValue('');
-    setSuccessOrFail('');
+    let jsonPatchData = {
+      key_result_id: keyResultsId,
+      count: getCount(keyResultsId),
+      success: successOrFail,
+    };
+
+    fetch("http://localhost:8081/personal_measurements", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonMeasuredData),
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          alert('Measurement added successfully');
+          handleAddDialogClose();
+        }
+      });
+
+    fetch("http://localhost:8081/personal_key_results", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonPatchData),
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setDate("");
+          setKeyResultsId("");
+          setNotes("");
+          setSuccessOrFail("");
+          setMeasurementValue("");
+        }
+      });
+  };
+
+  const getCount = (kr_id) => {
+    let krData = personalOkr.map((entry) =>
+      entry.objectives.filter((kr) => kr.kr_id === kr_id)
+    );
+    let filteredKrData = krData.filter((entry) => entry.length === 1);
+    let success_count = filteredKrData[0][0].success_count;
+    let fail_count = filteredKrData[0][0].fail_count;
+    let currentCount = parseInt(measurementValue);
+    if (successOrFail === true) {
+      return currentCount + success_count;
+    } else {
+      return currentCount + fail_count;
+    }
   };
 
   return (
 
 
     <Paper>
+      <AddPersObj objAdded={objAdded} setObjAdded={setObjAdded} />
       {personalOkr.map((row, index) => (
-        <Accordion key={row.id}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion key={row.user_id}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`panel-${row.objective}-content`}
+            id={`panel-${row.objective}-header`}
+          >
             <Typography>{row.objective}</Typography>
           </AccordionSummary>
-          <AccordionDetails
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-             justifyContent: 'space-between',
-              alignItems: 'center' }}
+          {row.objectives.map((entry) => (
+            <AccordionDetails
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+              key={entry.kr_id}
+            >
+              <div>
+                <Typography>{row.mission_impact} </Typography>
+              </div>
+              <div>
+                <Typography>{entry.kr_title} </Typography>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
               >
-            <div>
-              <Typography>
-                {/* {`${row.title}: This is Key Result `} */}
-              </Typography>
-            </div>
-            <div>
-
-               <Typography>{row.impact} </Typography>
-            </div>
-            <div style={{ display: 'flex',
-             flexDirection: 'row',
-             justifyContent: 'space-between',
-             alignItems: 'center' }}
-              >
-              <IconButton onClick={handleAddMeasurement} color="primary" aria-label="add measurement">
-                <AddIcon />
-              </IconButton>
-              <Typography>{`${row.success_count}/${row.target_value}`}</Typography>
-              <Dialog open={addDialog} onClose={handleAddDialogClose}>
-                <DialogTitle>Organization: Org here</DialogTitle>
-                <DialogContent>
-Number of Measurements
-          <TextField
-            label="Number Input"
-            variant="outlined"
-            value={measurementValue}
-            onChange={(e) => setMeasurementValue(e.target.value)}
-            type="number"
-            autoFocus
-            margin="dense"
-            fullWidth
-          />
-   Success or Fail
-    <Select
-    value=''
-    onChange={(e) => setSuccessOrFail(e.target.value)}
-    fullWidth
-    autoFocus
-    margin='dense'
-    variant='outlined'
-    label=''
-    >
-    <MenuItem value={10}> Success</MenuItem>
-    <MenuItem value={10}> Failure</MenuItem>
-
-        </Select>
-
-
-
-Notes
-<TextField
-            label=""
-            variant="filled"
-            type="text"
-            multiline
-            fullWidth
-            rows={8}
-            autoFocus
-            margin="dense"
-          />
-
-
-        </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleAddDialogClose}>Cancel</Button>
-                  <Button onClick={handleAddDialogSubmit} color="primary">Submit</Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-            <CircularWithValueLabel
-            successCount={row.success_count}
-            targetValue={row.target_value}
-
-            />
-            <div>
-              <AddKr />
-            </div>
-          </AccordionDetails>
+                <IconButton
+                  onClick={() => {
+                    setKeyResultsId(entry.kr_id);
+                    handleAddMeasurement();
+                  }}
+                  color="primary"
+                  aria-label="add measurement"
+                >
+                  <AddIcon />
+                </IconButton>
+                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
+                <Dialog open={addDialog} onClose={handleAddDialogClose}>
+                  <DialogTitle>Organization: {row.organization_name}</DialogTitle>
+                  <DialogContent>
+                    Number of Measurements
+                    <TextField
+                      label="Number Input"
+                      variant="outlined"
+                      value={measurementValue}
+                      onChange={(e) => setMeasurementValue(e.target.value)}
+                      type="number"
+                      autoFocus
+                      margin="dense"
+                      fullWidth
+                    />
+                    Success or Fail
+                    <Select
+                      value={successOrFail}
+                      onChange={(e) => setSuccessOrFail(e.target.value)}
+                      fullWidth
+                      autoFocus
+                      margin="dense"
+                      variant="outlined"
+                      label=""
+                    >
+                      <MenuItem value={true}> Success</MenuItem>
+                      <MenuItem value={false}> Failure</MenuItem>
+                    </Select>
+                    {/* Add your DatePicker component here */}
+                    {/* Add your Notes TextField component here */}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleAddDialogClose}>Cancel</Button>
+                    <Button onClick={handleAddDialogSubmit} color="primary">
+                      Submit
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+              <CircularWithValueLabel
+                successCount={entry.success_count}
+                targetValue={entry.target_value}
+              />
+              <div>
+                <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded} />
+              </div>
+            </AccordionDetails>
+          ))}
         </Accordion>
       ))}
       <AddPersObj/>
