@@ -1,4 +1,4 @@
-const { createNewUser, updateMember, createNewMeasurement, patchKeyResult } = require("./Helpers")
+const { createNewUser, updateMember, createNewMeasurement, patchKeyResult, persPatchKeyResult, createNewPersMeasurement } = require("./Helpers")
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -552,13 +552,13 @@ app.get('/personal_measurements', (req, res) => {
 
 app.post('/personal_measurements', (req, res) => {
   const {
-    key_result_id,
+    personal_key_result_id,
     date,
     count,
     success,
     notes
   } = req.body;
-  createNewMeasurement(key_result_id, date, count, success, notes)
+  createNewMeasurement(personal_key_result_id, date, count, success, notes)
   .then(result => {
     res.status(201).json(result)
   })
@@ -574,11 +574,11 @@ app.get('/personal_key_results', (req, res) => {
 
 app.patch('/personal_key_results', (req, res) => {
   const {
-    key_result_id,
+    personal_key_result_id,
     count,
     success
   } = req.body;
-  patchKeyResult(key_result_id, count, success)
+  persPatchKeyResult(personal_key_result_id, count, success)
   .then(data => {
     res.status(201).json(data)
   })

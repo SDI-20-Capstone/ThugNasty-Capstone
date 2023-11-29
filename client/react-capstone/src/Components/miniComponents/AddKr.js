@@ -42,8 +42,6 @@ export default function AddKr({obj_title, krAdded, setKrAdded}) {
   setToggled(!toggled)
  }
 
- console.log(toggled)
-
  const handleSubmit = async () => {
    let jsonData = {
      newKrTitle: newKrTitle,
@@ -56,7 +54,7 @@ export default function AddKr({obj_title, krAdded, setKrAdded}) {
      newSuccessCount: 0,
      newFailcount: 0,
    };
-   console.log(jsonData)
+
     // try {
      const response = await fetch('http://localhost:8081/key_results', {
        method: 'POST',
