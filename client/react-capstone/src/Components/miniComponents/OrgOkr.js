@@ -120,7 +120,7 @@ const OrgOkr = () => {
           >
             <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective_title}</Typography>
             {user.role !== 'user' ?
-            <div style={{padding: '10px', align: 'right'}}>
+            <div>
               <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
             </div> :
             <></> }
@@ -142,13 +142,16 @@ const OrgOkr = () => {
                   <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{entry.kr_title} </Typography>
                 </div>
                 <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+                style={{
+                  display: "flex",
+                  flexDirection: row.objective_id !== null ? "row" : "column",
+                  justifyContent: row.objective_id !== null ? "space-between" : "center",
+                  alignItems: row.objective_id !== null ? "center" : "center",
+                  textAlign: row.objective_id !== null ? "left" : "center", // Adjust text alignment as needed
+                  margin: row.objective_id !== null ? "auto" : "auto",
+                }}
                 >
+                {row.objective_id !== null ?
                 <IconButton
                   onClick={() => {
                     setKeyResultsId(entry.kr_id)
@@ -157,10 +160,11 @@ const OrgOkr = () => {
                   aria-label="add measurement"
                 >
                   <AddIcon />
-                </IconButton>
+                </IconButton>:
+                <></> }
                 {row.objective_id !== null ?
                 <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography> :
-                <></> }
+                <div>Click On the Add Kr Button To Add a New Key Result</div> }
                 <Dialog open={addDialog} onClose={handleAddDialogClose}>
                   <DialogTitle>Organization: {row.organization_name}</DialogTitle>
                   <DialogContent>
