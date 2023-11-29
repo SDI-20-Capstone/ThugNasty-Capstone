@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Toggle from './Toggle';
 
 const AddPersKr = ({ objTitle, krAdded, setKrAdded }) => {
@@ -43,11 +44,12 @@ const AddPersKr = ({ objTitle, krAdded, setKrAdded }) => {
       newSuccessCount: 0,
       newFailCount: 0,
     };
+    console.log(jsonData)
 
-      const response = await fetch('http://localhost:8081/personal_key_results', {
+     const response = await fetch('http://localhost:8081/personal_key_results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(jsonData),
+        body : JSON.stringify(jsonData),
       });
 
       if (response.status === 201) {

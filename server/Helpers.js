@@ -48,4 +48,29 @@ const patchKeyResult = (key_result_id, count, success) => {
   }
 }
 
-module.exports = {createNewUser, updateMember, createNewMeasurement, patchKeyResult}
+const persPatchKeyResult = (personal_key_result_id, count, success) => {
+  if(success === true){
+    return knex('personal_key_results')
+    .select('*')
+    .where('id', '=', personal_key_result_id)
+    .update({success_count: count})
+  } else {
+    return knex('personal_key_results')
+    .select('*')
+    .where('id', '=', personal_key_result_id)
+    .update({fail_count: count})
+  }
+}
+
+const createNewPersMeasurement = (personal_key_result_id, date, count, success, notes) => {
+  return knex("personal_measurement_table").insert([{
+    personal_key_result_id: personal_key_result_id,
+    date: date,
+    count: count,
+    success: success,
+    notes: notes
+  }])
+}
+
+
+module.exports = {createNewUser, updateMember, createNewMeasurement, patchKeyResult, persPatchKeyResult, createNewPersMeasurement}

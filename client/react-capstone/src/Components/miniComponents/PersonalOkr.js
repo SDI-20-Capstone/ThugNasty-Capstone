@@ -13,7 +13,6 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CircularWithValueLabel from './CircularWithValueLabel';
-import AddKr from './AddKr';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -21,6 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddPersObj from './AddPersObj';
 import { UserContext } from "../UserContext";
+import AddPersKr from './AddPersKr'
 
 const PersonalOkr = () => {
   const [personalOkr, setPersonalOkr] = useState([]);
@@ -37,7 +37,7 @@ const PersonalOkr = () => {
   useEffect(() => {
     fetch("http://localhost:8081/homepersonal_info")
       .then((res) => res.json())
-      .then((data) => data.filter((entry) => entry.user_id === user.id)) 
+      .then((data) => data.filter((entry) => entry.user_id === user.id))
       .then((filteredData) => setPersonalOkr(filteredData));
   }, [user, keyResultsId, objAdded, krAdded]);
 
@@ -53,7 +53,7 @@ const PersonalOkr = () => {
   const handleAddDialogSubmit = (event) => {
     event.preventDefault();
     let jsonMeasuredData = {
-      key_result_id: keyResultsId,
+      personal_key_result_id: keyResultsId,
       date: date,
       count: measurementValue,
       success: successOrFail,
@@ -61,7 +61,7 @@ const PersonalOkr = () => {
     };
 
     let jsonPatchData = {
-      key_result_id: keyResultsId,
+      personal_key_result_id: keyResultsId,
       count: getCount(keyResultsId),
       success: successOrFail,
     };
@@ -116,12 +116,15 @@ const PersonalOkr = () => {
       {personalOkr.map((row, index) => (
         <Accordion key={row.user_id} style={{backgroundColor:'white', border: '1px solid #92cbff', width:'100%', height: '100%'}}>
           <AccordionSummary
-            
+
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-${row.objective}-content`}
             id={`panel-${row.objective}-header`}
           >
             <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective}</Typography>
+            <div>
+              <AddPersKr objTitle={row.objective} krAdded={krAdded} setKrAdded={setKrAdded} />
+            </div>
           </AccordionSummary>
           {row.objectives.map((entry) => (
             <AccordionDetails
@@ -202,9 +205,6 @@ const PersonalOkr = () => {
                 successCount={entry.success_count}
                 targetValue={entry.target_value}
               />
-              <div>
-                <AddKr objTitle={row.objective} krAdded={krAdded} setKrAdded={setKrAdded} />
-              </div>
             </AccordionDetails>
           ))}
         </Accordion>
