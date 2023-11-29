@@ -92,10 +92,6 @@ export default function Organization() {
     <>
       <ButtonAppBar />
       <Box sx={{ width: '100%', typography: 'body1' }}>
-        {user.role !== "user" ?
-          <AddObj /> :
-          <></>
-        }
         <TabContext value={currentTab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleTabChange} aria-label={currentTab} centered>
