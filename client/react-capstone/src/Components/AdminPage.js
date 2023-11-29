@@ -26,7 +26,7 @@ export default function AdminPage() {
         fetch('http://localhost:8081/unitrows')
             .then((res) => res.json())
             .then((data) => setUnitRows(data));
-    }, [isAddMemberModalOpen, isAddUnitModalOpen]);
+    }, [isAddMemberModalOpen, isAddUnitModalOpen, memberRows, unitRows]);
 
     const memberColumns = [
         { field: 'first_name', headerName: 'First name', width: 350 },
@@ -217,7 +217,7 @@ export default function AdminPage() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
-                    checkboxSelection
+                    // checkboxSelection
                 />
             </div>
 
