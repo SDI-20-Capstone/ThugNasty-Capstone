@@ -294,38 +294,36 @@ app.post('/addMember', (req, res) => {
     });
 });
 
-app.delete('/removeMember', (req, res) => {
-  const { id } = req.body;
+app.delete('/removeMember', async (req, res) => {
+  try {
+    const { id } = req.body;
 
-  knex('userinfo')
-    .where('id', '=', id)
-    .del()
-  knex('personal_objectives')
-    .where('user_id', '=', id)
-    .then(() => {
-      res.status(200).json({ success: true, message: 'Member deleted successfully' });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
-    });
+    await knex('userinfo').where('id', '=', id).del();
+    await knex('personal_objectives').where('user_id', '=', id).del();
+
+    const updatedMemberRows = await knex('userinfo').select('*');
+    
+    res.status(200).json({ success: true, message: 'Member deleted successfully', updatedMemberRows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 });
 
-app.delete('/removeUnit', (req, res) => {
-  const { id } = req.body;
+app.delete('/removeUnit', async (req, res) => {
+  try {
+    const { id } = req.body;
 
-  knex('organization')
-    .where('id', '=', id)
-    .del()
-  knex('objectives')
-    .where('objectives.organization_id', '=', id)
-    .then(() => {
-      res.status(200).json({ success: true, message: 'Unit deleted successfully' });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
-    });
+    await knex('organization').where('id', '=', id).del();
+    await knex('objectives').where('objectives.organization_id', '=', id).del();
+    
+    const updatedUnitRows = await knex('organization').select('*');
+
+    res.status(200).json({ success: true, message: 'Unit deleted successfully', updatedUnitRows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 });
 
 app.get('/organization/:id/objectives', (req, res) => {
