@@ -122,7 +122,7 @@ const PersonalOkr = () => {
             id={`panel-${row.objective}-header`}
           >
             <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective}</Typography>
-            <div>
+            <div style={{ alignItems:'end' }}>
               <AddPersKr objTitle={row.objective} krAdded={krAdded} setKrAdded={setKrAdded} />
             </div>
           </AccordionSummary>
