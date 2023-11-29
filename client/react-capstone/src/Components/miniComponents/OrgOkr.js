@@ -111,6 +111,9 @@ const OrgOkr = () => {
 
   return (
     <Paper>
+      {user.role !== 'user' ?
+        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} /> :
+          <></>}
       {orgOkr.map((row,index) => (
         <Accordion key={row.id} style={{backgroundColor:'white', border: '1px solid #92cbff', width:'100%'}}>
           <AccordionSummary
@@ -230,9 +233,7 @@ const OrgOkr = () => {
               ))}
         </Accordion>
       ))}
-      {user.role !== 'user' ?
-        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} /> :
-          <></>}
+      
     </Paper>
   );
 };

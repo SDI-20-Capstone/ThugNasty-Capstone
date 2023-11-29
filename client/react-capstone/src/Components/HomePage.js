@@ -51,7 +51,7 @@ const HomePage = () => {
         direction="row"
         justifyContent="space-evenly"
         alignItems="stretch"
-        spacing={5}
+        spacing={1}
       >
         <Grid item xs={25} >
           <Grid
@@ -60,12 +60,14 @@ const HomePage = () => {
             justifyContent="space-evenly"
             alignItems="stretch"
             height="100%"
+            margin={3}
           >
             <Grid item xs={25} style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
                 marginBottom: '16px',
+                padding:'15px'
               }}>
               <OrgOkr />
             </Grid>
@@ -73,8 +75,9 @@ const HomePage = () => {
             style={{
               borderRadius: 8,
               overflow: 'hidden',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
               marginBottom: '16px',
+              padding:'15px'
             }}
             >
               <PersonalOkr />
@@ -90,26 +93,29 @@ const HomePage = () => {
             direction="column"
             justifyContent="space-evenly"
             alignItems="stretch"
-            height="100%"
-            padding={1}
+            height="95%"
+            padding={3}
+            margin={1}
           >
             <Grid item xs={25}
               style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
                 marginBottom: '16px',
+                padding:'20px'
               }}
             >
               {setSummaryValues(objectivesData)}
-              <SummaryGraph complete={completedObj} total={totalObj} />
+              <SummaryGraph style={{alignItems:'center'}}complete={completedObj} total={totalObj} />
             </Grid>
             <Grid item xs={25}
               style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
                 marginBottom: '16px',
+                padding:'20px'
               }}
             >
               {setSummaryValues(personalData)}

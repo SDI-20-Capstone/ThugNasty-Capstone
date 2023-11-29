@@ -112,7 +112,8 @@ const PersonalOkr = () => {
   return (
 
 
-    <Paper>
+    <Paper> 
+       <AddPersObj objAdded={objAdded} setObjAdded={setObjAdded} />
       {personalOkr.map((row, index) => (
         <Accordion key={row.user_id} style={{backgroundColor:'white', border: '1px solid #92cbff', width:'100%', height: '100%'}}>
           <AccordionSummary
@@ -209,7 +210,7 @@ const PersonalOkr = () => {
           ))}
         </Accordion>
       ))}
-      <AddPersObj objAdded={objAdded} setObjAdded={setObjAdded} />
+    
     </Paper>
   );
 };
