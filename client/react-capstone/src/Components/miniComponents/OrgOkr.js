@@ -120,7 +120,7 @@ const OrgOkr = () => {
           >
             <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective_title}</Typography>
             {user.role !== 'user' ?
-            <div>
+            <div style={{padding: '10px', align: 'right'}}>
               <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
             </div> :
             <></> }
