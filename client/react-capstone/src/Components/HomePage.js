@@ -71,23 +71,26 @@ const HomePage = () => {
               }}>
               <OrgOkr />
             </Grid>
+            {/* <Divider orientation="vertical" /> */}
             <Grid item xs={25} 
             style={{
               borderRadius: 8,
               overflow: 'hidden',
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
               marginBottom: '16px',
               padding:'15px'
             }}
             >
               <PersonalOkr />
-            </Grid>
+            </Grid> 
+           
           </Grid>
         </Grid>
-
+             
         <Grid item xs={25}
 
         >
+          
           <Grid
             container
             direction="column"
@@ -101,19 +104,21 @@ const HomePage = () => {
               style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
                 marginBottom: '16px',
                 padding:'20px'
               }}
             >
+              
               {setSummaryValues(objectivesData)}
               <SummaryGraph style={{alignItems:'center'}}complete={completedObj} total={totalObj} />
             </Grid>
+        
             <Grid item xs={25}
               style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
                 marginBottom: '16px',
                 padding:'20px'
               }}
