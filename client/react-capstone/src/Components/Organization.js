@@ -2,44 +2,54 @@ import ButtonAppBar from './ButtonAppBar';
 import React,  { useState, useEffect, useContext } from 'react'
 import {
   Paper,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Typography,
-  IconButton,
-  MenuItem,
-  Select,
 } from "@mui/material";
 import { UserContext } from "./UserContext";
-import AddIcon from "@mui/icons-material/Add";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import OrgOkr from "./miniComponents/OrgOkr";
-import { Grid } from "@mui/material";
-import Divider from '@mui/material/Divider';
-import Tabs from '@mui/material/Tabs';
+import { Grid, Button } from "@mui/material";
 import Tab from '@mui/material/Tab';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
 import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList';
 import TabContext from '@mui/lab/TabContext';
 import OrganizationGraph from './miniComponents/OrganizationGraph';
 import AddObj from './miniComponents/AddObj'
+import * as XLSX from "xlsx"
+
 
 
 export default function Organization() {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [currentTab, setCurrentTab] = useState(0);
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
   const [objectivesData, setObjectivesData] = useState([]);
+
+  const handleDownload = () => {
+    const rows = objectivesData.map((organization) => ({
+
+      objective_title: organization.title,
+      mission_impact: organization.mission_impact,
+      startDate: organization.start_date,
+      endDate: organization.end_date,
+      targetValue: organization.target_value,
+      succes: organization.success_count,
+      fail: organization.fail_count,
+    }));
+
+    // THIS CREATES THE WORKBOOK
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Organization Objectives");
+
+    XLSX.utils.sheet_add_aoa(worksheet, [
+      ["Org Objective Title",  "Org Objective Mission Impact", "Start Date", "End Date", "Target Value", "Success Count","Fail Count"],
+    ]);
+
+    // THIS WILL WRITE THE FILE AND YOU CAN SET THE NAME FOR THE FILE
+    XLSX.writeFile(workbook, "ReportFor2023.xlsx", { compression: true });
+    alert('Download completed successfully!');
+  }
+
+
 
   useEffect(() => {
     fetch("http://localhost:8081/organization_page")
@@ -66,13 +76,6 @@ export default function Organization() {
       })
   }, [user]);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -102,7 +105,11 @@ export default function Organization() {
                   value={item.id}
                   onClick={() => handleTabClick(item.id)}
                 />
+                
               ))}
+              <div>
+              <Button onClick={handleDownload} style={{backgroundColor: '#92cbff', color: 'black'}} >Export to Excel</Button>
+              </div>
             </TabList>
           </Box>
           {data.map((item) => (
