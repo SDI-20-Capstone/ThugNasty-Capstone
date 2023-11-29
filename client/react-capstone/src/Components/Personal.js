@@ -7,17 +7,47 @@ import {
   Tabs,
   Tab,
   Box,
+  Button,
 } from "@mui/material";
 import TabPanel from '@mui/lab/TabPanel'
 import TabList from '@mui/lab/TabList';
 import TabContext from '@mui/lab/TabContext';
 import { UserContext } from "./UserContext";
 import PersonalGraph from './miniComponents/PersonalGraph';
+import * as XLSX from "xlsx"
+
 
 export default function Personal() {
   const { user } = useContext(UserContext);
   const [personalObjectivesData, setPersonalObjectivesData] = useState([]);
   const [currentTab, setCurrentTab] = useState('personal');
+
+
+  const handleDownload = () => {
+    const rows = personalObjectivesData.map((personal) => ({
+
+      objective_title: personal.title,
+      mission_impact: personal.impact,
+      startDate: personal.start_date,
+      endDate: personal.end_date,
+      targetValue: personal.target_value,
+      succes: personal.success_count,
+      fail: personal.fail_count,
+    }));
+
+    // THIS CREATES THE WORKBOOK
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Personal Objectives");
+
+    XLSX.utils.sheet_add_aoa(worksheet, [
+      ["Personal Objective Title",  "Personal Objective Mission Impact", "Start Date", "End Date", "Target Value", "Success Count","Fail Count"],
+    ]);
+
+    // THIS WILL WRITE THE FILE AND YOU CAN SET THE NAME FOR THE FILE
+    XLSX.writeFile(workbook, "ReportFor2023.xlsx", { compression: true });
+    alert('Download completed successfully!');
+  }
 
   useEffect(() => {
     const fetchPersonalObjectives = async () => {
@@ -57,7 +87,8 @@ export default function Personal() {
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleTabChange} aria-label="Personal Objectives" centered>
               <Tab key="personal" label="Personal" value="personal" />
-            </TabList>
+           <Button onClick={handleDownload} style={{backgroundColor: '#92cbff', color: 'black'}} >Export to Excel</Button></TabList>
+            
           </Box>
           <TabPanel key="personal" value={currentTab}>
             {Array.isArray(personalObjectivesData) &&
