@@ -119,6 +119,11 @@ const OrgOkr = () => {
             id={`panel-${row.objective_title}-header`}
           >
             <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective_title}</Typography>
+            {user.role !== 'user' ?
+            <div>
+              <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
+            </div> :
+            <></> }
           </AccordionSummary>
             {row.objectives.map(entry => (
           <AccordionDetails
@@ -127,12 +132,12 @@ const OrgOkr = () => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-            
+
             }}
           >
-            <div>
+            {/* <div>
               <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.mission_impact} </Typography>
-            </div>
+            </div> */}
                 <div>
                   <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{entry.kr_title} </Typography>
                 </div>
@@ -221,9 +226,6 @@ const OrgOkr = () => {
               successCount={entry.success_count}
             targetValue={entry.target_value}/> :
             <></> }
-              <div>
-                <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
-              </div>
           </AccordionDetails>
               ))}
         </Accordion>
