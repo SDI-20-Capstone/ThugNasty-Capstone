@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Paper,
   Accordion,
@@ -21,10 +21,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddObj from "./AddObj";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const OrgOkr = () => {
   const [orgOkr, setOrgOkr] = useState([]);
@@ -32,15 +32,17 @@ const OrgOkr = () => {
   const [measurementValue, setMeasurementValue] = useState("");
   const [successOrFail, setSuccessOrFail] = useState("");
   const [notes, setNotes] = useState("");
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState("");
   const [keyResultsId, setKeyResultsId] = useState("");
-  const [objAdded, setObjAdded] = useState(false)
-  const [krAdded, setKrAdded] = useState(false)
+  const [objAdded, setObjAdded] = useState(false);
+  const [krAdded, setKrAdded] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:8081/home_orginfo")
       .then((res) => res.json())
-      .then((data) => data.filter((entry) => entry.organization_id === user.organization_id))
+      .then((data) =>
+        data.filter((entry) => entry.organization_id === user.organization_id)
+      )
       .then((filteredData) => setOrgOkr(filteredData));
   }, [user, keyResultsId, objAdded, krAdded]);
 
@@ -58,118 +60,158 @@ const OrgOkr = () => {
     event.preventDefault();
     let jsonMeasuredData = {
       key_result_id: keyResultsId,
-      date: date.format('YYYY-MM-DD'),
+      date: date.format("YYYY-MM-DD"),
       count: measurementValue,
       success: successOrFail,
-      notes: notes
+      notes: notes,
     };
 
     let jsonPatchData = {
       key_result_id: keyResultsId,
       count: getCount(keyResultsId),
-      success: successOrFail
-    }
+      success: successOrFail,
+    };
     fetch("http://localhost:8081/measurements", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(jsonMeasuredData),
-        })
-        .then((response) => {
-          if (response.status === 201){
-          alert('Measurement added succesfully');
-          handleAddDialogClose();
-          }
-        })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonMeasuredData),
+    }).then((response) => {
+      if (response.status === 201) {
+        alert("Measurement added succesfully");
+        handleAddDialogClose();
+      }
+    });
     fetch("http://localhost:8081/key_results", {
       method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(jsonPatchData),
-    })
-    .then((response) => {
-      if (response.status === 201){
-      setDate("")
-      setKeyResultsId("")
-      setNotes("")
-      setSuccessOrFail("")
-      setMeasurementValue("")
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonPatchData),
+    }).then((response) => {
+      if (response.status === 201) {
+        setDate("");
+        setKeyResultsId("");
+        setNotes("");
+        setSuccessOrFail("");
+        setMeasurementValue("");
       }
-    })
-  }
+    });
+  };
 
   const getCount = (kr_id) => {
-    let krData = orgOkr.map(entry => entry.objectives.filter(kr => kr.kr_id === kr_id))
-    let filteredKrData = krData.filter(entry => entry.length === 1);
-    let success_count = filteredKrData[0][0].success_count
-    let fail_count = filteredKrData[0][0].fail_count
-    let currentCount = parseInt(measurementValue)
-    if (successOrFail === true){
-      return currentCount + success_count
+    let krData = orgOkr.map((entry) =>
+      entry.objectives.filter((kr) => kr.kr_id === kr_id)
+    );
+    let filteredKrData = krData.filter((entry) => entry.length === 1);
+    let success_count = filteredKrData[0][0].success_count;
+    let fail_count = filteredKrData[0][0].fail_count;
+    let currentCount = parseInt(measurementValue);
+    if (successOrFail === true) {
+      return currentCount + success_count;
     } else {
-      return currentCount + fail_count
+      return currentCount + fail_count;
     }
-  }
+  };
 
   return (
     <Paper>
-      {user.role !== 'user' ?
-        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} /> :
-          <></>}
-      {orgOkr.map((row,index) => (
-        <Accordion key={row.id} style={{backgroundColor:'white', border: '1px solid #92cbff', width:'100%'}}>
+      {user.role !== "user" ? (
+        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} />
+      ) : (
+        <></>
+      )}
+      {orgOkr.map((row, index) => (
+        <Accordion
+          key={row.id}
+          style={{
+            backgroundColor: "white",
+            border: "1px solid #92cbff",
+            width: "100%",
+          }}
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-${row.objective_title}-content`}
             id={`panel-${row.objective_title}-header`}
+            style={{ justifyContent: "space-between", alignItems: "center" }}
           >
-            <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective_title}</Typography>
-            {user.role !== 'user' ?
-            <div>
-              <AddKr obj_title={row.objective_title} krAdded={krAdded} setKrAdded={setKrAdded}/>
-            </div> :
-            <></> }
+            <Typography
+              variant="h6"
+              style={{ fontFamily: "Georgia", fontSize: "17px" }}
+            >
+              {row.objective_title}
+            </Typography>
+            {user.role !== "user" ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: "auto",
+                  paddingRight: "8px",
+                }}
+              >
+                <AddKr
+                  obj_title={row.objective_title}
+                  krAdded={krAdded}
+                  setKrAdded={setKrAdded}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
           </AccordionSummary>
-            {row.objectives.map(entry => (
-          <AccordionDetails
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-
-            }}
-          >
-            {/* <div>
+          {row.objectives.map((entry) => (
+            <AccordionDetails
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {/* <div>
               <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.mission_impact} </Typography>
             </div> */}
-                <div>
-                  <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{entry.kr_title} </Typography>
-                </div>
-                <div
+              <div>
+                <Typography
+                  variant="h6"
+                  style={{ fontFamily: "Georgia", fontSize: "17px" }}
+                >
+                  {entry.kr_title}{" "}
+                </Typography>
+              </div>
+              <div
                 style={{
                   display: "flex",
                   flexDirection: row.objective_id !== null ? "row" : "column",
-                  justifyContent: row.objective_id !== null ? "space-between" : "center",
+                  justifyContent:
+                    row.objective_id !== null ? "space-between" : "center",
                   alignItems: row.objective_id !== null ? "center" : "center",
                   textAlign: row.objective_id !== null ? "left" : "center", // Adjust text alignment as needed
                   margin: row.objective_id !== null ? "auto" : "auto",
                 }}
-                >
-                {row.objective_id !== null ?
-                <IconButton
-                  onClick={() => {
-                    setKeyResultsId(entry.kr_id)
-                    handleAddMeasurement()}}
-                  color="primary"
-                  aria-label="add measurement"
-                >
-                  <AddIcon />
-                </IconButton>:
-                <></> }
-                {row.objective_id !== null ?
-                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography> :
-                <div>Click On the Add Kr Button To Add a New Key Result</div> }
+              >
+                {row.objective_id !== null ? (
+                  <IconButton
+                    onClick={() => {
+                      setKeyResultsId(entry.kr_id);
+                      handleAddMeasurement();
+                    }}
+                    color="primary"
+                    aria-label="add measurement"
+                  >
+                    <AddIcon />
+                  </IconButton>
+                ) : (
+                  <></>
+                )}
+                {row.objective_id !== null ? (
+                  <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
+                ) : (
+                  <div>Click On the Add Kr Button To Add a New Key Result</div>
+                )}
                 <Dialog open={addDialog} onClose={handleAddDialogClose}>
-                  <DialogTitle>Organization: {row.organization_name}</DialogTitle>
+                  <DialogTitle>
+                    Organization: {row.organization_name}
+                  </DialogTitle>
                   <DialogContent>
                     Number of Measurements
                     <TextField
@@ -196,7 +238,7 @@ const OrgOkr = () => {
                       <MenuItem value={false}> Failure</MenuItem>
                     </Select>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={['DatePicker']}>
+                      <DemoContainer components={["DatePicker"]}>
                         <DatePicker
                           label="Date"
                           value={date}
@@ -227,17 +269,18 @@ const OrgOkr = () => {
                   </DialogActions>
                 </Dialog>
               </div>
-              {row.objective_id !== null ?
-              <CircularWithValueLabel
-
-              successCount={entry.success_count}
-            targetValue={entry.target_value}/> :
-            <></> }
-          </AccordionDetails>
-              ))}
+              {row.objective_id !== null ? (
+                <CircularWithValueLabel
+                  successCount={entry.success_count}
+                  targetValue={entry.target_value}
+                />
+              ) : (
+                <></>
+              )}
+            </AccordionDetails>
+          ))}
         </Accordion>
       ))}
-      
     </Paper>
   );
 };
