@@ -40,7 +40,7 @@ export default function ButtonAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }} >
-      <AppBar position="static" style={{backgroundColor:'#4dacff'}} >
+      <AppBar position="static" style={{ backgroundColor: '#1c3851' }} >
         <Toolbar >
           <IconButton
             size="large"
@@ -69,38 +69,38 @@ export default function ButtonAppBar() {
           >
             <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
               <MenuItem onClick={handleClose}>
-              <AccountBoxIcon />
-              Home
-                </MenuItem>
-             </Link>
-            
-             
+                <AccountBoxIcon />
+                Home
+              </MenuItem>
+            </Link>
+
+
             <Link to="/Personal" style={{ textDecoration: 'none', color: 'inherit' }}>
               <MenuItem onClick={handleClose}>
-              <PersonIcon  />
+                <PersonIcon />
                 Personal Objectives
-            </MenuItem>
-             </Link>
-             
+              </MenuItem>
+            </Link>
+
             <Link to="/Organization" style={{ textDecoration: 'none', color: 'inherit' }}>
               <MenuItem onClick={handleClose}>
-              <WorkIcon />
+                <WorkIcon />
                 Organization Objectives
-            </MenuItem>
+              </MenuItem>
             </Link>
 
             {user.role !== "user" ?
-            <MenuItem onClick={handleClose}>
-              <PersonIcon />
-              <Link to="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                Admin
-              </Link>
-            </MenuItem> :
-            <></> }
-            
+              <MenuItem onClick={handleClose}>
+                <PersonIcon />
+                <Link to="/admin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Admin
+                </Link>
+              </MenuItem> :
+              <></>}
+
           </Menu>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} >
-            My OKRA
+            MyOKRA
           </Typography>
           <Button color="inherit" onClick={() => logout()}>logout</Button>
         </Toolbar>

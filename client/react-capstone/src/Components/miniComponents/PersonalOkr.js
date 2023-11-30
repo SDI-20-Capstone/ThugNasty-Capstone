@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   Paper,
   Accordion,
@@ -8,19 +8,19 @@ import {
   IconButton,
   MenuItem,
   Select,
-  Button
+  Button,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CircularWithValueLabel from './CircularWithValueLabel';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import AddPersObj from './AddPersObj';
+import AddIcon from "@mui/icons-material/Add";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CircularWithValueLabel from "./CircularWithValueLabel";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import AddPersObj from "./AddPersObj";
 import { UserContext } from "../UserContext";
-import AddPersKr from './AddPersKr'
+import AddPersKr from "./AddPersKr";
 
 const PersonalOkr = () => {
   const [personalOkr, setPersonalOkr] = useState([]);
@@ -47,7 +47,7 @@ const PersonalOkr = () => {
 
   const handleAddDialogClose = () => {
     setAddDialog(false);
-    setMeasurementValue('');
+    setMeasurementValue("");
   };
 
   const handleAddDialogSubmit = (event) => {
@@ -70,28 +70,26 @@ const PersonalOkr = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(jsonMeasuredData),
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          alert('Measurement added successfully');
-          handleAddDialogClose();
-        }
-      });
+    }).then((response) => {
+      if (response.status === 201) {
+        alert("Measurement added successfully");
+        handleAddDialogClose();
+      }
+    });
 
     fetch("http://localhost:8081/personal_key_results", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(jsonPatchData),
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          setDate("");
-          setKeyResultsId("");
-          setNotes("");
-          setSuccessOrFail("");
-          setMeasurementValue("");
-        }
-      });
+    }).then((response) => {
+      if (response.status === 201) {
+        setDate("");
+        setKeyResultsId("");
+        setNotes("");
+        setSuccessOrFail("");
+        setMeasurementValue("");
+      }
+    });
   };
 
   const getCount = (kr_id) => {
@@ -110,49 +108,85 @@ const PersonalOkr = () => {
   };
 
   return (
-
-
-    <Paper> 
-       <AddPersObj objAdded={objAdded} setObjAdded={setObjAdded} />
+    <Paper>
+      <AddPersObj objAdded={objAdded} setObjAdded={setObjAdded} />
       {personalOkr.map((row, index) => (
-        <Accordion key={row.user_id} style={{backgroundColor:'white', border: '1px solid #92cbff', width:'100%', height: '100%'}}>
+        <Accordion
+          key={row.user_id}
+          style={{
+            backgroundColor: "white",
+            border: "1px solid #92cbff",
+            width: "100%",
+            height: "100%",
+          }}
+        >
           <AccordionSummary
-
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-${row.objective}-content`}
             id={`panel-${row.objective}-header`}
+            style={{ justifyContent: "space-between", alignItems: "center" }}
           >
-            <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.objective}</Typography>
-            <div style={{ alignItems:'end' }}>
-              <AddPersKr objTitle={row.objective} krAdded={krAdded} setKrAdded={setKrAdded} />
+            <Typography
+              variant="h6"
+              style={{ fontFamily: "Georgia", fontSize: "17px" }}
+            >
+              {row.objective}
+            </Typography>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "auto",
+              paddingRight: "8px",
+              }}>
+              <AddPersKr
+                objTitle={row.objective}
+                krAdded={krAdded}
+                setKrAdded={setKrAdded}
+              />
             </div>
           </AccordionSummary>
           {row.objectives.map((entry) => (
             <AccordionDetails
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
                 // padding: '146px'
               }}
               key={entry.kr_id}
             >
               <div>
-                <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px'}}>{row.mission_impact} </Typography>
+                <Typography
+                  variant="h6"
+                  style={{ fontFamily: "Georgia", fontSize: "17px" }}
+                >
+                  {row.mission_impact}{" "}
+                </Typography>
               </div>
               <div>
-                <Typography variant="h6" style={{ fontFamily: 'Georgia', fontSize: '17px', textAlign:'left'}}>{entry.kr_title} </Typography>
+                <Typography
+                  variant="h6"
+                  style={{
+                    fontFamily: "Georgia",
+                    fontSize: "17px",
+                    textAlign: "left",
+                  }}
+                >
+                  {entry.kr_title}{" "}
+                </Typography>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-
+                  display: "flex",
+                  flexDirection: entry.kr_id !== null ? "row" : 'column',
+                  justifyContent: entry.kr_id !== null ? "space-between" : 'center',
+                  textAlign: entry.kr_id !== null ? "left" : "center",
+                  alignItems: "center",
+                  margin: row.objective_id !== null ? "auto" : "auto",
                 }}
               >
+                {entry.kr_id !== null ?
                 <IconButton
                   onClick={() => {
                     setKeyResultsId(entry.kr_id);
@@ -162,10 +196,15 @@ const PersonalOkr = () => {
                   aria-label="add measurement"
                 >
                   <AddIcon />
-                </IconButton>
-                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
+                </IconButton> :
+                <></>}
+                {entry.kr_id !== null ?
+                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography> :
+                <div>Click On the Add Kr Button To Add a New Key Result</div> }
                 <Dialog open={addDialog} onClose={handleAddDialogClose}>
-                  <DialogTitle>Organization: {row.organization_name}</DialogTitle>
+                  <DialogTitle>
+                    User: {user.first_name}
+                  </DialogTitle>
                   <DialogContent>
                     Number of Measurements
                     <TextField
@@ -202,15 +241,16 @@ const PersonalOkr = () => {
                   </DialogActions>
                 </Dialog>
               </div>
+              {entry.kr_id !== null ?
               <CircularWithValueLabel
                 successCount={entry.success_count}
                 targetValue={entry.target_value}
-              />
+              /> :
+              <></> }
             </AccordionDetails>
           ))}
         </Accordion>
       ))}
-    
     </Paper>
   );
 };

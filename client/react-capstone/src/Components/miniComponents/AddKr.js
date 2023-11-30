@@ -15,7 +15,7 @@ import Toggle from './Toggle';
 import { UserContext } from "../UserContext";
 
 
-export default function AddKr({obj_title, krAdded, setKrAdded}) {
+export default function AddKr({org, obj_title, krAdded, setKrAdded}) {
  const [open, setOpen] = useState(false);
  const [newKrTitle, setNewKrTitle] = useState();
 //  const [newStartDate, setNewStartDate] = useState();
@@ -120,7 +120,7 @@ export default function AddKr({obj_title, krAdded, setKrAdded}) {
         <DialogTitle id="form-dialog-title">Key Result</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Organization: Org will be here
+            Organization: {org}
           </DialogContentText>
         <TextField
           autoFocus

@@ -75,7 +75,7 @@ const AddPersObj = ({ objAdded, setObjAdded }) => {
       <Dialog open={openAdd} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Personal Objective</DialogTitle>
         <DialogContent>
-          <DialogContentText>User: {user.username}</DialogContentText>
+          <DialogContentText>User: {user.first_name}</DialogContentText>
         </DialogContent>
         Objective
         <TextField

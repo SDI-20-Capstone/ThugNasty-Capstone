@@ -42,7 +42,7 @@ const HomePage = () => {
       totalObj += entry.target_value
     ));
   }
-
+  
   return (
     <div>
       <ButtonAppBar />
@@ -60,25 +60,25 @@ const HomePage = () => {
             justifyContent="space-evenly"
             alignItems="stretch"
             height="100%"
-            margin={3}
+            padding={3}
+            // margin={3}
           >
             <Grid item xs={25} style={{
-                borderRadius: 8,
+                borderRadius: 5,
                 overflow: 'hidden',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.5)',
                 marginBottom: '16px',
-                padding:'15px'
+                padding:'0 6px 0 6px'
               }}>
               <OrgOkr />
             </Grid>
-            {/* <Divider orientation="vertical" /> */}
-            <Grid item xs={25} 
+            <Grid item xs={25}
             style={{
-              borderRadius: 8,
+              borderRadius: 5,
               overflow: 'hidden',
               boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
               marginBottom: '16px',
-              padding:'15px'
+              padding:'0 6px 0 6px'
             }}
             >
               <PersonalOkr />
@@ -98,7 +98,7 @@ const HomePage = () => {
             alignItems="stretch"
             height="95%"
             padding={3}
-            margin={1}
+            // margin={1}
           >
             <Grid item xs={25}
               style={{
@@ -106,7 +106,8 @@ const HomePage = () => {
                 overflow: 'hidden',
                 boxShadow: '0 4px 10px rgba(0, 0, 0, 0.8)',
                 marginBottom: '16px',
-                padding:'20px'
+                padding:'20px',
+                paddingRight: '35px'
               }}
             >
               
