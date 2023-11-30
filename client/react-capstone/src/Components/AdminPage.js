@@ -184,7 +184,7 @@ export default function AdminPage() {
     return (
         <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: 'white' }}>
             <ButtonAppBar />
-            <h1 style={{ color: 'black' }}>Administrator Page</h1>
+            <h1 style={{ color: '#1c3851' }}>Administrator Page</h1>
 
             <Tabs value={currentTab} onChange={handleTabChange} centered>
                 <Tab label="Members" />
@@ -194,7 +194,7 @@ export default function AdminPage() {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <button
                     onClick={handleOpenAddModal}
-                    style={{ backgroundColor: '#3385ff', color: 'white', marginRight: '16px' }}
+                    style={{ backgroundColor: '#1c3851', color: 'white', marginRight: '16px' }}
                 >
                     {addButtonLabel}
                 </button>
@@ -217,7 +217,7 @@ export default function AdminPage() {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
-                    // checkboxSelection
+                // checkboxSelection
                 />
             </div>
 
