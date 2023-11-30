@@ -132,7 +132,12 @@ const PersonalOkr = () => {
             >
               {row.objective}
             </Typography>
-            <div style={{ marginLeft: "auto" }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "auto",
+              paddingRight: "8px",
+              }}>
               <AddPersKr
                 objTitle={row.objective}
                 krAdded={krAdded}
@@ -174,11 +179,14 @@ const PersonalOkr = () => {
               <div
                 style={{
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  flexDirection: entry.kr_id !== null ? "row" : 'column',
+                  justifyContent: entry.kr_id !== null ? "space-between" : 'center',
+                  textAlign: entry.kr_id !== null ? "left" : "center",
                   alignItems: "center",
+                  margin: row.objective_id !== null ? "auto" : "auto",
                 }}
               >
+                {entry.kr_id !== null ?
                 <IconButton
                   onClick={() => {
                     setKeyResultsId(entry.kr_id);
@@ -188,11 +196,14 @@ const PersonalOkr = () => {
                   aria-label="add measurement"
                 >
                   <AddIcon />
-                </IconButton>
-                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography>
+                </IconButton> :
+                <></>}
+                {entry.kr_id !== null ?
+                <Typography>{`${entry.success_count}/${entry.target_value}`}</Typography> :
+                <div>Click On the Add Kr Button To Add a New Key Result</div> }
                 <Dialog open={addDialog} onClose={handleAddDialogClose}>
                   <DialogTitle>
-                    Organization: {row.organization_name}
+                    User: {user.first_name}
                   </DialogTitle>
                   <DialogContent>
                     Number of Measurements
@@ -230,10 +241,12 @@ const PersonalOkr = () => {
                   </DialogActions>
                 </Dialog>
               </div>
+              {entry.kr_id !== null ?
               <CircularWithValueLabel
                 successCount={entry.success_count}
                 targetValue={entry.target_value}
-              />
+              /> :
+              <></> }
             </AccordionDetails>
           ))}
         </Accordion>

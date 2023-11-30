@@ -90,7 +90,7 @@ const AddPersKr = ({ objTitle, krAdded, setKrAdded }) => {
         <DialogTitle id="form-dialog-title">Key Result</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            User: User will be here
+            User: {user.first_name}
           </DialogContentText>
           <TextField
             autoFocus

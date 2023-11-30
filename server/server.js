@@ -47,7 +47,7 @@ app.patch('/userinfo', (req, res) => {
 
 app.get('/SignIn', (req, res) => {
   knex('userinfo')
-    .select('email', 'password', 'organization_id', 'role','id')
+    .select('email', 'password', 'organization_id', 'role','id', 'first_name')
     .then(data => {
       res.json(data)
     })
@@ -302,7 +302,7 @@ app.delete('/removeMember', async (req, res) => {
     await knex('personal_objectives').where('user_id', '=', id).del();
 
     const updatedMemberRows = await knex('userinfo').select('*');
-    
+
     res.status(200).json({ success: true, message: 'Member deleted successfully', updatedMemberRows });
   } catch (error) {
     console.error(error);
@@ -316,7 +316,7 @@ app.delete('/removeUnit', async (req, res) => {
 
     await knex('organization').where('id', '=', id).del();
     await knex('objectives').where('objectives.organization_id', '=', id).del();
-    
+
     const updatedUnitRows = await knex('organization').select('*');
 
     res.status(200).json({ success: true, message: 'Unit deleted successfully', updatedUnitRows });
