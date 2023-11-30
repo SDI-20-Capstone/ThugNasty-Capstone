@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -16,6 +16,7 @@ export default function AddObj({objAdded, setObjAdded}) {
   const navigate = useNavigate();
   const [newMissionImpact, setNewMissionImpact] = useState('');
   const [newObjectiveTitle, setNewObjectiveTitle] = useState('');
+  const [orgName, setOrgName] = useState("");
   const { user } = useContext(UserContext);
   const handleOpen = () => {
     setOpenAdd(true);
@@ -82,7 +83,7 @@ export default function AddObj({objAdded, setObjAdded}) {
       >
         <DialogTitle id="form-dialog-title">Organization Objective</DialogTitle>
         <DialogContent>
-          <DialogContentText>Organization: Org will be here</DialogContentText>
+          <DialogContentText>Organization: </DialogContentText>
         </DialogContent>
         Objective
         <TextField

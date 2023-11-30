@@ -43,7 +43,7 @@ const OrgOkr = () => {
       .then((data) =>
         data.filter((entry) => entry.organization_id === user.organization_id)
       )
-      .then((filteredData) => setOrgOkr(filteredData));
+      .then((filteredData) => setOrgOkr(filteredData))
   }, [user, keyResultsId, objAdded, krAdded]);
 
   const handleAddMeasurement = () => {
@@ -114,7 +114,7 @@ const OrgOkr = () => {
   return (
     <Paper>
       {user.role !== "user" ? (
-        <AddObj objAdded={objAdded} setObjAdded={setObjAdded} />
+       <AddObj objAdded={objAdded} setObjAdded={setObjAdded} />
       ) : (
         <></>
       )}
@@ -149,6 +149,7 @@ const OrgOkr = () => {
                 }}
               >
                 <AddKr
+                  org={row.organization_name}
                   obj_title={row.objective_title}
                   krAdded={krAdded}
                   setKrAdded={setKrAdded}
