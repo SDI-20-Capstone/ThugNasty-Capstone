@@ -1,4 +1,4 @@
-const { createNewUser, updateMember, createNewMeasurement, patchKeyResult, persPatchKeyResult, createNewPersMeasurement } = require("./Helpers")
+const { createNewUserSignUp, createNewUserAdmin, updateMember, createNewMeasurement, patchKeyResult, persPatchKeyResult, createNewPersMeasurement } = require("./Helpers")
 const express = require('express');
 const app = express();
 const port = 8081;
@@ -32,7 +32,7 @@ app.post('/userinfo', (req, res) => {
     rank,
     role
   } = req.body
-  createNewUser(first_name, last_name, email, password, organization, rank, role)
+  createNewUserSignUp(first_name, last_name, email, password, organization, rank, role)
     .then((data) => res.status(200).send(data))
 })
 
@@ -287,7 +287,7 @@ app.get('/addMember', (req, res) => {
 app.post('/addMember', (req, res) => {
   const { first_name, last_name, email, password, organization_id, rank } = req.body;
 
-  createNewUser(first_name, last_name, email, password, organization_id, rank)
+  createNewUserAdmin(first_name, last_name, email, password, organization_id, rank)
     .then((data) => res.status(201).json(data))
     .catch((error) => {
       console.error(error);
