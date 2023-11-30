@@ -21,6 +21,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import AddPersObj from "./AddPersObj";
 import { UserContext } from "../UserContext";
 import AddPersKr from "./AddPersKr";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const PersonalOkr = () => {
   const [personalOkr, setPersonalOkr] = useState([]);
@@ -230,8 +234,28 @@ const PersonalOkr = () => {
                       <MenuItem value={true}> Success</MenuItem>
                       <MenuItem value={false}> Failure</MenuItem>
                     </Select>
-                    {/* Add your DatePicker component here */}
-                    {/* Add your Notes TextField component here */}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={["DatePicker"]}>
+                        <DatePicker
+                          label="Date"
+                          value={date}
+                          onChange={(newValue) => setDate(newValue)}
+                        />
+                      </DemoContainer>
+                    </LocalizationProvider>
+                    Notes
+                    <TextField
+                      label=""
+                      variant="filled"
+                      type="text"
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      multiline
+                      fullWidth
+                      rows={8}
+                      autoFocus
+                      margin="dense"
+                    />
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleAddDialogClose}>Cancel</Button>
