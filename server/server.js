@@ -47,7 +47,8 @@ app.patch('/userinfo', (req, res) => {
 
 app.get('/SignIn', (req, res) => {
   knex('userinfo')
-    .select('email', 'password', 'organization_id', 'role','id', 'first_name')
+    .select('email', 'password', 'organization_id', 'role','userinfo.id as id', 'first_name', 'organization.name')
+    .join('organization', 'userinfo.organization_id', '=', 'organization.id')
     .then(data => {
       res.json(data)
     })
