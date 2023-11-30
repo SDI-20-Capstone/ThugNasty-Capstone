@@ -83,7 +83,7 @@ export default function AddObj({objAdded, setObjAdded}) {
       >
         <DialogTitle id="form-dialog-title">Organization Objective</DialogTitle>
         <DialogContent>
-          <DialogContentText>Organization: </DialogContentText>
+          <DialogContentText>Organization: {user.organization_name}</DialogContentText>
         </DialogContent>
         Objective
         <TextField

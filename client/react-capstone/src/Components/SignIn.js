@@ -61,7 +61,8 @@ export default function SignIn() {
                     organization_id: filteredInfo[0].organization_id,
                     role: filteredInfo[0].role,
                     id: filteredInfo[0].id,
-                    first_name: filteredInfo[0].first_name
+                    first_name: filteredInfo[0].first_name,
+                    organization_name: filteredInfo[0].name
                 }))
               navigate('/Home');
             } else {
@@ -72,7 +73,8 @@ export default function SignIn() {
                   organization_id: "",
                   role: "",
                   id: "",
-                  first_name: ""
+                  first_name: "",
+                  organization_name: ""
                 })
                 setEmail('');
                 setPassword('');
